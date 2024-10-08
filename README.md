@@ -147,7 +147,7 @@ Output:
 
 ## Team
 
-- Marie-Helene Weech (RBG Kew, digitisation)
+- [Marie-Helene Weech](https://github.com/Cupania) (RBG Kew, digitisation)
 - Priscila Reis (RBG Kew, senior curator-botanist)
-- Nicky Nicolson (RBG Kew, digital collections)
-- Piriyan Karunakularatnam (RBG Kew, digital research associate)
+- [Nicky Nicolson](https://github.com/nickynicolson) (RBG Kew, digital collections)
+- [Piriyan Karunakularatnam](https://github.com/ipiriyan2002) (RBG Kew, digital research associate)
