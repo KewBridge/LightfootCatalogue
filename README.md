@@ -14,6 +14,10 @@ It is possible to experiment with QWEN using a huggingface space: https://huggin
 
 An example:
 
+Page image:
+
+<img src="sample-images/pg132_a.jpeg" width=250px/>
+
 Prompt:
 
 ```
