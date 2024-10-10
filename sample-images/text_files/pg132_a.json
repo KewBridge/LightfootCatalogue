@@ -1,0 +1,103 @@
+{
+    "ACERACEAE": {
+        "Acer campestre L.": {
+            "folders": 1,
+            "folder_contents": [
+                "Acer campestre [TA]"
+            ]
+        },
+        "Acer pseudoplatanus L.": {
+            "folders": 2,
+            "folder_contents": [
+                {
+                    "folder": "Acer Pseudo-Platanus [G]",
+                    "contents": [
+                        "Maple. Bulls: [Bulstrode] Park [JL]"
+                    ]
+                },
+                {
+                    "folder": "Acer Pseudo-Platanus [TA]"
+                }
+            ]
+        }
+    },
+    "AMARANTHACEAE": {
+        "Amaranthus lividus L., Flora Europaea 1: 110 (1964)": {
+            "folders": 1,
+            "folder_contents": [
+                "Amaranthus Blitum [TA]"
+            ],
+            "contents": [
+                "Cites Ray's Syn. 1957. ii. 'Blite Amaranth. Aug! It is often found on Dunghills in the neighbourhood of London. I gather'd this on a Dunghill at Fulham near London' [JL]. iii. 'Amaranthus Blitum. Monoec: 5. and:' [JL]"
+            ]
+        }
+    },
+    "ARALIACEAE": {
+        "Hedera helix L.": {
+            "folders": 1,
+            "folder_contents": [
+                "Hedera Helix [TA]"
+            ]
+        }
+    },
+    "ARISTOLOCHIACEAE": {
+        "Asarum europaeum L.": {
+            "folders": 1,
+            "folder_contents": [
+                "Asarum europaeum [TA]"
+            ],
+            "contents": [
+                "Asarum europaeum Lin: Asarabacca. Anglis. ex horto [JL]"
+            ]
+        }
+    },
+    "BALSAMINACEAE": {
+        "Impatiens noli-tangere L.": {
+            "folders": 1,
+            "folder_contents": [
+                "Impatiens Noli me tangere [G]"
+            ]
+        }
+    },
+    "BETULACEAE": {
+        "Alnus glutinosa (L.) Gaertn.": {
+            "folders": 1,
+            "folder_contents": [
+                "Betula Alnus [TA]"
+            ]
+        },
+        "Betula nana L.": {
+            "folders": 1,
+            "folder_contents": [
+                "Betula nana [G]"
+            ]
+        }
+    },
+    "CAMANULACEAE": {
+        "Campanula latifolia L.": {
+            "folders": 2,
+            "folder_contents": [
+                {
+                    "folder": "Companula latifolia [TA]"
+                },
+                {
+                    "folder": "Companula latifolia [G]"
+                }
+            ]
+        },
+        "Campanula patula L.": {
+            "folders": 1,
+            "folder_contents": [
+                "Campanula patula [TA]"
+            ]
+        },
+        "Campanula rapunculus L.": {
+            "folders": 2,
+            "folder_contents": [
+                {
+                    "folder": "Campanula rapunculus [TA]"
+                }
+            ]
+        }
+    }
+}
