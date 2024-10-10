@@ -25,6 +25,8 @@ def load_images(path: str) -> list:
 
     # Traverse through the directory
     for file in os.listdir(path):
+        if file in config.IGNORE_FILE:
+            continue
         # Get the file path
         file_path = os.path.join(path, file)
 

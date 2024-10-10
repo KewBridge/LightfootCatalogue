@@ -4,7 +4,7 @@ MODEL = "Qwen/Qwen2-VL-7B-Instruct"
 
 # A list of image extensions to approve
 IMAGE_EXT = ["jpeg", "png"]
-
+IGNORE_FILE = [".ipynb_checkpoints"]
 # Path to the save directory of the json files
 SAVE_PATH = "./parsed_json"
 
