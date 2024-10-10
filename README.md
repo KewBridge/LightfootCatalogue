@@ -144,6 +144,18 @@ Output:
   ]
 }
 ```
+## To run the program
+```
+1. Connect to the HPC cluster
+2. Request a partition
+>>> srun --partition=gpu --gpus=1 --mem=80G --cpus-per-task=4 --pty bash
+3. Create a conda environment (assuming conda is installed in your HPC cluster, if not follow this link https://help.cropdiversity.ac.uk/bioconda.html)
+>>> conda create --name <input your conda env name> --file=./requirements.yml
+4. Activate conda environment
+>>> conda activate <input your conda env name>
+5. Run program from root
+>>> python run.py "<path to image/image directory>"
+```
 
 ## Team
 
