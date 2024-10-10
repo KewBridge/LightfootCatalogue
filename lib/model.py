@@ -93,7 +93,7 @@ def batch_infer(model: object, processor: object, images: list, batch_size: int 
     # Define the value for maximum number of tokens and batch size given they are empty (None)
     max_new_tokens = max_new_tokens if (max_new_tokens is not None) else config.MAX_NEW_TOKENS
     batch_size = batch_size if (batch_size is not None) else config.BATCH_SIZE
-    print(f" Using: \n Maximum new tokens = {max_new_tokens} \n Batch size = {batch_size} \n save_path = {save_path}")
+    print(f">>> Using: \n \tMaximum new tokens = {max_new_tokens} \n \tBatch size = {batch_size} \n \tsave_path = {save_path}")
 
     # Seperate the input images into batches (return the rest as a single batch)
     # Such that given 10 images and a batch size of 3
@@ -102,14 +102,15 @@ def batch_infer(model: object, processor: object, images: list, batch_size: int 
 
     # Loop through batched images and perform inference
     for ind, batch in enumerate(batched_images):
-        print(f"Batch {ind+1} starting...")
+        print(f">>> Batch {ind+1} starting...")
         output_text = perform_inference(model, processor, batch, max_new_tokens)
         
         pairs = [(image, output_text[ind]) for ind, image in enumerate(batch)]
 
         # Saving the output as soon as we get it for each batch, as not to waste memory
-        print(f"== Saving Pairs For Batch {ind+1} ==")
+        print(f"\t== Saving Pairs For Batch {ind+1} ==")
         utils.save_jsons(pairs, save_path)
+        print(f"\t== Saving Done For Batch {ind+1}  ==")
     
         
 

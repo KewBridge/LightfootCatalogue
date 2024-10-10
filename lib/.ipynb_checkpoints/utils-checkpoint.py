@@ -2,7 +2,7 @@ import re
 import os
 import json
 import lib.config as config
-
+import pandas as pd
 
 def load_images(path: str) -> list:
     """
@@ -41,6 +41,36 @@ def load_images(path: str) -> list:
             all_files.extend(files)
     
     return all_files
+
+def json_to_csv(json_file: dict) -> pd.DataFrame:
+    
+    tabular = pd.DataFrame(columns=["family", "species", "folder", "contents"])
+
+    try:
+        for family, f_val in json_file.items():
+            try:
+                for species, s_val in f_val.items():
+                    try:
+                        for folder_name in s_val['folder_contents']:
+                            if isinstance(folder_name, str):
+                                tabular.loc[len(tabular)] = [family, species, folder_name, None]
+                            else:
+                                if "contents" in folder_name:
+                                    for content in folder_name['contents']:
+                                        tabular.loc[len(tabular)] = [family, species, folder_name['folder'], content]
+                                else:
+                                    tabular.loc[len(tabular)] = [family, species, folder_name['folder'], None]
+                
+                            if "contents" in s_val and tabular.loc[len(tabular)-1]["contents"] is None:
+                                tabular.loc[len(tabular)-1, "contents"] = s_val["contents"][0]
+                    except:
+                        tabular.loc[len(tabular)] = [family, species, None, None]
+            except:
+                tabular.loc[len(tabular)] = [family, None, None, None]
+    except:
+        tabular.loc[len(tabular)] = [None, None, None, None]
+
+    return tabular
 
     
 def clean_json(text: str) -> str:
@@ -81,8 +111,8 @@ def verify_json(text: str) -> bool:
         json_loaded = json.loads(text)
         return True
     except Exception as e:
-        print(f"Non JSON format found in input text")
-        print(f"Error: \n {e}")
+        print(f">>> Non JSON format found in input text")
+        print(f">>> Error: \n {e}")
 
     return False
 
@@ -105,6 +135,19 @@ def dump_json(text: str, file_name: str = "sample.json", save_path : str = None)
     # Save the file
     with open(os.path.join(save_path, file_name), "w") as json_file:
         json.dump(json_loaded_text, json_file, indent=4)
+
+
+def save_csv(text: str, file_name: str = "sample.csv", save_path: str = None):
+    
+    # Find the save directory in config if not provided
+    save_path = save_path if (save_path is not None) else config.SAVE_PATH
+
+    # Load the json text into json
+    json_loaded_text = json.loads(text)
+
+    tabular = json_to_csv(json_loaded_text)
+
+    tabular.to_csv(os.path.join(save_path, file_name), index=False)
 
 
 def save_text(text: str, file_name: str = "sample.txt", save_path : str = None):
@@ -151,7 +194,11 @@ def save_json(image: str, text: str, save_path: str = None):
     # verify if text is json formatted
     if verify_json(json_text):
         # Dump into json file
+        print(">>>> Saving JSON...")
         dump_json(json_text, file_name+ ".json", save_path)
+        # Dump into csv
+        print(">>>> Saving CSV...")
+        save_csv(json_text, file_name+ ".csv", save_path)
     else:
         # If not, save it as a text file
         save_text(json_text, file_name+ ".txt", save_path)
