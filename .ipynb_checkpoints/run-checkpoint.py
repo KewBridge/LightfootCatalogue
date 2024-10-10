@@ -31,23 +31,25 @@ def main():
     """
     Main function to perform the operations
     """
-    print("Starting...")
+    print(">>> Starting...")
     args = parse_args()
 
     # Load a list of all image paths (with their absolute path)
-    print("Loading Images...")
+    print(">>> Loading Images...")
     images = utils.load_images(args.images)
 
     # Load model
-    print("Loading Model...")
+    print(">>> Loading Model...")
     qwen_model = model.load_model()
     # Load processor
-    print("Loading Pre-Processor...")
+    print(">>> Loading Pre-Processor...")
     processor = model.load_processor()
-
+    
+    batch = int(args.batch) if (args.batch is not None) else None
+    max_tokens = int(args.max_tokens) if (args.max_tokens is not None) else None
     # Perform inference and save the jsons
-    model.batch_infer(qwen_model, processor, images, int(args.batch), int(args.max_tokens), args.save_path)
-    print("Inference Finished")
+    model.batch_infer(qwen_model, processor, images, batch, max_tokens, args.save_path)
+    print(">>> Inference Finished")
     
 
 if __name__ == "__main__":
