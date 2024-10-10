@@ -13,6 +13,9 @@ def parse_args():
     Parses arguments inputted in command line
     
     Flags available:
+    -mt or --max-tokens -> for defining maximum number of tokens in the model
+    -out or --save-path -> for defining the save path in which to save the jsons
+    -b or --batch -> for defining the batch size
     """
     parser = argparse.ArgumentParser(description='Run inference on pages')
     parser.add_argument('images', help='Path to images (Can parse in either a single image or a directory of images)')
@@ -25,20 +28,28 @@ def parse_args():
 
 
 def main():
+    """
+    Main function to perform the operations
+    """
+    print("Starting...")
     args = parse_args()
 
-    #Load a list of all image paths (with their absolute path)
+    # Load a list of all image paths (with their absolute path)
+    print("Loading Images...")
     images = utils.load_images(args.images)
 
-    #Load model
+    # Load model
+    print("Loading Model...")
     qwen_model = model.load_model()
-    #Load processor
+    # Load processor
+    print("Loading Pre-Processor...")
     processor = model.load_processor()
-
-    #Perform inference
-    image_text_pairs = model.batch_infer(qwen_model, processor, images, args.batch, args.max_tokens)
     
-    utils.save_jsons(image_text_pairs, args.save_path)
+    batch = int(args.batch) if (args.batch is not None) else None
+    max_tokens = int(args.max_tokens) if (args.max_tokens is not None) else None
+    # Perform inference and save the jsons
+    model.batch_infer(qwen_model, processor, images, batch, max_tokens, args.save_path)
+    print("Inference Finished")
     
 
 if __name__ == "__main__":
