@@ -4,8 +4,6 @@ from transformers import Qwen2VLForConditionalGeneration, AutoTokenizer, AutoPro
 import lib.config as config
 import lib.utils as utils
 
-qwen_config = config.QWEN_CFG()
-
 def load_model() -> object:
     """
     Load the Qwen2-VL-7B pretrained model, automatically setting to available device (GPU is given priority if it exists).
@@ -14,7 +12,7 @@ def load_model() -> object:
         model (object): Returns the loaded pretrained model.
     """
     model = Qwen2VLForConditionalGeneration.from_pretrained(
-        qwen_config.MODEL, torch_dtype="auto", device_map="auto"
+        config.MODEL, torch_dtype="auto", device_map="auto"
     )
 
     return model
@@ -27,7 +25,7 @@ def load_processor() -> object:
     Return:
         processor (object): Returns the loaded pretrained processor for the model.
     """
-    processor = AutoProcessor.from_pretrained(qwen_config.MODEL)
+    processor = AutoProcessor.from_pretrained(config.MODEL)
 
     return processor
 
@@ -46,9 +44,9 @@ def perform_inference(model: object, processor: object, images : list, max_new_t
         output_text (list): A set of model outputs for given set of images.
     """
     # Preprocess the inputs
-    max_new_tokens = max_new_tokens if (max_new_tokens is not None) else qwen_config.MAX_NEW_TOKENS
+    max_new_tokens = max_new_tokens if (max_new_tokens is not None) else config.MAX_NEW_TOKENS
     # Prepreocess the conversation
-    conversation = conversation if conversation is not None else qwen_config.conversation
+    conversation = conversation if conversation is not None else config.CONVERSATION
     text_prompt = processor.apply_chat_template(conversation, add_generation_prompt=True)
     # Get N text_prompts for equal number of images
     text_prompts = [text_prompt] * len(images)
@@ -94,8 +92,8 @@ def batch_infer(model: object, processor: object, images: list, batch_size: int 
     """
 
     # Define the value for maximum number of tokens and batch size given they are empty (None)
-    max_new_tokens = max_new_tokens if (max_new_tokens is not None) else qwen_config.MAX_NEW_TOKENS
-    batch_size = batch_size if (batch_size is not None) else qwen_config.BATCH_SIZE
+    max_new_tokens = max_new_tokens if (max_new_tokens is not None) else config.MAX_NEW_TOKENS
+    batch_size = batch_size if (batch_size is not None) else config.BATCH_SIZE
     print(f">>> Using: \n \tMaximum new tokens = {max_new_tokens} \n \tBatch size = {batch_size} \n \tsave_path = {save_path}")
 
     # Seperate the input images into batches (return the rest as a single batch)
