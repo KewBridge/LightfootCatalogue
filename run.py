@@ -4,7 +4,7 @@ import time
 import lib.config as config
 import lib.utils as utils
 import lib.model as model
-
+import lib.roi as roi
 
 
 
@@ -22,6 +22,7 @@ def parse_args():
     parser.add_argument('-mt', '--max-tokens', default=None, help="Maximum number of tokens for model")
     parser.add_argument('-out','--save-path', default=None, help="Save path for json files")
     parser.add_argument('-b','--batch', default=None, help="Batch Size for inference if more than one image provided")
+    parser.add_argument('-c', '--crop', default=True, help="Choose to crop and resize an image before parsing into system")
     args = parser.parse_args()
 
     return args
@@ -38,6 +39,11 @@ def main():
     print(">>> Loading Images...")
     images = utils.load_images(args.images)
 
+    if args.crop:
+        print(">>> Cropping Images...")
+        images = roi.cropAllImages(images, pad = 20.0, resize_factor = 0.4, 
+              remove_area_perc = 0.005, save_file_name = None)
+    
     # Load model
     print(">>> Loading Model...")
     qwen_model = model.load_model()

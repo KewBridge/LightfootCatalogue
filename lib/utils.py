@@ -3,6 +3,35 @@ import os
 import json
 import lib.config as config
 import pandas as pd
+import numpy as np
+
+from PIL import Image
+import cv2
+
+def pil_to_cv2(image):
+    """
+    Conver PIL image to cv2 image
+    """
+
+    cv2_image = np.array(image)
+
+    cv2_image = cv2.cvtColor(cv2_image, cv2.COLOR_RGB2BGR)
+
+    return cv2_image
+
+def cv2_to_pil(image):
+    """
+    Convert cv2 image to PIL image
+    """
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+    return Image.fromarray(image)
+
+def box_area(box: dict) -> int:
+    """
+    Return the area of of the bounding box
+    """
+    return box['w'] * box['h']
 
 def load_images(path: str) -> list:
     """
