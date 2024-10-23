@@ -8,6 +8,7 @@ IMAGE_EXT = ["jpeg", "png", "jpg"]
 IGNORE_FILE = [".ipynb_checkpoints"]
 # Path to the save directory of the json files
 SAVE_PATH = "./parsed_json"
+CROPPED_DIR_NAME = "cropped"
 
 PROMPT = "Process this image in two steps: Step 1: Turn the text in this picture into markdown. Indicate italics. \
             Indent lines which discuss folder contents as unordered lists Step 2: Convert the markdown text that you created in step 1 into JSON. \

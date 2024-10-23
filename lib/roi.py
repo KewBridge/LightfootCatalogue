@@ -3,9 +3,10 @@ import cv2
 from tesserocr import PyTessBaseAPI, PSM, RIL, PT
 from lib.utils import box_area, pil_to_cv2, cv2_to_pil
 import lib.split_pages as spages
+import lib.config as config
 import os
 
-def identifyROI(path: str, remove_area_perc: float = 0.005) -> list:
+def identifyROI(path: str, remove_area_perc: float = 0.01) -> list:
     """
     Identify the region of interest in an image to crop / zoom into
 
@@ -50,9 +51,28 @@ def identifyROI(path: str, remove_area_perc: float = 0.005) -> list:
     
         return [x,y,w,h]
 
+def cropAndResize(path: str, pad: float = 50.0, resize_factor: float = 0.4, 
+              remove_area_perc: float = 0.01) -> object:
+    
+    # Identify the region of interest to crop 
+    roi = identifyROI(path, remove_area_perc)
 
+    # Load the image
+    image = Image.open(path)
+
+    # Crop the image
+    #image = image[int(roi[0]-pad):int(roi[2]+pad), int(roi[1]-pad):int(roi[3]+pad)]
+    image = image.crop((roi[0]-pad, roi[1]-pad, roi[2]+pad, roi[3]+pad))
+    w, h = image.size
+
+    # Resize the image
+    if (w * resize_factor) > 100 and (h * resize_factor) > 100:
+        image = image.resize((int(w * resize_factor), int(h * resize_factor)))
+
+    return image
+    
 def cropImage(path: str, pad: float = 50.0, resize_factor: float = 0.4, 
-              remove_area_perc: float = 0.005, save_file_name: str = None) -> object:
+              remove_area_perc: float = 0.01, save_file_name: str = None) -> object:
     """
     Crop the image, pad it and save the resized image
 
@@ -65,16 +85,12 @@ def cropImage(path: str, pad: float = 50.0, resize_factor: float = 0.4,
     Returns:
         image (Image): cropped image
     """
-    # Identify the region of interest to crop 
-    roi = identifyROI(path, remove_area_perc)
-
-    # Load the image
-    image = Image.open(path)
+    
 
     # save_path
     if save_file_name is None:
         # Seperate the path to make a directory to save it in
-        save_path = os.path.join(os.sep.join(path.split(os.sep)[:-1]), "cropped")
+        save_path = os.path.join(os.sep.join(path.split(os.sep)[:-1]), config.CROPPED_DIR_NAME)
 
         # Make sure the save path exists
         if not os.path.exists(save_path):
@@ -85,25 +101,13 @@ def cropImage(path: str, pad: float = 50.0, resize_factor: float = 0.4,
         # Define the save_file_name and join it with the save path
         save_file_name = file_name[0] + "_cropped_{}." + file_name[-1]
         save_file_name = os.path.join(save_path, save_file_name)
-    else:
-        pass
 
-    # Crop the image
-    #image = image[int(roi[0]-pad):int(roi[2]+pad), int(roi[1]-pad):int(roi[3]+pad)]
-    image = image.crop((roi[0]-pad, roi[1]-pad, roi[2]+pad, roi[3]+pad))
-    w, h = image.size
-
-    # Resize the image
-    if (w * resize_factor) > 100 and (h * resize_factor) > 100:
-        resized = image.resize((int(w * resize_factor), int(h * resize_factor)))
-        #resized = cv2.resize(image, (int(w * resize_factor), int(h * resize_factor)))
-    else:
-        resized = image
-
-    #resized.save(save_file_name.format(0))
+    # Resize and crop the image
+    resized = cropAndResize(path, pad, resize_factor, 
+              remove_area_perc)
     
-    images = spages.split_image_with_gradient(pil_to_cv2(resized), name = ".".join(file_name))
-
+    images = spages.split_image(pil_to_cv2(resized), name = ".".join(file_name))
+    
     counter = 0
     image_paths = []
     for i in images:
@@ -117,7 +121,7 @@ def cropImage(path: str, pad: float = 50.0, resize_factor: float = 0.4,
     return images, image_paths
 
 def cropAllImages(images: list, pad: float = 50.0, resize_factor: float = 0.4, 
-              remove_area_perc: float = 0.005, save_file_name: str = None):
+              remove_area_perc: float = 0.01, save_file_name: str = None):
     """
     Crop the image, pad it and save the resized image
 

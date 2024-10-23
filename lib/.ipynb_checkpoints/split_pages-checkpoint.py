@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
-def filter_lines(lines : list, middle_line: int, margin_perc: float = 0.15):
+def filter_lines(lines : list, middle_line: int, margin_perc: float = 0.20):
 
     if lines is None or len(lines) == 0:
         return []
@@ -77,7 +77,9 @@ def split_image(path, name = None):
     else:
         #Return the unsplit image and a null image
         print(f">>>> Splitting unsuccessful  : {name} | number of middle lines found = {len(middle_lines)} | number of lines found = {line_length}")
-        return image, None
+        print("Trying now with thresholding")
+        
+        return split_image_with_thresholding(path, name)
 
 def split_image_with_gradient(path, name = None):
 
@@ -106,7 +108,7 @@ def split_image_with_gradient(path, name = None):
     # Sum the edges to get pixel density at x locale
     edges_sum = np.sum(edges, axis=0)
     # Get the middle region (35% of width as start and 65% of width as end)
-    mid_start, mid_end = int(w * 0.35), int(w * 0.65)
+    mid_start, mid_end = int(w * 0.4), int(w * 0.6)
     region = edges_sum[mid_start:mid_end]
 
     # Calculating gradient to detemine location of sharp change (due to a single vertical split between pages)
@@ -116,6 +118,46 @@ def split_image_with_gradient(path, name = None):
     # Adding the index to the region starting index to bring it back to the full image
     split_index = mid_start + np.argmax(np.abs(gradient))
 
+    image_1 = image[:, :split_index]
+    image_2 = image[:, split_index:]
+
+    print(f"Image {name} successfully split down the middle")
+    return image_1, image_2
+
+def split_image_with_thresholding(path, name = None):
+
+    if isinstance(path, str):
+        image = cv2.imread(path)
+        name = path
+    else:
+        image = path
+
+    h, w, _ = image.shape
+
+    if w < h:
+        print("Width of image is less than height")
+        print("Considering this image to already be split")
+        print(f"Skipping image: {name}")
+
+        return image, None
+
+    # Convert it to grayscale
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    # Perform thresholding
+    _, binary = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY_INV)
+
+    # Zoom in on the expected region
+    mid_start, mid_end = int(w * 0.4), int(w * 0.6)
+    region = binary[:, mid_start:mid_end]
+
+    vert_proj = np.sum(region, axis=0)
+    vert_proj = vert_proj / vert_proj.max()
+    
+    split_start = np.argmin(vert_proj)
+    split_end = np.argmin(vert_proj[::-1])
+
+    split_index = int(mid_start + ((split_start + (len(vert_proj) - split_end)) // 2))
+    
     image_1 = image[:, :split_index]
     image_2 = image[:, split_index:]
 
