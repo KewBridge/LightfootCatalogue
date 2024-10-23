@@ -1,7 +1,7 @@
 import argparse
 import os
 import time
-import lib.config as config
+from lib.config import CROPPED_DIR_NAME
 import lib.utils as utils
 import lib.model as model
 import lib.roi as roi
@@ -37,12 +37,19 @@ def main():
 
     # Load a list of all image paths (with their absolute path)
     print(">>> Loading Images...")
-    images = utils.load_images(args.images)
+    
 
-    if args.crop:
+    cropped_dir = os.path.join(args.images, CROPPED_DIR_NAME)
+    
+    if args.crop and not(os.path.isdir(cropped_dir)):
+        images = utils.load_images(args.images)
         print(">>> Cropping Images...")
-        images = roi.cropAllImages(images, pad = 20.0, resize_factor = 0.4, 
-              remove_area_perc = 0.005, save_file_name = None)
+        images = roi.cropAllImages(images, pad = 50.0, resize_factor = 0.4, 
+              remove_area_perc = 0.01, save_file_name = None)
+    elif os.path.isdir(cropped_dir):
+        images = utils.load_images(cropped_dir)
+    else:
+        images = utils.load_images(args.images)
     
     # Load model
     print(">>> Loading Model...")
