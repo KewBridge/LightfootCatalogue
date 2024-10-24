@@ -8,6 +8,13 @@ import numpy as np
 from PIL import Image
 import cv2
 
+
+def debugPrint(message: str, debug: bool):
+
+    if debug:
+        print(message)
+
+
 def pil_to_cv2(image):
     """
     Conver PIL image to cv2 image

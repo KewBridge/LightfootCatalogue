@@ -50,18 +50,16 @@ def main():
         images = utils.load_images(cropped_dir)
     else:
         images = utils.load_images(args.images)
+
+    batch = int(args.batch) if (args.batch is not None) else None
+    max_tokens = int(args.max_tokens) if (args.max_tokens is not None) else None
     
     # Load model
     print(">>> Loading Model...")
-    qwen_model = model.load_model()
-    # Load processor
-    print(">>> Loading Pre-Processor...")
-    processor = model.load_processor()
+    qwen_model = model.QWEN_model(batch_size = batch, max_new_tokens = max_tokens, save_path=args.save_path)
     
-    batch = int(args.batch) if (args.batch is not None) else None
-    max_tokens = int(args.max_tokens) if (args.max_tokens is not None) else None
     # Perform inference and save the jsons
-    model.batch_infer(qwen_model, processor, images, batch, max_tokens, args.save_path)
+    _ = qwen_model.batch_infer(images, save=True)
     print(">>> Inference Finished")
     
 
