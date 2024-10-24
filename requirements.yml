@@ -10,3 +10,6 @@ dependencies:
   - pandas
   - jupyterlab
   - pillow
+  - tesserocr
+  - matplotlib
+  - opencv
