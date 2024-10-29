@@ -34,6 +34,10 @@ DEFAULT_PROMPT = "Process this image in two steps: Step 1: Turn the text in this
 
 get_conversation = lambda prompt: [
             {
+                "role": "system",
+                "content": "You are an expert in horticulture, plant taxonomy. You are also an expert in transcribing texts from botanical catalogue images to json format texts."
+            },
+            {
                 "role": "user",
                 "content": [
                     {
