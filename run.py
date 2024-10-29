@@ -44,7 +44,7 @@ def main():
     if args.crop and not(os.path.isdir(cropped_dir)):
         images = utils.load_images(args.images)
         print(">>> Cropping Images...")
-        images = roi.cropAllImages(images, pad = 50.0, resize_factor = 0.4, 
+        images = roi.cropAllImages(images, pad = 100.0, resize_factor = 0.4, 
               remove_area_perc = 0.01, save_file_name = None)
     elif os.path.isdir(cropped_dir):
         images = utils.load_images(cropped_dir)
