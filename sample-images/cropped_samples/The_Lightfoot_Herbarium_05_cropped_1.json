@@ -1,0 +1,196 @@
+{
+    "metadata": {
+        "division": "N/A",
+        "page": "132"
+    },
+    "contents": [
+        {
+            "familyName": "Aceraceae",
+            "species": [
+                {
+                    "speciesName": "Acer campestre L.",
+                    "folders": [
+                        {
+                            "description": "1 folder. Acer campestre [TA]",
+                            "citations": [
+                                "N/A"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Acer pseudoplatanus L.",
+                    "folders": [
+                        {
+                            "description": "2 folders. Folder 1. Acer Pseudo-Platanus [G]. i. \"Maple. Bulls: [Bulstrode] Park\" [JL] Folder 2. Acer Pseudo-Platanus [TA].",
+                            "citations": [
+                                "N/A"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "Amaranthaceae",
+            "species": [
+                {
+                    "speciesName": "Amaranthus lividus L., Flora Europaea 1: 110 (1964)",
+                    "folders": [
+                        {
+                            "description": "1 folder. Amaranthus Blitum [TA]. i. Cites Ray's Syn. 1957. ii. \"Blite Amaranth. Aug.\" It is often found on Dunghills in the neighbourhood of London. I gather'd this on a Dunghill at Fulham near London\" [JL]. iii. \"Amaranthus Blitum. Monoec: 5. and:\" [JL]",
+                            "citations": [
+                                "N/A"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "Araliaceae",
+            "species": [
+                {
+                    "speciesName": "Hedera helix L.",
+                    "folders": [
+                        {
+                            "description": "1 folder. Hedera Helix [TA].",
+                            "citations": [
+                                "N/A"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "Aristolochiaceae",
+            "species": [
+                {
+                    "speciesName": "Asarum europaeum L.",
+                    "folders": [
+                        {
+                            "description": "1 folder. Asarum europaeum [TA]. i. \"Asarum europaeum Lin: Asarabacca. Anglis. ex horto\" [JL]",
+                            "citations": [
+                                "N/A"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "Balsaminaceae",
+            "species": [
+                {
+                    "speciesName": "Impatiens noli-tangere L.",
+                    "folders": [
+                        {
+                            "description": "1 folder. Impatiens Noli me tangere [G].",
+                            "citations": [
+                                "N/A"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "Betulaceae",
+            "species": [
+                {
+                    "speciesName": "Alnus glutinosa (L.) Gaertn.",
+                    "folders": [
+                        {
+                            "description": "1 folder. Betula Alnus [TA].",
+                            "citations": [
+                                "N/A"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Betula nana L.",
+                    "folders": [
+                        {
+                            "description": "1 folder. Betula nana [G].",
+                            "citations": [
+                                "N/A"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "Campanulaceae",
+            "species": [
+                {
+                    "speciesName": "Campanula latifolia L.",
+                    "folders": [
+                        {
+                            "description": "2 folders. Folder 1. Companula latifolia [TA]. Folder 2. Companula latifolia [G].",
+                            "citations": [
+                                "N/A"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Campanula patula L.",
+                    "folders": [
+                        {
+                            "description": "1 folder. Campanula patula [TA].",
+                            "citations": [
+                                "N/A"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Campanula rapunculus L.",
+                    "folders": [
+                        {
+                            "description": "2 folders. Folder 1. Campanula rapunculus [TA].",
+                            "citations": [
+                                "N/A"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "Phyteuma tenerum R.Schulz",
+            "species": [
+                {
+                    "speciesName": "Phyteuma tenerum R.Schulz",
+                    "folders": [
+                        {
+                            "description": "1 folder. Phyteuma orbicularis [TA].",
+                            "citations": [
+                                "N/A"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "Wahlenbergia hederacea (L.) Reichb.",
+            "species": [
+                {
+                    "speciesName": "Wahlenbergia hederacea (L.) Reichb.",
+                    "folders": [
+                        {
+                            "description": "2 folders. Folder 1. Campanula hederacea [TA]. i. \"Carmathenshire\" [JL].",
+                            "citations": [
+                                "N/A"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

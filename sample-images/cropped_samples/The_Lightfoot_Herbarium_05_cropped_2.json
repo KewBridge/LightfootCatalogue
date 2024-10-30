@@ -1,0 +1,136 @@
+{
+    "metadata": {
+        "division": "N/A",
+        "page": "133"
+    },
+    "contents": [
+        {
+            "familyName": "Caprifoliaceae",
+            "species": [
+                {
+                    "speciesName": "Linnaea borealis L.",
+                    "folders": [
+                        {
+                            "description": "This is a Native of Sweden, Sibria, Switzerland, Russia, Canada, & c. This Specimen was gathered & communicated by Jos: Banks Esqr. who discover'd it in Abundance in the Woods in Newfoundland",
+                            "citations": [
+                                "JL"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Lonicera periclymenum L.",
+                    "folders": [
+                        {
+                            "description": "1 folder. Lonicera periclymenum [TA].",
+                            "citations": [
+                                "TA"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Viburnum lantana L.",
+                    "folders": [
+                        {
+                            "description": "1 folder. Viburnum lantana [TA].",
+                            "citations": [
+                                "TA"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Viburnum opulus L.",
+                    "folders": [
+                        {
+                            "description": "1 folder. Viburnum opulus [TA].",
+                            "citations": [
+                                "TA"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "Caryophyllaceae",
+            "species": [
+                {
+                    "speciesName": "Arenaria serpyllifolia L.",
+                    "folders": [
+                        {
+                            "description": "1 folder. Arenaria Serpyllifolia [TA].",
+                            "citations": [
+                                "TA"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Bufonia tenuifolia L., Flora Europaea 1: 133 (1964)",
+                    "folders": [
+                        {
+                            "description": "[Not a British plant, but from southern and eastern Europe.]",
+                            "citations": [
+                                "TA"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "Cerastium",
+            "species": [
+                {
+                    "speciesName": "Cerastium alpinum L.",
+                    "folders": [
+                        {
+                            "description": "Folder 1. Cerastium latifolium [G]. i. Cites Ray's Syn. 349. ii. \"Cerastium alpinum. This was gathered upon Snowdon at the top of the highest Rock call'd Clogwyn y Garnedh. June\" [JL]. iii. \"Top of Snowdon\" [JL]. iv. \"Dr. Solander affirms this to be the true Cerastium alpinum. I had it from Snowdon. He found it at Terra del Fuego & named it C. hirtum with a mark of Dubitation, but now thinks them both one\" [JL].",
+                            "citations": [
+                                "JL"
+                            ]
+                        },
+                        {
+                            "description": "Folder 2. Cerastium alpinum [TA]; Cerastium latifolium [G]. i. \"Clogwyn d\" [JL]. ii. \"Cerast: alpin: Ben Lomond\" [JL].",
+                            "citations": [
+                                "JL"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Cerastium arvense L.",
+                    "folders": [
+                        {
+                            "description": "Folder 1. Cerastium arvense [TA]. i. \"Cerastium arvense. This must be right tho' the leaves are hoary\" [JL]. ii. \"Cerastium arvense. Very common in Norfolk. Why does Lin. put the word glabris in his Specific Description in opposition to truth & the Testimony of all Authors\" [B].",
+                            "citations": [
+                                "JL",
+                                "B"
+                            ]
+                        },
+                        {
+                            "description": "Folder 2. Cerastium arvense [G]. [See also under C. arcticum Folder 1.]",
+                            "citations": [
+                                "G"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Cerastium fontanum Baumg., subsp. triviale (Link) Jalas, Flora Europaea 1: 142 (1964)",
+                    "folders": [
+                        {
+                            "description": "1 sheet. Cerastium vulgaris [TA]; C. vulgatum Huds. and C. viscosum Linn. [G]. i. \"Pray inform me",
+                            "citations": [
+                                "TA",
+                                "G"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

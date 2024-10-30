@@ -10,7 +10,7 @@ import cv2
 
 
 def debugPrint(message: str, debug: bool):
-
+    
     if debug:
         print(message)
 
