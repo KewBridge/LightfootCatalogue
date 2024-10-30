@@ -19,6 +19,7 @@ def parse_args():
     """
     parser = argparse.ArgumentParser(description='Run inference on pages')
     parser.add_argument('images', help='Path to images (Can parse in either a single image or a directory of images)')
+    parser.add_argument('-p', '--prompt', default=None, help='Path to an input prompt/conversation to the model')
     parser.add_argument('-mt', '--max-tokens', default=None, help="Maximum number of tokens for model")
     parser.add_argument('-out','--save-path', default=None, help="Save path for json files")
     parser.add_argument('-b','--batch', default=None, help="Batch Size for inference if more than one image provided")
@@ -56,7 +57,7 @@ def main():
     
     # Load model
     print(">>> Loading Model...")
-    qwen_model = model.QWEN_model(batch_size = batch, max_new_tokens = max_tokens, save_path=args.save_path)
+    qwen_model = model.QWEN_model(prompt= args.prompt, batch_size = batch, max_new_tokens = max_tokens, save_path=args.save_path)
     
     # Perform inference and save the jsons
     _ = qwen_model.batch_infer(images, save=True)

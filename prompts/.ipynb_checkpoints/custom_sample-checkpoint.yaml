@@ -1,0 +1,11 @@
+# define to inherit any missing prompts from the default prompt
+inherit_default: True
+# System defines the system prompt to the model
+system:
+  # Setup defines the model setup prompt. This lets the model know what area of knowledge to focus on for this task
+  setup: >
+    You are an expert in horticulture, plant taxonomy and botanical catalogues and transcribing images to text json dicts
+  # instructions define the step-by-step instructions for the model to follow through
+  instructions: |
+    define this instructions here
+    

@@ -3,7 +3,7 @@ import torch
 from transformers import Qwen2VLForConditionalGeneration, AutoTokenizer, AutoProcessor
 import lib.config as config
 import lib.utils as utils
-
+from lib.promptLoader import PromptLoader
 
 class QWEN_Model:
 
@@ -11,15 +11,15 @@ class QWEN_Model:
 
     def __init__(self, 
                  prompt: str = None, # Input prompt into the model
-                 conversation :list = None, # Input conversation into the model
+                 #conversation :list = None, # Input conversation into the model
                  batch_size: int = 3, # Batch size for inference
                  max_new_tokens: int = 5000, # Maximum number of tokens
                  save_path: str = None # Where to save the outputs
                 ):
 
         # Load parameters
-        self.prompt = prompt
-        self.conversation = self.getConversation(conversation)
+        self.prompt = PromptLoader(prompt)#prompt
+        self.conversation = self.prompt.get_conversation()#self.getConversation(conversation)
         self.batch_size = batch_size if (batch_size is not None) else config.BATCH_SIZE
         self.max_new_tokens = max_new_tokens if (max_new_tokens is not None) else config.MAX_NEW_TOKENS
         self.save_path = save_path
@@ -148,7 +148,7 @@ class QWEN_Model:
             # Saving the output as soon as we get it for each batch, as not to waste memory or to repeat due to interruptions
             if save:
                 print(f"\t== Saving Pairs For Batch {ind+1} ==")
-                utils.save_jsons(pairs, save_path)
+                utils.save_jsons(pairs, self.save_path)
                 print(f"\t== Saving Done For Batch {ind+1}  ==")
         
 
