@@ -10,7 +10,7 @@ import cv2
 
 
 def debugPrint(message: str, debug: bool):
-
+    
     if debug:
         print(message)
 
@@ -214,8 +214,10 @@ def save_json(image: str, text: str, save_path: str = None):
     """
     print(f">>> Saving text output for {image}")
     # Cleaning the text here
-    json_text = text.split("```")[1]
-    json_text = clean_json(json_text)
+    if "```" in text:
+        text = text.split("```")[1]
+        
+    json_text = clean_json(text)
 
     # defining the save path if it does not exist
     save_path = save_path if (save_path is not None) else os.path.join(os.sep.join(image.split(os.sep)[:-1]), "text_files")
@@ -233,8 +235,8 @@ def save_json(image: str, text: str, save_path: str = None):
         print(">>>> Saving JSON...")
         dump_json(json_text, file_name+ ".json", save_path)
         # Dump into csv
-        print(">>>> Saving CSV...")
-        save_csv(json_text, file_name+ ".csv", save_path)
+        #print(">>>> Saving CSV...")
+        #save_csv(json_text, file_name+ ".csv", save_path)
     else:
         # If not, save it as a text file
         save_text(json_text, file_name+ ".txt", save_path)

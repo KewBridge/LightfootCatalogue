@@ -14,22 +14,28 @@ class QWEN_Model:
                  #conversation :list = None, # Input conversation into the model
                  batch_size: int = 3, # Batch size for inference
                  max_new_tokens: int = 5000, # Maximum number of tokens
+                 temperature: float = 0.2, # Model temperature. 0 to 2. Higher the value the more random and lower the value the more focused and deterministic.
                  save_path: str = None # Where to save the outputs
                 ):
 
         # Load parameters
         self.prompt = PromptLoader(prompt)#prompt
         self.conversation = self.prompt.get_conversation()#self.getConversation(conversation)
-        self.batch_size = batch_size if (batch_size is not None) else config.BATCH_SIZE
-        self.max_new_tokens = max_new_tokens if (max_new_tokens is not None) else config.MAX_NEW_TOKENS
+        self.batch_size = batch_size
+        self.max_new_tokens = max_new_tokens
+        self.temperature = temperature
         self.save_path = save_path
 
         # Load model
-        self.model = self.load_model()
+        self.model = self._load_model()
         # Load processor
-        self.processor = self.load_processor()
+        self.processor = self._load_processor()
 
-    def getConversation(self, conversation: list) -> list:
+    def setNewPrompt(self, prompt):
+        self.prompt = PromptLoader(prompt)
+        self.conversation = self.prompt.get_conversation()
+    
+    def _getConversation(self, conversation: list) -> list:
 
         if self.prompt is None and conversation is None:
             return config.CONVERSATION
@@ -39,7 +45,7 @@ class QWEN_Model:
             return conversation
             
         
-    def load_model(self) -> object:
+    def _load_model(self) -> object:
         """
         Load the Qwen2-VL-7B pretrained model, automatically setting to available device (GPU is given priority if it exists).
     
@@ -47,13 +53,13 @@ class QWEN_Model:
             model (object): Returns the loaded pretrained model.
         """
         model = Qwen2VLForConditionalGeneration.from_pretrained(
-            self.MODEL_NAME, torch_dtype="auto", device_map="auto"
+            self.MODEL_NAME,temperature=self.temperature, torch_dtype="auto", device_map="auto"
         )
     
         return model
 
 
-    def load_processor(self) -> object:
+    def _load_processor(self) -> object:
         """
         Loads the pre-processor that is used to pre-process the input prompt and images.
     

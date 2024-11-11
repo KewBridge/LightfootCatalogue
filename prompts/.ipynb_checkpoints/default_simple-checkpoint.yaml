@@ -4,18 +4,8 @@ inherit_default: False
 system:
   # Setup defines the model setup prompt. This lets the model know what area of knowledge to focus on for this task
   setup: >
-    You are an expert in transcribing textual data from images of botanical catalogues with data spanning 2 columns and multiple pages.
+    You are an expert in transcribing textual data from images of botanical catalogues with data spanning 2 columns and multiple pages. You are knowledgeable in horticulure, plant taxonomy and botainical catalogues.
   # context defines the context of the task. This includes the input to the model and the description of said input
-  context: >
-    The following images provided are snapshots of botanical catalogue pages. 
-    The pages contain information on species, where they were collected and in which folder they were stored. 
-    The information is organised in order of plant taxonomy.
-    The highest level of category is the division (which can be one of Dicotyledones, Monocotyledones, Pteridophyta, Algae, Hepaticae or others like them).
-    This is followed by the family headers that are always presented in capital letters and end with suffix "aceae" except for a few others.
-    The next level of category is the species presented in italic letters.
-    The page consists of two columns, where information finishing in the first column carries over in the second column.
-    It is importatant that both columns are fully read.
-    Some pages contain continued information at the start (top left of first column) from previous pages.
   # goal is used to define the task for the model
   goal: >
     Your task is to parse the given image into a JSON object that follows the provided rules, instructions and template.

@@ -1,11 +1,16 @@
 # define to inherit any missing prompts from the default prompt
-inherit_default: True
+inherit_default: False
 # System defines the system prompt to the model
 system:
   # Setup defines the model setup prompt. This lets the model know what area of knowledge to focus on for this task
   setup: >
-    You are an expert in horticulture, plant taxonomy and botanical catalogues and transcribing images to text json dicts
+    You are an expert in extracting small text from botanical catalogues and organising them into JSON files with respect to a defined structure.
   # instructions define the step-by-step instructions for the model to follow through
   instructions: |
-    define this instructions here
-    
+    1) **Extract Text**: Extract all text from the image, preserving the layout order and formatting as much as possible.
+
+# user defines the user input. This can contain more than one prompt. 
+# Different prompts will be passed to the model as individual inputs
+user:
+  # the prompt defines the user's prompt to the model
+  image: Extract the text from the botanical catalogue. Format it into the given JSON structure.

@@ -28,6 +28,23 @@ def parse_args():
 
     return args
 
+def get_images(image_path: str, crop: bool = True, pad: float = 100.0, resize_factor: float = 0.4, remove_area_perc: float = 0.01, save_file_name: str = None):
+    print(">>> Loading Images...")
+    
+
+    cropped_dir = os.path.join(image_path, CROPPED_DIR_NAME)
+    
+    if crop and not(os.path.isdir(cropped_dir)):
+        images = sorted(utils.load_images(image_path))
+        print(">>> Cropping Images...")
+        images = roi.cropAllImages(images, pad, resize_factor, 
+              remove_area_perc, save_file_name)
+    elif os.path.isdir(cropped_dir):
+        images = utils.load_images(cropped_dir)
+    else:
+        images = utils.load_images(image_path)
+
+    return images
 
 def main():
     """
@@ -37,20 +54,7 @@ def main():
     args = parse_args()
 
     # Load a list of all image paths (with their absolute path)
-    print(">>> Loading Images...")
-    
-
-    cropped_dir = os.path.join(args.images, CROPPED_DIR_NAME)
-    
-    if args.crop and not(os.path.isdir(cropped_dir)):
-        images = utils.load_images(args.images)
-        print(">>> Cropping Images...")
-        images = roi.cropAllImages(images, pad = 100.0, resize_factor = 0.4, 
-              remove_area_perc = 0.01, save_file_name = None)
-    elif os.path.isdir(cropped_dir):
-        images = utils.load_images(cropped_dir)
-    else:
-        images = utils.load_images(args.images)
+    images = get_images(args.images, args.crop)
 
     batch = int(args.batch) if (args.batch is not None) else None
     max_tokens = int(args.max_tokens) if (args.max_tokens is not None) else None
