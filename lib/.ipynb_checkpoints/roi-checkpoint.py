@@ -37,7 +37,7 @@ def identifyROI(path: str, remove_area_perc: float = 0.01) -> list:
         boxes = api.GetComponentImages(RIL.BLOCK, True)
 
         # Iterate through the different boxes and calculate the minimum (x,y) and maximum (x,y)
-        for i, (im, box, _, _) in enumerate(boxes):
+        for i, (im, box, _, _) in enumerate(boxes or []):
 
             #Define a better way to remove outliers (boxes with areas that are too small)
             if box_area(box) < (remove_area_perc * image_area):

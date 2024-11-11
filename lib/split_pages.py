@@ -6,16 +6,22 @@ import matplotlib.pyplot as plt
 import os
 
 def filter_lines(lines : list, middle_line: int, margin_perc: float = 0.20):
+    """
+    Given a list of possible lines and a presumed middle line, filter out the possible lines that are closer to the middle for inspection
 
-    if lines is None or len(lines) == 0:
-        return []
+    Parameters:
+        lines (list): a list of all possible lines
+        middle_line: the x axis that is the presumed middle
+        margin_perc: defines how close to the presumed middle line the possible lines should be.
+                     smaller the closer to the presumed middle line
+    """
     # Calculate margin
     margin = margin_perc * middle_line
 
     # Get all lines close to the assumed middle_line
     middle_lines = []
     # Iterate over all lines
-    for line in lines:
+    for line in lines or []:
         # Get the Coords
         x1, y1, x2, y2 = line[0]
 
@@ -32,7 +38,7 @@ def filter_lines(lines : list, middle_line: int, margin_perc: float = 0.20):
     return middle_lines
 
 def getLines(image: object):
-
+    
     if isinstance(image, str):
         image = cv2.imread(image)
 
@@ -77,7 +83,7 @@ def split_image(path, name = None):
     else:
         #Return the unsplit image and a null image
         print(f">>>> Splitting unsuccessful  : {name} | number of middle lines found = {len(middle_lines)} | number of lines found = {line_length}")
-        print("Trying now with thresholding")
+        print("\tTrying now with thresholding")
         
         return split_image_with_thresholding(path, name)
 
@@ -161,5 +167,5 @@ def split_image_with_thresholding(path, name = None):
     image_1 = image[:, :split_index]
     image_2 = image[:, split_index:]
 
-    print(f"Image {name} successfully split down the middle")
+    print(f"\tImage {name} successfully split down the middle")
     return image_1, image_2

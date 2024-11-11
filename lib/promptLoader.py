@@ -71,8 +71,8 @@ class PromptLoader:
     def get_prompt(self, title, prompt, role="system"):
 
         message = ""
-        if title is not None:
-            message += f"{title.upper()}: \n"
+        if title is not None and title != "setup" and role == "system":
+            message += f"## {title.upper()} \n"
             
         if isinstance(prompt, dict):
             for key, value in prompt.items():
@@ -81,7 +81,12 @@ class PromptLoader:
             message += prompt
 
         if role == "user":
-            return dict(role=role, content=[dict(type="image"), dict(type="text", text=message)])
+            contents = (
+                [dict(type="text", text=message)] 
+                if title.lower() != "image" else 
+                [dict(type="image"), dict(type="text", text=message)]
+            )
+            return dict(role=role, content=contents)
 
         return dict(role=role, content=message)
             
@@ -95,8 +100,8 @@ class PromptLoader:
                 conversation.append(self.get_prompt(prompt_title, prompt))
 
         if "user" in self.yaml_prompt:
-            for _, prompt in self.yaml_prompt["user"].items():
-                conversation.append(self.get_prompt(None, prompt, role="user"))
+            for prompt_title, prompt in self.yaml_prompt["user"].items():
+                conversation.append(self.get_prompt(prompt_title, prompt, role="user"))
 
         return conversation
                 
