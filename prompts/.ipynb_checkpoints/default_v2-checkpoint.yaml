@@ -93,5 +93,5 @@ system:
 # Different prompts will be passed to the model as individual inputs
 user:
   # the prompt defines the user's prompt to the model
-  text1: Given the {extracted_text}, organise it into a JSON object as outlined by the rules and instructions. 
+  image: Extract the text from the botanical catalogue. Format it into a JSON structure.
     

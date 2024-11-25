@@ -4,7 +4,19 @@ import yaml
 
 class PromptLoader:
     
-    def __init__(self, filename: str = None, default: str = "./prompts/default.yaml"):
+    def __init__(
+            self, 
+            filename: str = None, 
+            default: str = "./prompts/default.yaml"
+            ):
+        """
+        Prompt Loader class acts as an intermediary between the user prompt and the model.
+
+        Loads the users prompts and returns step-based instructions/prompts to the model when requested
+
+        Parameters:
+            filename (str): the file name of the prompt
+        """
         self.filename = filename
         self.default = default
         
@@ -23,6 +35,7 @@ class PromptLoader:
                 custom[key] = value
 
     def load(self):
+            
 
         default_file = self.load_yaml(self.default)
         
@@ -83,7 +96,7 @@ class PromptLoader:
         if role == "user":
             contents = (
                 [dict(type="text", text=message)] 
-                if title.lower() != "image" else 
+                if not("image" in title.lower()) else 
                 [dict(type="image"), dict(type="text", text=message)]
             )
             return dict(role=role, content=contents)
@@ -91,7 +104,7 @@ class PromptLoader:
         return dict(role=role, content=message)
             
     
-    def get_conversation(self):
+    def get_conversation(self, extracted_text: str = None):
 
         conversation = []
 
@@ -99,11 +112,22 @@ class PromptLoader:
             for prompt_title, prompt in self.yaml_prompt["system"].items():
                 conversation.append(self.get_prompt(prompt_title, prompt))
 
+        #TODO: Need to append this for user input as the extracted text
         if "user" in self.yaml_prompt:
             for prompt_title, prompt in self.yaml_prompt["user"].items():
+                if not(extracted_text is None):
+                    prompt = prompt.format(extracted_text=extracted_text)
                 conversation.append(self.get_prompt(prompt_title, prompt, role="user"))
 
         return conversation
+    
+    def getImagePrompt(self):
+
+        image_prompt = "Extract the text from both columns in the image, preserving the structure and formatting, ensure no grammatical correction is performed."
+
+        return [dict(role="user", content=[dict(type="image"), 
+                dict(type="text", 
+                     text=image_prompt)])]
                 
             
 

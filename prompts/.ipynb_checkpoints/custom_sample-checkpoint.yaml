@@ -4,7 +4,7 @@ inherit_default: False
 system:
   # Setup defines the model setup prompt. This lets the model know what area of knowledge to focus on for this task
   setup: >
-    You are an expert in extracting small text from botanical catalogues and organising them into JSON files with respect to a defined structure.
+    You are an expert in extracting small text from botanical catalogues
   # instructions define the step-by-step instructions for the model to follow through
   instructions: |
     1) **Extract Text**: Extract all text from the image, preserving the layout order and formatting as much as possible.
@@ -13,4 +13,4 @@ system:
 # Different prompts will be passed to the model as individual inputs
 user:
   # the prompt defines the user's prompt to the model
-  image: Extract the text from the botanical catalogue. Format it into the given JSON structure.
+  image: Extract the text from the botanical catalogue
