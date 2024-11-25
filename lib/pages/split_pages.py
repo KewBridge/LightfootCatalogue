@@ -2,8 +2,8 @@
 
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
-import os
+#import matplotlib.pyplot as plt
+#import os
 
 def filter_lines(lines : list, middle_line: int, margin_perc: float = 0.20):
     """

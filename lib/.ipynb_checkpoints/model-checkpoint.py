@@ -11,7 +11,7 @@ class QWEN_Model:
 
     def __init__(self, 
                  prompt: str = None, # Input prompt into the model
-                 #conversation :list = None, # Input conversation into the model
+                 conversation :list = None, # Input conversation into the model
                  batch_size: int = 3, # Batch size for inference
                  max_new_tokens: int = 5000, # Maximum number of tokens
                  temperature: float = 0.2, # Model temperature. 0 to 2. Higher the value the more random and lower the value the more focused and deterministic.
@@ -20,7 +20,7 @@ class QWEN_Model:
 
         # Load parameters
         self.prompt = PromptLoader(prompt)#prompt
-        self.conversation = self.prompt.get_conversation()#self.getConversation(conversation)
+        self.conversation = self.prompt.get_conversation() if conversation is None else conversation#self.getConversation(conversation)
         self.batch_size = batch_size
         self.max_new_tokens = max_new_tokens
         self.temperature = temperature
@@ -31,10 +31,16 @@ class QWEN_Model:
         # Load processor
         self.processor = self._load_processor()
 
-    def setNewPrompt(self, prompt):
-        self.prompt = PromptLoader(prompt)
-        self.conversation = self.prompt.get_conversation()
-    
+    def setNewPrompt(self, prompt, conversation=None):
+
+        if not(prompt is None) and conversation is None:
+            self.prompt = PromptLoader(prompt)
+            self.conversation = self.prompt.get_conversation()
+        elif prompt is None and not(conversation is None):
+            self.conversation = conversation
+        else:
+            raise ValueError("Received None for prompt and None for conversation")
+            
     def _getConversation(self, conversation: list) -> list:
 
         if self.prompt is None and conversation is None:

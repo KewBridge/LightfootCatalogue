@@ -2,9 +2,9 @@ import argparse
 import os
 import time
 from lib.config import CROPPED_DIR_NAME
-import lib.utils as utils
+import lib.utils.utils as utils
 import lib.model as model
-import lib.roi as roi
+import lib.pages.roi as roi
 
 
 

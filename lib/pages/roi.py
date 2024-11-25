@@ -1,8 +1,8 @@
 from PIL import Image
-import cv2
+#import cv2
 from tesserocr import PyTessBaseAPI, PSM, RIL, PT
-from lib.utils import box_area, pil_to_cv2, cv2_to_pil
-import lib.split_pages as spages
+from lib.utils.utils import box_area, pil_to_cv2, cv2_to_pil
+import lib.pages.split_pages as spages
 import lib.config as config
 import os
 
