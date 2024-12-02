@@ -21,13 +21,15 @@ def split_division(text, divisions=["Dicotyledones", "Monocotyledone", "Pteridop
     regex = re.compile(f"({division_str})")
     result = re.split(regex, text)
 
+    remove_newline = lambda x: not(re.match(re.compile(r"^(\n)+$"), x))
     result = list(filter(None,result))
+    result = list(filter(remove_newline, result))
 
     return list(zip(result[::2], result[1::2]))
 
 def split_family(text):
 
-    regex = re.compile("\n\n(?=[A-Z ]+\n)")
+    regex = re.compile("\n\n(?=[A-Z ]+\n|.+?[aA][cC][eE][aA][eE])")
 
     result = re.split(regex, text)
 
