@@ -45,7 +45,7 @@ class BaseModel:
         self.batch_size = batch_size
         self.max_new_tokens = max_new_tokens
         self.temperature = temperature
-        self.save_path = save_path
+        self.save_path = save_path if save_path is not None else "./"
         self.timeout = timeout
         self.model = get_model(self.model_name)(self.batch_size, self.max_new_tokens, self.temperature, **kwargs)
 
@@ -152,6 +152,7 @@ class BaseModel:
             organised_blocks (str): the json dict output from the model
             file_name (str): the file name to save as
         """
+
         
         file_path = os.path.join(self.save_path, file_name +".json")
         csv_file_path = os.path.join(self.save_path, file_name + ".csv")
