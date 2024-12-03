@@ -10,25 +10,25 @@ system:
     Your task is to organise the given text and format it into a JSON object that follows the provided structure and specific formatting rules.
   # instructions define the step-by-step instructions for the model to follow through
   instructions: |
-    1) **Organize into JSON**: Structure the extracted text into JSON according to the template and rules below, keeping the hierarchy of Family > Species > Folder > Details.
     
-    2) **Identify Family Names**:
+    1) **Identify Family Names**:
        - Each family name is written in uppercase (e.g., "ACERACEAE").
        - Store it as `familyName` in the JSON structure.
 
-    3) **Identify Species**:
+    2) **Identify Species**:
        - Species names appear in italics and are typically followed by an author abbreviation (e.g., "Acer campestre L.").
        - Store each as `speciesName` under its respective `familyName`.
 
-    4) **Capture Folder Details**:
-       - Each species may have one or more folders labeled as "Folder X".
-       - Extract the folder number and description. Use the text after "Folder X" as `description`.
+    3) **Capture Folder Details**:
+       - Each species may have one or more folders labeled as "Folder X" with a following description.
+       - Extract the folder number and description. 
 
-    5) **Validation**:
+    4) **Validation**:
        - Leave fields empty or set to "N/A" if information is not available.
-       - Avoid duplicate keys and ensure all keys are in camelCase.
-       - Ensure JSON is valid with no trailing commas or unquoted keys.
        - Do not perform grammar checks or corrections.
+    
+    5) Ensure JSON is valid with no trailing commas or unquoted keys.
+    6) Avoid duplicate keys and ensure all keys are in camelCase.
 
   # rules define the key-value rules for each expected key in the output json dict
   rules:

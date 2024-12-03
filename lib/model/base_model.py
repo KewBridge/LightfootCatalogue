@@ -24,7 +24,7 @@ class BaseModel:
                  max_new_tokens: int = 5000, # Maximum number of tokens
                  temperature: float = 0.2, # Model temperature. 0 to 2. Higher the value the more random and lower the value the more focused and deterministic.
                  save_path: str = None, # Where to save the outputs
-                 timeout: int = 10,
+                 timeout: int = 4,
                  **kwargs
                  ):
         """
