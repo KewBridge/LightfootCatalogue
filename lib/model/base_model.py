@@ -221,17 +221,18 @@ class BaseModel:
                 while count < self.timeout:
                     # Perform inference on text
                     json_text = self.model(json_conversation, None, debug)
+                    
                     # Check the integrity of the JSON output. 
                     # Json verified is boolean to check if the integrity of the JSON output is valid
                     # Json loaded is the post-processed form of the text into dict (removing and cleaning done)
-                    json_verified, json_loaded = verify_json(json_text, clean=True, out=True)
+                    json_verified, json_loaded = verify_json(json_text[0], clean=True, out=True)
                     
                     # If verified, add to organised block and break
                     if json_verified:
                         if division in organised_blocks:
-                            organised_blocks[division].extend(json_loaded)
+                            organised_blocks[division].append(json_loaded)
                         else:
-                            organised_blocks[division] = json_loaded
+                            organised_blocks[division] = [json_loaded]
                         break
 
                     count += 1
