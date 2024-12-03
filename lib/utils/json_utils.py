@@ -28,7 +28,7 @@ def clean_json(text: str) -> str:
     return cleaned_text
 
 
-def verify_json(text: str) -> bool:
+def verify_json(text: str, clean: bool = False, out: bool = False) -> bool:
     """
     Verifies if the input text is of JSON format
 
@@ -39,12 +39,17 @@ def verify_json(text: str) -> bool:
     """
 
     try:
+        text = clean_json(text) if clean else text
         json_loaded = json.loads(text)
+        if out:
+            return True, json_loaded
         return True
     except Exception as e:
         print(f">>> Non JSON format found in input text")
         print(f">>> Error: \n {e}")
 
+    if out:
+        return False, None
     return False
 
     
