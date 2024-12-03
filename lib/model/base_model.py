@@ -2,6 +2,7 @@ import os
 from tqdm import tqdm
 import time
 import json
+import pandas as pd
 from lib.model import get_model
 from lib.utils.promptLoader import PromptLoader
 from lib.utils.utils import debugPrint
@@ -76,12 +77,25 @@ class BaseModel:
             raise ValueError("Received None for prompt and None for conversation")
 
     def _save_to_temp(self, text):
+        """
+        (Private function)
+        Saves the extracted text to the temporary file
+
+        """
 
         with open(self.TEMP_TEXT_FILE, "w") as f:
             f.write(text)
     
 
     def _load_from_temp(self):
+        """
+        (Private function)
+        Load the extracted text from the temporary file
+
+        Returns:
+            text: the text read from the file
+
+        """
 
         text = ""
 
@@ -92,6 +106,17 @@ class BaseModel:
     
 
     def extract_text(self, images: list, debug: bool = False):
+        """
+        Iterate through all images and extract the text from the image, saving at intervals.
+        Combine all extracted text into one long text
+
+        Parameters:
+            images: a list of all images to extract from
+            debug: used when debugging. Prints debugPrint() messages
+        
+        Returns:
+            joined_text: a combined form of all the text extracted from the images.
+        """
         joined_text = "\n\n"
 
         debugPrint("Batching Images...", debug)
@@ -119,25 +144,67 @@ class BaseModel:
 
         return joined_text
 
+    def save_final_out(self, orgnasied_blocks: dict, file_name: str = "sample"):
+        """
+        Saves final output of model as JSON and CSV file at given location
 
-    def __call__(self, images: list, debug: bool = False, save: bool = False, text=None) -> list:
-        # TODO: Write the docu message
+        Parameters:
+            organised_blocks (str): the json dict output from the model
+            file_name (str): the file name to save as
+        """
+        
+        file_path = os.path.join(self.save_path, file_name +".json")
+        csv_file_path = os.path.join(self.save_path, file_name + ".csv")
+        # Saving JSON file
+        with open(file_path, "w", encoding="utf-8") as json_file:
+            json.dump(orgnasied_blocks, json_file, indent=4)
+
+        # Saving CSV file
+
+        with open(file_path, "r", encoding="utf-8") as json_file:
+            pandas_json = pd.read_json(json_file)
+        
+        pandas_json.to_csv(csv_file_path, encoding="utf-8", index=False)
+
+
+
+    def __call__(self, images: list, text_file: str = None, save: bool = False, save_file_name: str = "sample", debug: bool = False) -> list:
+        """
+        The main pipeline that extracts text from the images, seperates them into text blocks and organises them into JSON objects
+
+        Paramaters:
+            images (list): a list of images to extract text from
+            text_file (str): the path to the text file containing the pre-extracted text to use
+            save (bool): Boolean to determine whether to save the outputs or not
+            save_file_name (str): the name of the save files
+            debug (bool): used when debugging. Prints debugPrint() messages
+        """
 
         self.info()
 
-        if text is None:
+        #===================================================
+        # Extracting text from image or loading a temp file
+        #===================================================
+        if text_file is None:
             print("Extracting Text from Images")
             extracted_text = self.extract_text(images, debug)
         else:
             print("Skipping extraction...")
             print("Loading text from provided extracted text file")
-            with open(text, "r") as file_:
+            with open(text_file, "r") as file_:
                 extracted_text = file_.read()
 
+        #===================================================
+        # Converting the extracted text into text blocks defined by divisions and families
+        #===================================================
         print("Converting extracted text into Text Blocks")
         text_blocks = convertToTextBlocks(extracted_text)
 
-        organised_block = {}
+
+        #===================================================
+        # Performing inference on the text blocks to generate JSON files
+        #===================================================
+        organised_blocks = {}
 
         print("Organising text into JSON blocks")
         # Add tqdm for the outer loop over divisions
@@ -151,19 +218,29 @@ class BaseModel:
                 # Start a while loop for a count of timeout
                 count = 0
                 while count < self.timeout:
+                    # Perform inference on text
                     json_text = self.model(json_conversation, None, debug)
-
+                    # Check the integrity of the JSON output. 
+                    # Json verified is boolean to check if the integrity of the JSON output is valid
+                    # Json loaded is the post-processed form of the text into dict (removing and cleaning done)
                     json_verified, json_loaded = verify_json(json_text, clean=True, out=True)
-
+                    
+                    # If verified, add to organised block and break
                     if json_verified:
-                        if division in organised_block:
-                            organised_block[division].extend(json_loaded)
+                        if division in organised_blocks:
+                            organised_blocks[division].extend(json_loaded)
                         else:
-                            organised_block[division] = json_loaded
+                            organised_blocks[division] = json_loaded
                         break
 
                     count += 1
                     time.sleep(1) # Adding a delay to not overwhelm the system
+
+        #===================================================
+        # Saving the outputs if prompted
+        #===================================================        
+        if save:
+            self.save_final_out(organised_blocks, save_file_name)
         
-        return organised_block
+        return organised_blocks
 
