@@ -1,9 +1,11 @@
 import os
 from tqdm import tqdm
+import time
+import json
 from lib.model import get_model
 from lib.utils.promptLoader import PromptLoader
 from lib.utils.utils import debugPrint
-from lib.utils.json_utils import save_jsons
+from lib.utils.json_utils import save_jsons, verify_json
 
 from lib.utils.text_utils import convertToTextBlocks
 
@@ -21,6 +23,7 @@ class BaseModel:
                  max_new_tokens: int = 5000, # Maximum number of tokens
                  temperature: float = 0.2, # Model temperature. 0 to 2. Higher the value the more random and lower the value the more focused and deterministic.
                  save_path: str = None, # Where to save the outputs
+                 timeout: int = 10,
                  **kwargs
                  ):
         """
@@ -42,6 +45,7 @@ class BaseModel:
         self.max_new_tokens = max_new_tokens
         self.temperature = temperature
         self.save_path = save_path
+        self.timeout = timeout
         self.model = get_model(self.model_name)(self.batch_size, self.max_new_tokens, self.temperature, **kwargs)
 
         self.prompt = PromptLoader(prompt)#prompt
@@ -141,12 +145,25 @@ class BaseModel:
 
             # Add tqdm for the inner loop over families
             for family in tqdm(families, desc=f"Processing Families in {division}", unit="family", leave=True):
+                # Load the system conversation with text blocks added to the prompt
                 json_conversation = self.prompt.get_conversation(family)
-                json_text = self.model(json_conversation, None, debug)
-                if division in organised_block:
-                    organised_block[division].extend(json_text)
-                else:
-                    organised_block[division] = json_text
 
+                # Start a while loop for a count of timeout
+                count = 0
+                while count < self.timeout:
+                    json_text = self.model(json_conversation, None, debug)
+
+                    json_verified, json_loaded = verify_json(json_text, clean=True, out=True)
+
+                    if json_verified:
+                        if division in organised_block:
+                            organised_block[division].extend(json_loaded)
+                        else:
+                            organised_block[division] = json_loaded
+                        break
+
+                    count += 1
+                    time.sleep(1) # Adding a delay to not overwhelm the system
+        
         return organised_block
 
