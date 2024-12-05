@@ -6,14 +6,14 @@ import pandas as pd
 from lib.model import get_model
 from lib.utils.promptLoader import PromptLoader
 from lib.utils.utils import debugPrint
-from lib.utils.json_utils import save_jsons, verify_json
-
+from lib.utils.json_utils import verify_json
+from lib.utils.save_utils import save_json, save_csv_from_json
 from lib.utils.text_utils import convertToTextBlocks
 
 
 class BaseModel:
 
-    TEMP_TEXT_FILE = "./temp.txt"
+    TEMP_TEXT_FILE = "temp.txt"
     SAVE_TEXT_INTERVAL = 3
 
     def __init__(self, 
@@ -45,7 +45,13 @@ class BaseModel:
         self.batch_size = batch_size
         self.max_new_tokens = max_new_tokens
         self.temperature = temperature
-        self.save_path = save_path if save_path is not None else "./"
+        self.save_path = save_path if save_path is not None else "./outputs/"
+
+        if not(os.path.isdir(self.save_path)):
+            os.makedirs(self.save_path)
+
+        self.TEMP_TEXT_FILE = os.path.join(self.save_path, self.TEMP_TEXT_FILE)
+
         self.timeout = timeout
         self.model = get_model(self.model_name)(self.batch_size, self.max_new_tokens, self.temperature, **kwargs)
 
@@ -144,31 +150,6 @@ class BaseModel:
 
         return joined_text
 
-    def save_final_out(self, orgnasied_blocks: dict, file_name: str = "sample"):
-        """
-        Saves final output of model as JSON and CSV file at given location
-
-        Parameters:
-            organised_blocks (str): the json dict output from the model
-            file_name (str): the file name to save as
-        """
-
-        
-        file_path = os.path.join(self.save_path, file_name +".json")
-        csv_file_path = os.path.join(self.save_path, file_name + ".csv")
-        # Saving JSON file
-        with open(file_path, "w", encoding="utf-8") as json_file:
-            json.dump(orgnasied_blocks, json_file, indent=4)
-
-        # Saving CSV file
-
-        with open(file_path, "r", encoding="utf-8") as json_file:
-            pandas_json = pd.read_json(json_file)
-        
-        pandas_json.to_csv(csv_file_path, encoding="utf-8", index=False)
-
-
-
     def __call__(self, images: list, text_file: str = None, save: bool = False, save_file_name: str = "sample", debug: bool = False) -> list:
         """
         The main pipeline that extracts text from the images, seperates them into text blocks and organises them into JSON objects
@@ -242,7 +223,9 @@ class BaseModel:
         # Saving the outputs if prompted
         #===================================================        
         if save:
-            self.save_final_out(organised_blocks, save_file_name)
+            json_file_name = save_file_name + ".json"
+            save_json(organised_blocks, json_file_name, self.save_path)
+            save_csv_from_json(json_file_name, save_file_name, self.save_path)
         
         return organised_blocks
 

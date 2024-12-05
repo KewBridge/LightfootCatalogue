@@ -1,2 +1,4 @@
 # ignore all images
 /images/
+/outputs/
+./temp.txt
