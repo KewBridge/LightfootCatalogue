@@ -225,7 +225,7 @@ class BaseModel:
         if save:
             json_file_name = save_file_name + ".json"
             save_json(organised_blocks, json_file_name, self.save_path)
-            save_csv_from_json(json_file_name, save_file_name, self.save_path)
+            save_csv_from_json(os.path.join(self.save_path, json_file_name), save_file_name, self.save_path)
         
         return organised_blocks
 

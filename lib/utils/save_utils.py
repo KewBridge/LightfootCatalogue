@@ -42,7 +42,7 @@ def save_csv_from_json(json_file: str | dict, file_name: str = "sample", save_pa
 
     # Load the json data from either file or provided dictionary
     if isinstance(json_file, str):
-        if os.path.isfile(os.path.join(save_path, json_file)):
+        if os.path.isfile(json_file):
              with open(json_file, "r", encoding="utf-8") as open_file:
                   json_data = json.load(open_file)
         else:
@@ -99,4 +99,5 @@ def save_csv(csv_file: object, file_name: str = "sample", save_path: str = "./ou
     file_path = os.path.join(save_path, file_name)
 
     # Save to CSV
+    print(f"Dumping extracted text into {file_path}")
     csv_file.to_csv(file_path, encoding="utf-8", index=False)
