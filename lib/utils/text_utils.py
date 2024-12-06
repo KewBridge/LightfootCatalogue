@@ -12,13 +12,13 @@ def clean_text(text):
     
     return result
 
-def split_division(text, divisions=["Dicotyledones", "Monocotyledone", "Pteridophyta", "Hepaticae", "Algae"]):
+def split_division(text, divisions=["Dicotyledones", "Monocotyledones", "Pteridophyta", "Hepaticae", "Algae"]):
 
     if divisions is None:
         return [("MAIN", text)]
     
     division_str = "|".join(divisions)
-    regex = re.compile(f"({division_str})")
+    regex = re.compile(f"({division_str})", re.IGNORECASE)
     result = re.split(regex, text)
 
     remove_newline = lambda x: not(re.match(re.compile(r"^(\n)+$"), x))
@@ -26,6 +26,13 @@ def split_division(text, divisions=["Dicotyledones", "Monocotyledone", "Pteridop
     result = list(filter(remove_newline, result))
 
     return list(zip(result[::2], result[1::2]))
+
+def find_family(text):
+    regex = re.compile("\n\n(?=[A-Z ]+\n|.+?[aA][cC][eE][aA][eE])")
+
+    result = re.findall(regex, text)
+
+    return list(filter(None,result))
 
 def split_family(text):
 
@@ -35,7 +42,7 @@ def split_family(text):
 
     return list(filter(None,result))
 
-def convertToTextBlocks(text, divisions=["Dicotyledones", "Monocotyledone", "Pteridophyta", "Hepaticae", "Algae"]):
+def convertToTextBlocks(text, divisions=["Dicotyledones", "Monocotyledones", "Pteridophyta", "Hepaticae", "Algae"]):
 
     cleaned_text = clean_text(text)
 

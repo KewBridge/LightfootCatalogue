@@ -180,7 +180,7 @@ class BaseModel:
         # Converting the extracted text into text blocks defined by divisions and families
         #===================================================
         print("Converting extracted text into Text Blocks")
-        text_blocks = convertToTextBlocks(extracted_text)
+        text_blocks = convertToTextBlocks(extracted_text, divisions=self.prompt.get_divisions())
 
 
         #===================================================

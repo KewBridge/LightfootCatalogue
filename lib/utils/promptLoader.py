@@ -66,6 +66,9 @@ class PromptLoader:
         
         with open(filename, "r") as f:
             return yaml.safe_load(f)
+        
+    def get_divisions(self):
+        return self.yaml_prompt["divisions"]
 
     def print_prompt(self, prompt=None, indent=""):
 
