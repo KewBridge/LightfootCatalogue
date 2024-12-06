@@ -1,5 +1,7 @@
 # define to inherit any missing prompts from the default prompt
 inherit_default: False
+# Any divisions in the catalogue
+divisions: ["Dicotyledones", "Monocotyledones", "Pteridophyta", "Hepaticae", "Algae"]
 # System defines the system prompt to the model
 system:
   # Setup defines the model setup prompt. This lets the model know what area of knowledge to focus on for this task
