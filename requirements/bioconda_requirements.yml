@@ -1,0 +1,15 @@
+name: lightfootcat
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - python==3.12.6
+  - pytorch
+  - pytorch-cuda=12.1
+  - numpy
+  - pandas
+  - jupyterlab
+  - pillow
+  - tesserocr
+  - matplotlib
+  - opencv
