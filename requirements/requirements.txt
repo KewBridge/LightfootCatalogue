@@ -1,0 +1,14 @@
+python==3.12
+pip
+pytorch
+pytorch-cuda=12.1
+numpy
+pandas
+jupyterlab
+pillow
+matplotlib
+tesserocr
+opencv
+transformers
+yaml
+json
