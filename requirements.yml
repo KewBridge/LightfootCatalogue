@@ -2,8 +2,11 @@ name: lightfootcat
 channels:
   - bioconda
   - conda-forge
+  - nvidia
+  - pytorch
 dependencies:
-  - python==3.12.6
+  - python==3.11.11
+  - pip
   - pytorch
   - pytorch-cuda=12.1
   - numpy
@@ -13,3 +16,5 @@ dependencies:
   - tesserocr
   - matplotlib
   - opencv
+  - transformers
+  - yaml
