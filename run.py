@@ -17,9 +17,9 @@ def parse_args():
     """
     parser = argparse.ArgumentParser(description='Run inference on pages')
     parser.add_argument('images', help='Path to images (Can parse in either a single image or a directory of images)')
+    parser.add_argument('prompt', default=None, help='Path to an input prompt/conversation to the model')
     parser.add_argument('save-file-name', help="Save file name for the outputs")
     parser.add_argument('temp-text', default=None, help="Temporary file storing the extracted text")   
-    parser.add_argument('-p', '--prompt', default=None, help='Path to an input prompt/conversation to the model')
     parser.add_argument('-mt', '--max-tokens', default=100000, help="Maximum number of tokens for model")
     parser.add_argument('--save-path', default=None, help="Save path for json files")
     parser.add_argument('-b','--batch', default=None, help="Batch Size for inference if more than one image provided")
