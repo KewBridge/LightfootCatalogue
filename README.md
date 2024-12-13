@@ -56,6 +56,7 @@ python run.py \
 
 ```
 For step 4, [temp-text-file] is a mandatory input but can be left out unless specifying an already exixting text file. In which case set <path to image/image directory> as None.
+
 To run the program post installation, follow steps 3 and 4 after navigating to project directory on your local device / HPC account. Do not forget to request a partition if using HPC cluster.
 
 ## Defining user prompts
