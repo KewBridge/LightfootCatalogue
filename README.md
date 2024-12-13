@@ -43,7 +43,7 @@ conda activate <input your conda env name>
 ```
 4. Run program from root
 ```
-python run.py "<path to image/image directory>" <path to prompt> <save-file-name> [temp-text-file] --max-tokens [maximum tokens for model] --save-path [path to save the jsons] --batch [Batch size. Default 1] --crop [Crop and pre-process the images or not. Default True]
+python run.py "<path to image/image directory>" <path to prompt> <save-file-name> [temp-text-file] --max-tokens [maximum tokens for model] --max-chunk-size [maximum size of each text block. Default 3000] --save-path [path to save the jsons] --batch [Batch size. Default 1] --crop [Crop and pre-process the images or not. Default True]
 ```
 
 To run the program post installation, follow steps 3 and 4 after navigating to project directory on your local device / HPC account. Do not forget to request a partition if using HPC cluster.
