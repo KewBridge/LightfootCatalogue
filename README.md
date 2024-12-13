@@ -44,7 +44,7 @@ conda activate <input your conda env name>
 4. Run program from root
 ```
 python run.py \
-    "<path to image/image directory>" \
+    <path to image/image directory> \
     <path to prompt> \
     <save-file-name> \
     [temp-text-file] \
@@ -55,7 +55,7 @@ python run.py \
     --crop [Crop and pre-process the images or not. Default True]
 
 ```
-
+For step 4, [temp-text-file] is a mandatory input but can be left out unless specifying an already exixting text file. In which case set <path to image/image directory> as None.
 To run the program post installation, follow steps 3 and 4 after navigating to project directory on your local device / HPC account. Do not forget to request a partition if using HPC cluster.
 
 ## Defining user prompts
