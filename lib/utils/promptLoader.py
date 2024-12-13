@@ -45,6 +45,8 @@ class PromptLoader:
         custom_file = self.load_yaml(self.filename)
 
         if custom_file["inherit_default"]:
+            if "default_file" in custom_file.keys() and custom_file["defualt_file"] is not None:
+                default_file = self.load_yaml(custom_file["default_file"])
             self.update_missing(custom_file, default_file)
 
         return custom_file
