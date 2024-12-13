@@ -150,7 +150,7 @@ class BaseModel:
 
         return joined_text
 
-    def __call__(self, images: list, text_file: str = None, save: bool = False, save_file_name: str = "sample", debug: bool = False) -> list:
+    def __call__(self, images: list, text_file: str = None, save: bool = False, save_file_name: str = "sample", max_chunk_size: int = 3000, debug: bool = False) -> list:
         """
         The main pipeline that extracts text from the images, seperates them into text blocks and organises them into JSON objects
 
@@ -180,7 +180,7 @@ class BaseModel:
         # Converting the extracted text into text blocks defined by divisions and families
         #===================================================
         print("Converting extracted text into Text Blocks")
-        text_blocks = convertToTextBlocks(extracted_text, divisions=self.prompt.get_divisions())
+        text_blocks = convertToTextBlocks(extracted_text, divisions=self.prompt.get_divisions(), max_chunk_size=max_chunk_size)
 
 
         #===================================================
