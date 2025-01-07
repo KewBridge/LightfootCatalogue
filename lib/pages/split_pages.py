@@ -20,8 +20,12 @@ def filter_lines(lines : list, middle_line: int, margin_perc: float = 0.20):
 
     # Get all lines close to the assumed middle_line
     middle_lines = []
+
+    # Quick check for empty list of lines.
+    if  lines is None or lines.size == 0:
+        return middle_lines
     # Iterate over all lines
-    for line in lines or []:
+    for line in lines:
         # Get the Coords
         x1, y1, x2, y2 = line[0]
 

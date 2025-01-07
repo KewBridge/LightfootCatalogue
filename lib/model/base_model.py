@@ -46,7 +46,7 @@ class BaseModel:
         self.max_new_tokens = max_new_tokens
         self.temperature = temperature
         self.save_path = save_path if save_path is not None else "./outputs/"
-
+        
         if not(os.path.isdir(self.save_path)):
             os.makedirs(self.save_path)
 
