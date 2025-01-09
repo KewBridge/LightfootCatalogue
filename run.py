@@ -3,9 +3,7 @@ import os
 # OS setting for Pytorch dynamic GPU memory allocation
 print("Setting OS envrionmnet variables")
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
-print(os.environ["PYTORCH_CUDA_ALLOC_CONF"])
 os.environ["TORCH_USE_CUDA_DSA"] = "1"
-print(os.environ["TORCH_USE_CUDA_DSA"])
 
 import argparse
 import time
@@ -53,7 +51,8 @@ def get_images(image_path: str, crop: bool = True, pad: float = 100.0, resize_fa
     else:
         images = utils.load_images(image_path)
 
-    return images
+    # return the images sorted wrt to filename
+    return sorted(images)
 
 def main():
     """
@@ -64,8 +63,7 @@ def main():
     args = parse_args()
     print(args)
     # Load a list of all image paths (with their absolute path)
-    images = get_images(args.images, args.crop)[:4]
-    print(images)
+    images = get_images(args.images, args.crop)
     batch = int(args.batch) if (args.batch is not None) else None
     max_tokens = int(args.max_tokens) if (args.max_tokens is not None) else None
     

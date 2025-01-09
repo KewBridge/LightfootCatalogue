@@ -3,6 +3,8 @@ import torch
 from transformers import Qwen2VLForConditionalGeneration, AutoTokenizer, AutoProcessor
 import lib.config as config
 from lib.utils.utils import debugPrint
+from torch.cuda.amp import autocast
+
 
 class QWEN_Model:
 
@@ -87,7 +89,8 @@ class QWEN_Model:
     
         # Inference
         debugPrint("\tPerforming inference...", debug)
-        output_ids = self.model.generate(**inputs, max_new_tokens=self.max_new_tokens) 
+        with autocast(): # Enabling mixed precision to reduce computational load where possible
+            output_ids = self.model.generate(**inputs, max_new_tokens=self.max_new_tokens) 
         # Increasing the number of new tokens, increases the number of words recognised by the model with trade-off of speed
         # 1024 new tokens was capable of reading upto 70% of the input image (pg132_a.jpeg)
         debugPrint("\tInference Finished", debug)

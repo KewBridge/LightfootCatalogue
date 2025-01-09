@@ -32,7 +32,7 @@ ARISTOLOCHIACEAE
 
 Asarum europaeum L.
 
-1 folder. Asarum europaeum [TA]. i. "Asarum europaeum Lin: Asara-bacca. Anglis. ex horto" [JL].
+1 folder. Asarum europaeum [TA]. i. "Asarum europaeum Lin: Asara- bacca. Anglis. ex horto" [JL].
 
 BALSAMINACEAE
 
@@ -104,7 +104,7 @@ Lobelia urens L.
 
 4 folders.
 
-Folder 1. Lobelia urens [G]. i. Cites Ray's Hist. 746. ii. "Caustic Lobelia. Habitat solum humidum & spongiosum Ericeti cujusdam Shute Common dicti Devoniae, inter paludem turfosam & viam publican quae ab Axminster ad Honiton ducit. Plures plantas primum invenit Dom: Newbury e Coll: Exon: Oxon: circiter finem Octobris, Anno 1768" [JL]. iii. "From Devonshire" [JL].
+Folder 1. Lobelia urens [G]. i. Cites Ray's Hist. 746. ii. "Caustic Lobelia. Habitat solum humidum & spongiosum Ericeti cujusdam Shute Common dicti Devoniae, inter paludem turfosam & viam publican quae ab Axminster ad Honiton ducit. Plures plantas primum invenit Dom: Newbury e Coll: Exon: Oxon: circiter finem Octo- bris, Anno 1768" [JL]. iii. "From Devonshire" [JL].
 
 Folder 2. Lobelia urens [TA]. i. "Lobelia urens" [JL].
 
@@ -654,9 +654,7 @@ Cirsium dissectum (L.) Hill
 
 Cirsium eriophorum (L.) Scop.
 1 folder. Carduus eriophorus [TA], Flora Scotica ed. 1, 455 (1777).
-```John Lightfoot
-
-Cirsium heterophyllum (L.) Hill
+```Cirsium heterophyllum (L.) Hill
 1 folder. Carduus Helenioides [TA], Flora Scotica ed. 1, 457 (1777).
 
 Coryza canadensis (L.) Cronq.
@@ -702,7 +700,7 @@ Folder 1. Filago germanica [TA].
 Folder 2. Filago germanica [G].
 
 Gnaphalium luteoalbum L.
-1 folder. Gnaphalium Luteo album [TA]. i. "Gnaphalium luteoalbum. Found wild in Jersey on some Rocks near the Sea Side, & sent me. It flowers in Sep' & Oct. 1773" [JL].
+1 folder. Gnaphalium Luteo album [TA]. i. "Gnaphalium luteoalbum. Found wild in Jersey on some Rocks near the Sea Side, & sent me. It flowers in Sep! & Oct. 1773" [JL].
 
 Gnaphalium supinum L.
 1 folder. Gnaphalium alpinum [TA], Flora Scotica ed. 1, t. xx, 470 (1777); Gnaphalium supinum [TA]. i. "Gnaphalium alpinum. Draw exactly from the Specimen, only make the top Flower like the middle one, & express the Woolliness of the Leaves. It is figur'd in the Fl: Dan: Tab: 332, but not to please me" [JL] [instructions presumably to the artist Moses Griffiths]. ii. "On comparing this with the Specimens in the Hort: Sicc: Lin: it appears that this Plant is his Gnaph: supinum Lin:" [JL].
@@ -906,7 +904,7 @@ Senecio integrifolius L.
 1 folder. Cineraria integrifolia [TA]; C. alpina Huds. [G]. i. Cites Ray's Syn. 178. ii. "Mountain Ragwort. June. On Gogmagog Hills & Newmarket Heath" [JL].
 
 Senecio jacobaea L.
-1 folder. Senecio Jacobaea [TA]. i. "Senecio Jacobaea distinguirt a Sen: erucifol: apicibus Calycis emortuis, folis non exacte pinnatis, imis lyratis. nascitur itidem in arvis & pratis patius quam in sepibus" [JL].
+1 folder. Senecio Jacobaea [TA]. i. "Senecio Jacobaea distinguirt a Sen: erucifol: apicibus Calycis emortuis, foliis non exacte pinnatis, imis lyratis. nascitur itidem in arvis & pratis patius quam in sepibus" [JL].
 
 Senecio sylvaticus L.
 1 folder. Senecio sylvaticus [TA].
@@ -977,7 +975,7 @@ Folder 2. Sedum album [TA]. i. "Sedum album. Upon the Houses of a Village call'd
 
 Folder 3. Sedum album [G].
 
-Sedum dasyphyllum L. 1 folder. Sedum dasyphyllum [TA]. i. "Tillea muscosa. I can find this plant at all times of the year; in great perfection as the Snow in Winter is gone, w. ch makes me think that it must at least be biennial" [B]; "By Mr. Bryant" [JL]. ii. "Dasyphyll: Bulls: [Bulstrode Park]" [JL].
+Sedum dasyphyllum L. 1 folder. Sedum dasyphyllum [TA]. i. "Tillea muscosa. I can find this plant at all times of the year; in great perfection as the Snow in Winter is gone, w'ch makes me think that it must at least be biennial" [B]; "By Mr. Bryant" [JL]. ii. "Dasyphyll: Bulls: [Bulstrode Park]" [JL].
 
 Sedum forsteranum Sm. 1 folder. Sedum rupestre [TA]. i. "Bristol & Chepstow" [JL].
 
@@ -1003,7 +1001,7 @@ Alliaria petiolata (Bieb.) Cavara & Grande 1 folder. Erysimum Alliaria [TA], Flo
 
 Arabis hirsuta (L.) Scop. 2 folders.
 
-Folder 1. Turritis hirsuta [TA], Flora Scotica ed. 1, 358 (1777). i. "I must beg Leave, my good Friend, to retract what I mentioned to you concerning the plant I picked up in Glostershire, for on Inspection, I perceived my mistake. I likewise examined Dr. Randolph's Specimens of Cardamine bellidifolia & found them all Turritis hirsuta, tho' He said Dr. Dillenius gave Him one of the Specimens I saw—together w. th the name—I have enclosed a Specimen of the plant I**Catalogue**
+Folder 1. Turritis hirsuta [TA], Flora Scotica ed. 1, 358 (1777). i. "I must beg Leave, my good Friend, to retract what I mentioned to you concerning the plant I picked up in Glostershire, for on Inspection, I perceived my mistake. I likewise examined Dr. Randolph's Specimens of Cardamine bellidifolia & found them all Turritis hirsuta, tho' He said Dr. Dillenius gave Him one of the Specimens I saw—together w' th the name—I have enclosed a Specimen of the plant I**Catalogue**
 
 147
 
@@ -1186,7 +1184,7 @@ Hornungia petraea (L.) Rchb.
 1 folder. Lepidium anglicum [TA]; Lepidium petraeum [G].
 
 Iberis amara L.
-1 folder. Iberis amara [TA]. i. "Thl: no. Iberis amara. In almost all the Cornfield in the Parish of Grays near Henley in Osfordshire about S' Tho' Stapleton's [Sir Thomas Stapleton owned Greys Court, which now belongs to the National Trust] & c." [JL].
+1 folder. Iberis amara [TA]. i. "Thl: no. Iberis amara. In almost all the Cornfield in the Parish of Grays near Henley in Osfordshire about S'th Thomas Stapleton's [Sir Thomas Stapleton owned Greys Court, which now belongs to the National Trust] & c." [JL].
 
 Isatis tinctoria L.
 1 folder. Isatis tinctoria [G]. i. "Isatis tinctoria Lin: Glashim sativum Ray. Woad. 4-dynam: siliquos: A Native of England" [JL].
@@ -1289,12 +1287,10 @@ Folder 1. Turritis glabra [TA]. i. "Turritis glabra. at Catton, near Norwich, un
 Folder 2. Turritis glabra [G].
 
 CUCURBITACEAE
-
 Bryonia dioica Jacq.
 1 folder. Bryonia alba [TA].
 
 DIPSACACEAE
-
 Dipsacus pilosus L.
 1 folder. Dipsacus pilosus [TA].
 Knautia arvensis (L.) Coul.
@@ -1306,7 +1302,6 @@ Flora Scotica ed. 1, 114 (1777). i.
 Folder 2. Scabiosa arvensis [TA].
 
 DROSERACEAE
-
 Drosera anglica Huds.
 1 folder. Drosera longifolia [TA],
 Flora Scotica ed. 1, 175, 1098 (1777). i.
@@ -1315,17 +1310,14 @@ Drosera rotundifolia L.
 1 folder. Drosera rotundifolia [TA].
 
 ELAEAGNACEAE
-
 Hippophae rhamnoides L.
 1 folder. Hippophae rhamnoides [TA]. i. "Hippophae Rhamnoides. By the sea Side near Sandwich & near Sandown Castle in Kent" [JL].
 
 ELATINACEAE
-
 Elatine alsinastrum L., Flora Europaea 2: 296 (1968)
 1 folder. Elatine alsinastrum [TA]. i. "Elatine alsinastrum Lin: e Suecia accepi" [JL].
 
 ERICACEAE
-
 Calluna vulgaris (L.) Hull
 1 folder and 1 sheet.
 Folder 1. Erica vulgaris [TA], Flora Scotica ed. 1, 203 (1777). i. "Erica vulgaris" [JL].
@@ -1354,7 +1346,6 @@ Folder 1. Vaccinium oxyccocus [TA]. i. "oxyccocus" [? Banks]; "Newfoundland" [JL
 Folder 2. Vaccinium oxyccocus [G]. i. "Ben Lomond" [JL].
 
 EUPHORBIACEAE
-
 Euphorbia amygdaloides L.
 1 folder. Euphorbia amygdaloides [TA]. i. "Euphorbia Amygdaloides Lin: Under Hedges & in Woods" [JL].
 
@@ -1364,7 +1355,7 @@ Euphorbia characias L., Flora Europaea 2: 226 (1968)
 
 4 folders.
 
-Folder 1. Euphorbia exigua [G]. i. "I found this plant, 1773, in our Cornfields, and supposed it to be only a variety of the exigua. I am still of the same opinion. It agrees indeed pretty well with the Tishy-malus Segetum longifolius. Cat. Cant. App & Rall Syn. p.312, since it is there described as Esulae exiguae Tragi persimilis, sed major; wch last circumstance may easily be accounted for; *because of the Umbella quinquefida in the one & trifida in the other. The Segetalis in Ray and the Segetalis in Linnaeus are certainly two very different Plants; and I should be glad to know, and I wish it may be in your power to inform me, whether those Specimens, wch Mr. Lyons found near Triplow, be at all different from this Specimen-another circumstance also makes me conclude that it is only a variety of the exigua; because found in company wth it, and am inclined to think that it never will be found anywhere else. I gathered more of it at the same Time; but have either mislaid or shuffled it away. But if I should find the same variety again, I will endeavour to collect the Seed of it, and try what it will do in my Garden. *Supposing all other circumstances equal, the quinquefida must be to the trifida in Magnitude in the Proportion of 5 to 3, wch wants only one third part of being twice as big" [B]. ii. "Euphorbia segetalis of D. Lyons, not of Lin: It seems to be only a Variety of Euphorb: exigua Lin: In Cornfields in Norfolk, Mr. Bryant. I compared this with Lyon's own Specimen, now in the possession of Mr. Banks" [JL].
+Folder 1. Euphorbia exigua [G]. i. "I found this plant, 1773, in our Cornfields, and supposed it to be only a variety of the exigua. I am still of the same opinion. It agrees indeed pretty well with the Tishy-malus Segetum longifolius. Cat. Cant. App & Rall Syn. p.312, since it is there described as Esulae exiguae Tragi persimilis, sed major; wch last circumstance may easily be accounted for; *because of the Umbella quinquefida in the one & trifida in the other. The Segetalis in Ray and the Segetalis in Linnaeus are certainly two very different Plants; and I should be glad to know, and I wish it may be in your power to inform me, whether those Specimens, wch Mr. Lyons found near Triplow, be at all different from this Specimen—another circumstance also makes me conclude that it is only a variety of the exigua; because found in company wth it, and am inclined to think that it never will be found anywhere else. I gathered more of it at the same Time; but have either mislaid or shuffled it away. But if I should find the same variety again, I will endeavour to collect the Seed of it, and try what it will do in my Garden. *Supposing all other circumstances equal, the quinquefida must be to the trifida in Magnitude in the Proportion of 5 to 3, wch wants only one third part of being twice as big" [B]. ii. "Euphorbia segetalis of D. Lyons, not of Lin: It seems to be only a Variety of Euphorb: exigua Lin: In Cornfields in Norfolk, Mr. Bryant. I compared this with Lyon's own Specimen, now in the possession of Mr. Banks" [JL].
 
 Folder 2. Euphorbia exigua [G]. i. "Euphorbia exigua Lin: In the barren Corn-fields" [JL].
 
@@ -1418,11 +1409,11 @@ Swertia perennis L., Flora Europaea 3: 67 (1972) 1 folder. Swertia perennis [TA]
 
 GERANIACEAE
 
-Erodium cicutarium (L.) L'Hér. 2 folders. Folder 1. Geranium Cicutorium Var. bimaculata [G], Flora Scotica ed. 1, 366 (1777). i. "Geran: from Norfolk with two Dots on the two uppermost Petals. Bustrode [Bulstrode]" [JL]. Folder 2. Geranium Cicutorium [TA].
+Erodium cicutarium (L.) L'Hérit. 2 folders. Folder 1. Geranium Cicutorium Var. bimaculata [G], Flora Scotica ed. 1, 366 (1777). i. "Geran: from Norfolk with two Dots on the two uppermost Petals. Bustrode [Bulstrode]" [JL]. Folder 2. Geranium Cicutorium [TA].
 
-Erodium maritimum (Burm. f.) L'Hér. 1 folder. Geranium maritimum [TA and G]. i. "Flat Holmes & Carnarvonshire" [JL].
+Erodium maritimum (Burm. f.) L'Hérit. 1 folder. Geranium maritimum [TA and G]. i. "Flat Holmes & Carnarvonshire" [JL].
 
-Erodium moschatum (Burm. f.) L'Hér. 1 folder. Geranium moschatum [TA], Flora Scotica ed. 1, 1136 (1777).
+Erodium moschatum (Burm. f.) L'Hérit. 1 folder. Geranium moschatum [TA], Flora Scotica ed. 1, 1136 (1777).
 
 Geranium columbinum L. 2 folders. Folder 1. Geranium dissectum [TA]; G. columbinum [G]. i. "Geran: columbinum. field by black Park [Langley in Buckinghamshire]" [JL]. ii. "& Columbinum. Vincent's Rock [in the Avon Gorge]" [JL]. iii. "Geranium colubrinum. On the right hand Bank in the first Inclosure in the Road from Heydon upper Common to Corpusty Church [Norfolk]" [B]. iv. "Specimens and labels mixed when received at Kew. C.H.W. 28 March 1921" [C.H. Wright, not identified]. Folder 2. Geranium columbinum [G]. i. "Ger: Columbin: Pangbourne [Berkshire]" [JL].1 folder. Geranium dissectum [G].
 
@@ -1776,11 +1767,11 @@ Astragalus danicus Retz.
 
 Folder 1. Astragalus Epiglotis [TA]. i. "An Astragalus arenarius? seu quid? In Anglia prope Portsmouth inventa a D. Banks" [JL]. ii. "Astragalus arenarius" [? Banks].
 
-Folder 2. Astragalus Epiglotis Linn. and A. arenarius Huds. [G]. Flora Scotia ed. 1, 400 (1777).
+Folder 2. Astragalus Epiglotis Linn. and A. arenarius Huds. [G]. Flora Scotica ed. 1, 400 (1777).
 
-Astragalus glycyphyllus L.
+Astragalus glycyphyllos L.
 
-1 folder. Astragalus Glycyphyllus [TA].
+1 folder. Astragalus Glycyphyllos [TA].
 
 Genista anglica L.
 
@@ -1796,7 +1787,7 @@ Genista tinctoria L.
 
 Hippocrepis comosa L.
 
-1 folder. Hippocrepis comosa [TA].
+1 folder. Hipocrepis comosa [TA].
 
 Lathyrus aphaca L.
 
@@ -1919,37 +1910,19 @@ Trifolium glomeratum L.
 
 1 folder. Trifolium Glomeratum [TA]. i. "Trifol: glomerat: Blackheath by the Green Man. Trifol: ornithopoid: grows with it. May" [JL]. ii. "Trifolium glomeratum. By no means a Scarce Plant on the South Side of Norwich" [B]; "Mr. Bryant" [JL].
 
-Trifolium medium L.
-
-1 folder. Trifolium medium [TA]; T. alpestre Linn. and Afzelius [G]. i. "Trifolium medium Huds. T. alpestre Linn:" [JL]. ii. "T. medium between Chatham & Canterbury" [JL]. iii. "Trifolium medium Huds. Trifolium [montanum deleted] alpestre Lin. On the Banks & Bound. Mires (? of Corpusty Field, near the Church; in Thompson's Grove at Thorpe near Norwich and indeed is very common in Norfolk" [B].
-
-Trifolium ochroleucum Huds.
-
-1 folder. Trifolium ochroleucum [TA]. i. "Trifolium ochroleucum. Near Bury [Bury St. Edmunds], Suffolk" [JL]. ii. "Trifolium ochroleucum. This is no uncommon Plant in the Neighbourhood of Norwich; particularly in a Place called Thompsons Grove, in the village of Thorpe, laying in the Road to Yarmouth and ab! a Mile from the City—I have reserved some better Specimens for you" [B]; "Insert this in Ray" [JL].
-
-Trifolium ornithopodioides L.
-
-2 folders.
-
-Folder 1. Trifolium ornithopodioides [G]. i. "Trifolium ornithopodioides. Tuthill [Tothill] Fields" [JL].
-
-Folder 2. Trifolium ornithopodioides [TA]. i. "Trifolium Ornithopodioides. Common on dry Sandy Banks on the South Side of Norwich" [B].
-
 Trifolium pratense L.
 
 1 folder. Trifolium pratense [TA]. i. "In the West of England" [JL].
 
 Trifolium repens L.
 
-1 folder. Trifolium repens [TA]. i. "Trifolium repens. A very extraordinary variety to be found in a gravel Pit, where the Soil is generally unfavourable to Luxuriance. A Specimen of this for Mr. Banks, if acceptable" [B].
-
-[Species prone to the type of abnormality displayed in these specimens.]
+1 folder. Trifolium repens [TA]. i. "Trifolium repens. A very extraordinary variety to be found in a gravel Pit, where the Soil is generally unfavourable to Luxuriance. A Specimen of this for Mr. Banks, if acceptable" [B]. [Species prone to the type of abnormality displayed in these specimens.]
 
 Trifolium scabrum L.
 
 2 folders.
 
-Folder 1. Trifolium scabrum [TA]. i. "Trif: scabrum for certain. It agrees wth the Specimens in Buddle. hort. sicc. but are very small" [JL]. Folder 2. Trifolium maritimum [TA].
+Folder 1. Trifolium scabrum [TA]. i. "Trif: scabrum for certain. It agrees with the Specimens in Buddle. hort. sicc. but are very small" [JL]. Folder 2. Trifolium maritimum [TA].
 
 Trifolium squamosum L.
 
@@ -2123,11 +2096,9 @@ Nymphaea alba L.
 
 ONAGRACEAE
 Chamaenerion angustifolium (L.) Scop.
-1 folder. Epilobium angustifolium [TA], Flora Scotica ed. 1, 197, 1121 (1777). i. "Epilobium angus- tifolium. Grays near Henley, Oxfordshire" [JL].
+1 folder. Epilobium angustifolium [TA], Flora Scotica ed. 1, 197, 1121 (1777). i. "Epilobium angustifolium. Grays near Henley, Oxfordshire" [JL].
 
-Circaea alpina L. [See C. ×intermedia
-Folder 1]
-
+Circaea alpina L. [See C. ×intermedia Folder 1]
 Circaea ×intermedia Ehrh.
 2 folders.
 Folder 1. Circaea alpina [TA], Flora Scotica ed. 1, 80, 1115 (1777). i. "Alpine Enchanters Nightshade. July & Aug. This is one of the rarer Natives of England. It grows at the Foot of some of the Mountains in Yorkshire & Westmoreland" [JL]. ii. "Circaea Alpina. Newfoundland. Mr.Banks" [JL] [P.H. Raven identified this specimen as C. alpina].
@@ -2164,7 +2135,55 @@ Epilobium parviflorum Schreb.
 
 Epilobium tetragonum L.
 
-1 folder. Epilobium tetragonum"Mr. Pitchford" [JL].
+1 folder. Epilobium tetragonum [TA]. i. "Epilobium tetragonum" [JL].
+
+Oxalidaceae
+
+Oxalis acetosella L.
+
+1 folder. Oxalis acetosella [TA].
+
+Papaveraceae
+
+Chelidonium majus L.
+
+1 folder. Chelidonium majus [TA].
+
+Corydalis claviculata (L.) DC.
+
+2 folders.
+
+Folder 1. Fumaria claviculata [G], Flora Scotica ed. 1, 380 (1777). Folder 2. Fumaria claviculata? [TA].
+
+Fumaria? bastardii Boreau
+
+1 folder. Fumaria capreolata? L: f: [TA]. i. "F: capreolata" [JL]. [Probably F. bastardii but specimen is inadequate for definite determination.]
+
+Fumaria officinalis L.
+
+1 folder. Fumaria officinalis [TA]. i. "Cowleyfield [near Uxbridge in Middlesex]. Common Fumitory" [JL].
+
+Glaucium flavum Crantz
+
+2 folders.
+
+Folder 1. Chelidonium Glaucium [G], Flora Scotica ed. 1, 279 (1777). i. "Portland" [JL]. Folder 2. Chelidonium Glaucium [TA]. i. "Chelidonium Glaucium" [JL].
+
+Meconopsis cambrica (L.) Vig.
+
+1 folder. Papaver cambricum [TA]. i. "Papaver Cambricum" [JL].
+
+Papaver argemone L.
+
+1 folder and 1 sheet.
+
+Folder 1. Papaver argemone [TA]. i. "Papaver Argemone" [JL]. ii. "Papaver Argemone. Very common all round Norwich" [B]. iii. "Hoddesdon [near Hertford]. Cornfields. July" [JL]. Sheet 1. Papaver argemone [TA].
+
+Papaver hybridum L.
+
+2 folders.
+
+Folder 1. Papaver hybridum [TA]. i. "Papaver hybridum. caps: globos: torosis hispidis" [JL]. ii. "Papaver hybridum. The plant was dried up when I found it" [P];"Mr. Pitchford" [JL].
 
 Folder 2. Papaver hybridum [G]. i. "Papaver hybridum. Corn Fields in the Isle of Thanet, & near Feversham in Kent" [JL].
 
@@ -2234,7 +2253,9 @@ Folder 1. Statice Limonium [G]. i. "Braunton Burroughs" [JL]. [Specimen on left 
 
 Folder 2. Statice Limonium [G]. [Specimens on left and right are L. binervosum.]
 
-[Limonium vulgare Mill.
+[Both folders also contain L. vulgare.]
+
+Limonium vulgare Mill.
 
 2 folders and 1 sheet.
 
@@ -2358,9 +2379,7 @@ Orthilia secunda (L.) House
 
 3 folders.
 
-Folder 1. Pyrola secunda [G], Flora Scotica ed. 1, 219 (1777). i. Cites Ray's Syn. 363; Moris Hist. Ox. Sect. 12, t. 10, f. 4. ii. "Dented-leav'd Winter-Green. June. This is said to be found in Haselwood near S' Walter Vavasor's Park in Yorkshire. These specimens came, the one from Sweden, the other from Newfoundland. I have found it also in Scotland in shady old Beech Woods. N.B. The Antherae in this Species stand out of the Corolla, and the Stigma is lengthened beyond the Stamina" [JL]. iii. "Pyrola secunda Lin: From Newfoundland & Scotland" [JL]. Folder 2. Pyrola secunda [TA]. i.
-
-"Pyrola secunda Lin: From Newfoundland by Mr Banks" [JL]. ii. Cites Ray's Syn. 363; Fl. Danica t. 402. iii. "This is said to be found in Haselwood... [deleted] in Yorkshire. These specimens were gathered in Newfoundland by Joseph Banks Esq. N.B. The only material Difference between this Species & the Pyr: minor consists in the Extrusion of the Stamina & Style. The Flowers lean also to one side of the Stalk, & the Leaves are more acute" [JL].
+Folder 1. Pyrola secunda [G], Flora Scotica ed. 1, 219 (1777). i. Cites Ray's Syn. 363; Moris Hist. Ox. Sect. 12, t. 10, f. 4. ii. "Dented-leav'd Winter-Green. June. This is said to be found in Haselwood near S' Walter Vavasor's Park in Yorkshire. These specimens came, the one from Sweden, the other from Newfoundland. I have found it also in Scotland in shady old Beech Woods. N.B. The Antherae in this Species stand out of the Corolla, and the Stigma is lengthened beyond the Stamina" [JL]. iii. "Pyrola secunda Lin: From Newfoundland & Scotland" [JL]. Folder 2. Pyrola secunda [TA]. i. "Pyrola secunda Lin: From Newfoundland by Mr Banks" [JL]. ii. Cites Ray's Syn. 363; Fl. Danica t. 402. iii. "This is said to be found in Haslewood... [deleted] in Yorkshire. These specimens were gathered in Newfoundland by Joseph Banks Esq. N.B. The only material Difference between this Species & the Pyr: minor consists in the Extrusion of the Stamina & Style. The Flowers lean also to one side of the Stalk, & the Leaves are more acute" [JL].
 
 Folder 3. Pyrola secunda [JL]. i. "Pyrola secunda Lin: From Scotland near Little Loch-Broom in Ross-shire" [JL].
 
@@ -2478,23 +2497,7 @@ Trollius europaeus L. 2 folders. Folder 1. Trollius europaeus [TA]. i. "Trollius
 
 RESEDAEAE Reseda lutea L. 1 folder. Reseda lutea [TA]. i. "Reseda lutea Lin: Base Rocket. Near Basingstoke" [JL].
 
-ROSACEAE Agrimonia eupatoria L. 1 folder. Agrimonia Eupatoria [TA]. i. "Agrimonia Eupatoria Lin: Agrimony. Anglis. under Hedges" [JL]. Alchemilla alpina L. 1 folder. Alchemilla alpina [TA]. i. "Scotland. alpina" [JL]. ii. "Scotland" [JL]. Alchemilla glabra Neygenfind 2 folders. Folder 1. Alchemilla vulgaris [TA], Flora Scotica ed. 1, 120 (1777). i. "Ladies Mantle. June & July. This smooth Kind of Ladies Mantle is much less common in England than the little pubescent one. I never saw it anywhere but at Longsledale [Long Sleddale, a valley a few miles northwest of Kendal] in Westmoreland. I imagine this to be the most frequent in Sweden as Linnaeus has given it the Epithet of vulgaris. It retains its Smoothness when planted in a Garden for many Years, but this is hardly to be allow'd as a true specific Mark to difference it from the other" [JL]. Folder 2. Alchemilla vulgaris [G]. i. "A. vulgaris. Yalden" [JL]. ii. "Snowdon" [JL].
-
-Alchemilla vestita (Buser) Raunk. 2 folders. Folder 1. Alchemilla vulgaris [G], Flora Scotica ed. 1, 120 (1777). i. "Ladies Mantle. June & July. In dry Pastures, not uncommon" [JL]. Folder 2. Alchemilla vulgaris β minor [TA]. i. "A. minor. Yalden" [JL]. ii. "Alchemilla vulgaris. In an old piece of Pasture behind Mr Bulwer's House, Heydon [in Norfolk]. The minor I never Saw; I will thank you for a good Specimen of it. The Alpina is in my Garden" [B]. [Specimen in top right corner is A. xanthochlora.]
-
-Alchemilla xanthochlora Rothm. [See A. vestita Folder 2]
-
-Dryas octopetala L. 2 folders. Folder 1. Dryas octopetala [G]. i. "Dryas octopetala. From Scotland" [JL]. Folder 2. Dryas octopetala [TA and G].
-
-Fragaria vesca L. 1 folder. Fragaria vesca [TA]; Hautboy Strawberry [name given to F. moschata Duchesne] [G].
-
-Geum rivale L. 1 folder. Geum Rivale [TA].
-
-Geum urbanum L. 1 folder. Geum Urbanum [TA].
-
-Potentilla alba L., Flora Europaea 2: 46 (1968) 1 folder. Potentilla alba [TA]. i. "Potentilla alba. Kew. May & April" [JL]. [Species occurs in central and southern Europe; probably cultivated at Kew.]
-
-Potentilla anglica Laicharding [See under P. erecta Folder 1 and P. reptans Folder 1]John Lightfoot
+ROSACEAE Agrimonia eupatoria L. 1 folder. Agrimonia Eupatoria [TA]. i. "Agrimonia Eupatoria Lin: Agrimony. Anglis. under Hedges" [JL]. Alchemilla alpina L. 1 folder. Alchemilla alpina [TA]. i. "Scotland. alpina" [JL]. ii. "Scotland" [JL]. Alchemilla glabra Neygenfind 2 folders. Folder 1. Alchemilla vulgaris [TA], Flora Scotica ed. 1, 120 (1777). i. "Ladies Mantle. June & July. This smooth Kind of Ladies Mantle is much less common in England than the little pubescent one. I never saw it anywhere but at Longsledale [Long Sleddale, a valley a few miles northwest of Kendal] in Westmoreland. I imagine this to be the most frequent in Sweden as Linnaeus has given it the Epithet of vulgaris. It retains its Smoothness when planted in a Garden for many Years, but this is hardly to be allow'd as a true specific Mark to difference it from the other" [JL]. Folder 2. Alchemilla vulgaris [G]. i. "A. vulgaris. Yalden" [JL]. ii. "Snowdon" [JL]. Alchemilla vestita (Buser) Raunk. 2 folders. Folder 1. Alchemilla vulgaris [G], Flora Scotica ed. 1, 120 (1777). i. "Ladies Mantle. June & July. In dry Pastures, not uncommon" [JL]. Folder 2. Alchemilla vulgaris β minor [TA]. i. "A. minor. Yalden" [JL]. ii. "Alchemilla vulgaris. In an old piece of Pasture behind Mr Bulwer's House, Heydon [in Norfolk]. The minor I never Saw; I will thank you for a good Specimen of it. The Alpina is in my Garden" [B]. [Specimen in top right corner is A. xanthochlora.] Alchemilla xanthochlora Rothm. [See A. vestita Folder 2] Dryas octopetala L. 2 folders. Folder 1. Dryas octopetala [G]. i. "Dryas octopetala. From Scotland" [JL]. Folder 2. Dryas octopetala [TA and G]. Fragaria vesca L. 1 folder. Fragaria vesca [TA]; Hautboy Strawberry [name given to F. moschata Duchesne] [G]. Geum rivale L. 1 folder. Geum Rivale [TA]. Geum urbanum L. 1 folder. Geum Urbanum [TA]. Potentilla alba L., Flora Europaea 2: 46 (1968) 1 folder. Potentilla alba [TA]. i. "Potentilla alba. Kew. May & April" [JL]. [Species occurs in central and southern Europe; probably cultivated at Kew.] Potentilla anglica Laicharding [See under P. erecta Folder 1 and P. reptans Folder 1]John Lightfoot
 
 Potentilla argentea L.
 
@@ -2524,7 +2527,7 @@ Potentilla reptans L.
 
 2 folders.
 
-Folder 1. Tormentilla reptans [TA], Flora Scotica ed. 1, 273 (1777). i. "Tormentilla reptans near Newent. Solander" [JL]. ii. "Pentaphyllum reptans, in the road to Percy Lodge" [JL]. [Specimens marked "X" in pencil are P. anglica or hybrids].
+Folder 1. Tormentilla reptans [TA], Flora Scotica ed. 1, 273 (1777). i. "Tormentilla reptans near Newent. Solander" [JL]. ii. "Pentaphyllum reptans, in the road to Percy Lodge" [JL]. [Specimens marked "X" in pencil are P. anglica or hybrids.]
 
 Folder 2. Potentilla reptans [TA].
 
@@ -2646,11 +2649,9 @@ Folder 1. Galium palustre [G]. i. "In a Bog with the Acrostichum Thelypteris, ne
 
 [See also under G. debile.]
 
-Galium parisienne L. subsp. anglicum (Huds.) Clapham
+Galium parisienne L. subsp. anglicum (Huds.) Clapham 4 folders.Folder 1. Galium anglicum Huds. [G]. i. "Gal: spinosum. sem: glabra ergo non G: parisiense. Mr. Banks, at Farningham 10 m: beyond Eltham in Kent on the Walls of a House" [JL].
 
-4 folders.Folder 1. Galium anglicum Huds. [G]. i. "Gal: spinosum. sem: glabra ergo non G: parisiense. Mr. Banks, at Farningham 10 m: beyond Eltham in Kent on the Walls of a House" [JL].
-
-Folder 2. Galium parisiense? [TA]; G. anglicum Huds. Ed.2 [G]. i. "This I take to be the Galium parisiense tho' the seeds are not but little hispid. See Ray's Syn. for this & his Fig:" [JL].
+Folder 2. Galium parisiense? [TA]; G. anglicum Huds. Ed.2 [G]. i. "This I take to be the Galium parisiense tho' the seeds are not but little hispid. See Ray's Syn. for this & his Fig." [JL].
 
 Folder 3. Galium parisiense Ed.1 & G. anglicum Ed.2 [G].
 
@@ -2754,7 +2755,7 @@ Folder 3. Salix herbacea [TA]. i. "Salix herbacea Goatfield in Ar-John Lightfoot
 
 174
 
-ran" [JL]. ii. "N° 143 Duncrosghill May 26th" [Stuart]; "Salix herbacea" [JL]. iii. "Salix herbacea old specimen: Isle of Rum" [JL].
+ran" [JL]. ii. "N° 143 Duncrosg- hill May 26th" [Stuart]; "Salix herbacea" [JL]. iii. "Salix herba- cea old specimen: Isle of Rum" [JL].
 
 Salix lapponum L.
 
@@ -2762,15 +2763,15 @@ Salix lapponum L.
 
 Folder 1. Salix lappona [TA]. i. "Salix Lappon: Bulls. [Bulstrode Park]" [JL].
 
-Folder 2. Salix arenaria [TA]; S. lapponum? [G]. i. "N° 150. Cregchaillech. Sep' 3" [Stuart]; "My S. Lapponum but very like the S. arenaria of Haller—hist. p. 195 f. 14" [JL].
+Folder 2. Salix arenaria [TA]; S. lapponum? [G]. i. "N° 150. Creg- chaillech. Sep' 3" [Stuart]; "My S. Lapponum but very like the S. arenaria of Haller—hist. p. 195 f. 14" [JL].
 
-Salix myrsinotes L.
+Salix myrsinities L.
 
 2 folders.
 
-Folder 1. Salix myrsinotes [TA]. i. "Ex Glenco, Scotland" [TA].
+Folder 1. Salix myrsinities [TA]. i. "Ex Glenco, Scotland" [TA].
 
-Folder 2. Salix myrsinotes? [G]. i. "N° 140. Glenlochy. May 25th" [Stuart]; "S. myrsinotes? or Arbuscula? See my other Specimens describ'd" [JL].
+Folder 2. Salix myrsinities? [G]. i. "N° 140. Glenlochy. May 25th" [Stuart]; "S. myrsinities? or Arbus- cula? See my other Specimens describ'd" [JL].
 
 Salix pentandra L.
 
@@ -2786,7 +2787,9 @@ Salix purpurea L.
 
 Folder 1. Salix Helix [G], Flora Scotica ed. 1, 597 (1777). i. "S. Helix. right. Scotland" [JL]. ii. "Salix Helix near Oxford" [JL]. Folder 2. Salix Helix [G]. i. "S. Helix mas. Mr. Bogg's's [sic]... [illegible]" [JL].
 
-Folder 3. Salix Helix [TA]. i. "Salix Helix. Gulch Well. right. May-74" [JL]. ii. "This Salix in the Lane going from Colnbrook to Staines, on the left. June. var. of Helix" [JL]. iii. "N° 139. Laggan near Comrie. June 1st" [Stuart]. iv. "N° 73. Curr near Comrie. June 1" [Stuart]; "S. Helix" [JL].
+Folder 3. Salix Helix [TA]. i. "Sa- lix Helix. Gulch Well. right. May- 74" [JL]. ii. "This Salix in the Lane going from Colnbrook to
+
+Staines, on the left. June. var. of Helix" [JL]. iii. "N° 139. Laggan near Comrie. June 1st" [Stuart]. iv. "N° 73. Curr near Comrie. June 1" [Stuart]; "S. Helix" [JL].
 
 Folder 4. Salix purpurea? [TA]; S. Helix [G].
 
@@ -2800,7 +2803,7 @@ Folder 2. Salix repens [G]. i. "Salix repens? of Mr. Yalden" [JL].
 
 Folder 3. Salix repens [G].
 
-Folder 4. Salix fusca [TA]. i. [Written on a capsule containing the specimen:] "N° 24. Stuart. Scotl Salix repens s. fusca. the female" [JL]. ii. "According to the Fig: quoted by Lin: this is his Salix repens; but it remains very doubtful, whether or not it be S: fusca or repens. See for the S: repens on Putney Heath" [JL].
+Folder 4. Salix fusca [TA]. i. [Written on a capsule containing the specimen:] "N° 24. Stuart. Scotl- d Salix repens s. fusca. the female" [JL]. ii. "According to the Fig: quoted by Lin: this is his Salix repens; but it remains very doubtful, whether or not it be S: fusca or repens. See for the S: repens on Put- ney Heath" [JL].
 
 Salix repens subsp. argentea (Sm.) G.&A.Camus
 
@@ -2810,7 +2813,7 @@ Salix reticulata L.
 
 1 folder. Salix reticulata [TA]. i. "N° 145" [Stuart]. ii. "N° 147. Mal-gyrdy - Aug." [Stuart]. iii. "N° 18. Mal-gyrdy & Mal-grea" [Stuart]; "Salix reticulata" [JL]. [Only one specimen in folder.]
 
-Salix ×rubens Schrank (S. alba × fragilis)
+Salix ×rubens Schrank (S. alba × fragi- lis)
 
 1 folder. Salix alba? [TA].
 
@@ -2844,7 +2847,7 @@ Folder 2. Salix viminalis [TA]. [Inadequate specimen, possibly S. viminalis.]
 
 Salix sp.
 
-1 folder. Salix myrsinates [G]. i. "Salix myrsinates of Aiton [William Aiton]. Kew. trailing" [JL].
+1 folder. Salix myrsinutes [G]. i. "Salix myrsinutes of Aiton [William Aiton]. Kew. trailing" [JL].
 
 SAMBUCAEAE
 
@@ -3204,7 +3207,7 @@ Folder 2. Pimpinella major [TA]. i. "Near Plymouth" [JL].
 
 Pimpinella saxifraga L. 3 folders.
 
-Folder 1. Pimpinella saxifraga [TA]. i. "Pimpinella saxifraga" [B]; "Mr. Bryant" [JL]. ii. "Pimpinella major Huds. Pimpinella Saxifraga var. γ Lin. Sp. Pl." [B]; "Not so of Huds: but only a var. of Pimpin: saxif:" [JL].
+Folder 1. Pimpinella saxifraga [TA]. i. "Pimpinella saxifraga" [B]; "Mr. Bryant" [JL]. ii. "Pimpinella major Huds. Pimpinella Saxifraga var. γ Lin. Sp. Pl." [B]; "Not so, of Huds: but only a var. of Pimpin: saxif:" [JL].
 
 Folder 2. Pimpinella saxifraga [TA].
 
@@ -3292,7 +3295,7 @@ Folder 1. Alisma [?], Flora Scotica ed. 1, 193 (1777).
 
 Folder 2. Alisma ranunculoides [TA].
 
-**DAMASONIUM ALISAMON Mill.**
+**DAMASONIUM ALISMA MILL.**
 
 2 folders.
 
@@ -3391,25 +3394,25 @@ England” [JL].
 Sheet 1. Carex canescens Lightfoot, C. curta Linn. Trans. V.2. G. and
 C. brizoides Huds. [G].
 Sheets 2 and 3. Carex canescens
-[Ta]; Lightfoot [G]; C. curta Linn.
+[TA]; Lightfoot [G]; C. curta Linn.
 Trans. V.2. G. [G]. [On Sheet 3,
 larger specimen on right is C.
 divulsa.]
 
 Carex diandra Schrank
 3 folders.
-Folder 1. Carex paniculata β?? [Ta]; C. teretiuscula G. [G]. i. “Carex paniculata minor. Consider
+Folder 1. Carex paniculata β?? [TA]; C. teretiuscula G. [G]. i. “Carex paniculata minor. Consider
 this plant well, and make a new
 Species of it” [B]; “By Mr. Bryant”
 [JL]; “I verily believe it to be a new
 Species, but Mr. Banks & Dr. S: [Solander] make it only a var. of C. paniculata” [JL].
-Folder 2. Carex spicata [Ta]; C.
+Folder 2. Carex spicata [TA]; C.
 teretiuscula G. [G]. i. “This is the
 constant Appearance of this Carex.
 soluta. It comes nearest to C. spicata.
 Huds: if not that must be new, for I
 think it is neither disticha divisa, nor uliginosa” [JL].
-Folder 3. Carex spicata [Ta]; C.
+Folder 3. Carex spicata [TA]; C.
 teretiuscula G. [G]. i. “From M’
 Bryant certainly a Carex & seems to be a small Specimen of Hudson’s C. divisa. It has too small & close a
 Head for C. spicata or paniculata.”
@@ -3429,24 +3432,24 @@ neither disticha, divisa, nor uligino-
 sa” [JL]; “Mr. Banks & D’r S. [Solander] made it a var. of C. paniculata but if not C. spicata as above, I think it new” [JL].
 
 Carex digitata L.
-1 folder. Carex digitata [Ta]; G.
+1 folder. Carex digitata [TA]; G.
 [G]. i. “Carex digitata Lin: found
-near Bath by Mr’ Sole [William
+near Bath by M’r Sole [William
 Sole] of that Place” [JL]. ii. “Carex Digitata for the Rev’d Mr.
 Lightfoot” [Sole]; “From Mr.
 Sole” [JL].
 
 Carex dioica L.
 3 folders.
-Folder 1. Carex dioica [Ta]. i.
+Folder 1. Carex dioica [TA]. i.
 “Carex dioica (foemina) Lin:”
 [JL]. ii. “Scotland, Yalden” [JL].
 iii. “Carex dioica. On Heydon lower common” [B]. iv. “N° 8 C.
 dioica” [JL].
-Folder 2. Carex capitata [Ta]; Huds. [G]; C. dioica Linn. spike androgynous. G. [G]. i. “Carex capitata Lin: pro certe” [JL]; “By no means. J.E. Smith” [JES];
+Folder 2. Carex capitata [TA]; Huds. [G]; C. dioica Linn. spike androgynous. G. [G]. i. “Carex capitata Lin: pro certe” [JL]; “By no means. J.E. Smith” [JES];
 “Spica simplici androgyna ovata,
 superne mascula.—sed varietas tantum videtur C. dioica Lin: Found upon Bogs near Heydon in
-Norfolk by the Rev’d Mr. Bryant”
+Norfolk by the Rev’d M’r Bryant”
 [JL].
 Folder 3. Carex dioica—
 androgynous specimens and C.
@@ -3474,7 +3477,7 @@ Folder 1. Carex intermedia-singular variety-G. [G]. i. "Carex disticha with a Si
 
 Folder 2. Carex disticha [TA] Huds.; C. intermedia Linn. Trans. V.2. G. [G]. i. "C. disticha. meadow by side of Farndens Hill" [JL]. ii. "C. disticha. Sole. good" [JL].
 
-Sheet 1. Carex leporina Jun. T. A. [TA]; Carex disticha Huds. [G]; C. intermedia Lin. Trans. Vol. 2. G. [G].
+Sheet 1. Carex leporina Jun. T. A [TA]; Carex disticha Huds. [G]; C. intermedia Lin. Trans. Vol. 2. G. [G].
 
 Carex divisa Huds.
 
@@ -3496,7 +3499,7 @@ Sheet 2. Carex muricata Huds.
 [ G]; C. stellulata Linn. Trans. Vol. 2. G. [G].
 
 Carex extensa Good. 1 folder. Carex extensa Linn. Trans. V.2. Dr. Goodenough, vars. [G]. i. "I can make this Carex agree w. nothing in the Sp. Pl. so well, as w. the filiformis but there is an obscurity in the latter part of the Specific Character, w. ch, I am afraid, I do not understand—inferiore foliolo proprio breviore—w. ch I translate thus—The Bottom Spike is Shorter than its own floral Leaf. and if this be the true Sense of the Author; the difference between the one & the other is so great, that, allowing this Carex to be the filiformis, he could never mean to draw the comparison. I found it, June 20th 1776, amongst the Stones & Sand on Cley [on north Norfolk coast near Blakeney] Beach. The Leaves were nearly convolute" [B]; "The Male Spike of C. filiform: is long, not sessile, the female ones only two, & the Capsules a little downy" [JL]. [On reverse of label:] ii. "Carex filiformis? Lin. I think this can never be a var. of the C. pallescens, for many Reasons; and for one in particular; because the parts of Fructification are so different—I have given you a fig. of each. Fig. 1 is the Capsula a Bractea membranacea of this Carex, w. ch are both acute, the latter of w. ch does not cover the former, but ab. half way; and the former, besides being acute is mucronate & angulata—Fig. 2. is the Capsula a & Bractea membranae of the Carex pallescens, w. ch are both obtuse, the latter being nearly equal to the former—and the former is not angulata mucronata, but obtuse & compressa" [B]; "C. flava? very young Specimens, or new" [JL]; [Bryant's drawing preserved with specimen]. iii. "A Specimen of this for Mr. Banks if you please" [B];```
-Q. an young Specimens of C. flava [JL].
+"Q. an young Specimens of C. flava" [JL].
 
 Carex flacca Schreb.
 1 folder and 2 sheets.
@@ -3517,7 +3520,7 @@ Carex? lepidocarpa Tausch
 1 folder. Carex flava β [TA]; C. flava var. fulva, compare Linn. Trans. Vol. 2 & 3. G. [G]. i. Cites Ray's Syn. 421. ii. "This has rarely more than two female Spiculae, & yet the Plant is commonly much taller than the common C: flava. In moist Meadows. June" [JL]. iii. "Carex flava. Var. β" [JL]. iv. "Scotland, Yalden" [JL]. v. "Carex distans" [B]. vi. "Carex flava" [B].
 
 Carex limosa L.
-1 folder. Carex limosa G. capsulis caesiis [TA]. i. "Carex Limosa Lin:" [JL]. ii. "I take this to be quite different from C: panicea. See Ray P: 418. N° 6" [JL].
+1 folder. Carex limosa G. capsulis caesii [TA]. i. "Carex Limosa Lin:" [JL]. ii. "I take this to be quite different from C: panicea. See Ray P: 418. N° 6" [JL].
 
 Carex maritima Gunn.
 1 folder. Carex incurva [TA], Flora Scotica ed. 1, t. xxiv, 544 (1777). i. "Carex from Isle of Arran by Dr H. [John Hope]" [JL]. [Specimen is the type of C. incurva Lightfoot and the basis for the corresponding plate in Flora Scotica.]
@@ -3547,7 +3550,7 @@ Folder 2. Carex caespitosa [G]. i. "Carex caespitosa Huds: floribus digynis" [JL
 3 folders.
 Folder 1. Carex leporina Huds., nec Linnaei [G], Flora Scotica ed. 1, 547 (1777); C. ovalis Linn. Trans. Vol.2. G [G]. i. "Carex leporina" [B]. ii. "Carex leporina var. perhaps this may be the C. divisa Huds." [B]; "It is C. leporina" [JL].
 Folder 2. Carex leporina Huds. nec Linnaei and C. ovalis Linn. Trans. Vol.2. G [G]. i. Cites Lin. Sp. Pl. 1381; Moris. Hist. S: 8, T: 12, f: 29; Fl: Dan: T: 294; Haller: Stirp: Helv: N° 1361. ii. "Carex leporina Lin: & Huds:" [JL]
-Folder 3. Carex leporina Huds. and C. intermedia Linn. Trans. V.2. G—a singular variety [G]. i. "Carex divisa? Huds. This is a variety of the former Carex, & probably is the Capitata also of Huds.—here are Spicae dioicae" [B]. ii. "Carex capitata. This is
+Folder 3. Carex leporina Huds. and C. intermedia Linn. Trans. V.2. G. -a singular variety [G]. i. "Carex divisa? Huds. This is a variety of the former Carex, & probably is the Capitata also of Huds.---here are Spicae dioicae" [B]. ii. "Carex capitata. This is
 ```John Lightfoot
 
 lata" [JL]. iv. "Carex paniculata" [B].
@@ -3572,7 +3575,9 @@ Carex pendula Huds.
 
 Carex pilulifera L.
 
-1 folder. Carex pilulifera [TA]. i. Cites Linn. Sp. Pl. 1385; Ray's Syn. 422; Pluk. t. 91, f. 8; Moris. Hist. Sect. 8, t. 12, f. 16. ii. "Carex pilulifera" [JL]. iii. "Round-headed Carex. June & July. It grows upon moorish Heaths, as on Hounslow Heath near Twickenham & c." [JL]. iv. "The Figure in Morison's Hist: Ox: Sect.: 8. T: 12, f. 16 agrees perfectly well with this Plant, but not the Synonyms, which are those of Carex pallescens Lin:" [JL].
+1 folder. Carex pilulifera [TA]. i. Cites Linn. Sp. Pl. 1385; Ray's Syn. 422; Pluk. t. 91, f. 8; Moris. Hist. Sect. 8, t. 12, f. 16. ii. "Carex pilulifera" [JL]. iii. "Round-headed Carex. June & July. It grows upon moorish Heaths, as on Hounslow Heath
+
+near Twickenham & c." [JL]. iv. "The Figure in Morison's Hist: Ox: Sect.: 8. T: 12, f. 16 agrees perfectly well with this Plant, but not the Synonyms, which are those of Carex pallescens Lin:" [JL].
 
 Carex pseudocyperus L.
 
@@ -3582,7 +3587,7 @@ Folder 1. Carex pseudo-Cyperus [TA]. i. Carex Pseudo Cyprus [B]. Folder 2. Carex
 
 Carex pulicaris L.
 
-1 folder. Carex pulicaris [TA], Flora Scotica ed. 1, 543 (1777). i. "Carex pulicaris. This, I believe, is one of the most common Species we have in Norfolk. It is to be found in almost every Meadow & moist Piece of Ground about Heydon; and is pretty frequent near Norwich" [B]. ii. "pulicaris. 3. CAREX spica simplici androgyna; flosculis [numerosis deleted] pluribus; masculis terminalibus imbricatis, capsulis retroflexis. [Carex pulicaris deleted] fr. [? from] Linn. Spec. pl. 1380. 3. "[? Solander] [description given in Flora Scotica, cited there as "Lin. Sp. pl. 1380. characteribus emendatis" and obviously derived from Sp. Pl. ed. 3, 1380 (1764)]."
+1 folder. Carex pulicaris [TA], Flora Scotica ed. 1, 543 (1777). i. "Carex pulicaris. This, I believe, is one of the most common Species we have in Norfolk. It is to be found in almost every Meadow & moist Piece of Ground about Heydon; and is pretty frequent near Norwich" [B]. ii. "pulicaris. 3. CAREX spica simplici androgyna; flosculis [numerosis deleted] pluribus; masculis terminalibus imbricatis, capsulis retroflexis. [Carex pulicaris deleted] fr. [? from] Linn. Spec. pl. 1380. 3. " [? Solander] [description given in Flora Scotica, cited there as "Lin. Sp. pl. 1380. characteribus emendatis" and obviously derived from Sp. Pl. ed. 3, 1380 (1764)].
 
 Carex riparia Curt.
 
@@ -3595,15 +3600,15 @@ Carex rostrata Stokes
 
 189
 
-**Carex? rupestris All.**
+*Carex? rupestris All.*
 
 1 folder. Carex pulicaris G. [G].
 
-**Carex? saxatilis L.**
+*Carex? saxatilis L.*
 
 1 folder. Carex pulla? G. Flores digyni [G].
 
-**Carex spicata Huds.**
+*Carex spicata Huds.*
 
 3 folders.
 
@@ -3613,31 +3618,31 @@ Folder 2. Carex divisa [TA]; C. spicata Huds. and Lightfoot and C. muricata Linn
 
 Folder 3. Carex canescens Huds., C. divulsa Linn. Trans. V.2. G. and Withering [G]. i. "Carex canescens. Foliolo longiori instructis" [B]; "C. spicata Huds:" [JL].
 
-**Carex sylvatica Huds.**
+*Carex sylvatica Huds.*
 
 1 folder. Carex sylvatica [TA]; i. "Linnaeus made this a variety of Vesicaria. G." [G]. ii. "Carex sylvatica Huds:" [JL]. iii. "C. sylvat: Hud: V: C: vesicar: β Lin: but I think improperly" [JL].
 
-**Carex vesicaria L.**
+*Carex vesicaria L.*
 
 1 sheet. Carex inflata [TA]; Huds. and Lightfoot, and C. vesicaria Linn. G. [G]. i. "C: Vesicaria Var: β Huds: (Var: γ Lin: Spec:) tho' it has some pretentions to C: ruffa
 
-**Carex vulpina L. agg.**
+*Carex vulpina L. agg.*
 
 1 folder. Carex vulpina [TA]. i. "Carex vulpina. The Brizoides should have come next, but that is a very scarce Plant in Norfolk—I will thank you for a good Specimen of it" [B].
 
-**Cladium mariscus (L.) Pohl**
+*Cladium mariscus (L.) Pohl*
 
 1 folder. Schoenus mariscus [TA]. i. Cites Ray's Syn. 426; Moris. Hist. Sect. 8, t. 11, f. 24. ii. "Long-rooted Bastard Cyperus. July. This is found on some of our Bogs, but not common. It grows plentifully on Hinton-Moor near Cambridge" [JL].
 
-**Cyperus longus L.**
+*Cyperus longus L.*
 
 1 folder. Cyperus longus [TA]. i. Cites Ray's Syn. 425; Moris. Hist. Sect. 8, t. 11, f. 13. ii. "Sweet Cyperus or English Galingale. This Species is said to have been found by Mr. Newton in the Isle of Purbeck, Dorsetshire, near a Chapel that looks towards Portland Island. July & August" [JL]. iii. "Near St. David's [Dyfed (Pembrokeshire)]" [JL]
 
-**Eleocharis acicularis (L.) Roem. & Schult.**
+*Eleocharis acicularis (L.) Roem. & Schult.*
 
 1 folder. Scirpus acicularis [TA], Flora Scotica ed. 1, 88 (1777). i. Cites Ray's Syn. 429; Moris. Hist. Sect. 8, t. 10, f. 37. ii. "The least upright Club-Rush. August. This is generally found in low Common & Moors growing in pure Water after Rains, but not very frequently" [JL].
 
-**Eleocharis quinqueflora (F.X.Hartm.) Schwarz**
+*Eleocharis quinqueflora (F.X.Hartm.) Schwarz*
 
 1 folder. Scirpus pauciflorus [TA], Flora Scotica ed. 1, 1078 (1777). i. "Scirpus pauciflorus. Flor: Scot:" [JL] [type specimen of Scirpus
 ```pauciflorus Lightfoot]. ii. "Scirpus pauciflous. Scotland. β" [JL]. iii. "My Scirpus pauciflorus. Flor: Scot: appendix. Some of the Specimens by Teesdale [possibly Mr. Teesdale, rather than the place] from Yorkshire. Scheuch. Agr: t. 7, f. 9, Pag: 364. I have examined & found it not to be the Schoenus ferrugineus Lin: because it has no Involucrum mucronatum, & is much smaller & more pliant. It certainly is different from Scirpus caespitosus as having truncated vaginae & c." [JL].
@@ -3678,7 +3683,7 @@ Folder 1. Scirpus triquetra [G]; S. mucronatus [TA]; Huds. β [G]. i. Cites Ray'
 
 Folder 2. Scirpus triquetra [G]; S. mucronatus [TA]; Huds. β [G]. i. "Scirpus mucronatus" [JL].
 
-Folder 3. Scirpus semiterites [TA]; S. triquetra var. [G]. i. "London wth Mr. Banks" [JL]. ii. "Sc. semiterites below London. Dr Soland: [Solander] gave it a new Name on of the Var: of Huds Sc: triquetra" [JL]. iii. "In the Thames" [JL].
+Folder 3. Scirpus semiterites [TA]; S. triquetra var. [G]. i. "London wth Mr. Banks" [JL]. ii. "Sc. semiterites below London. Dr Soland: [Solander] gave it a new Name on of the Var. of Huds Sc: triquetra" [JL]. iii. "In the Thames" [JL].
 
 Folder 4. Scirpus triquetra [G]. i. "Scirpus mucronatus" [JL].
 
@@ -3705,35 +3710,51 @@ Empetrum nigrum L.
 
 Folder 1. Empetrum nigrum [G]. i. Cites Ray's Syn. 444. ii. "Blackberried Heath, Crow or Crake Berries. In the moist Places of the Mountains in the North, in Abundance. May" [JL].
 
-Folder 2. Empetrum nigrum [G]. i."Scotland. Yalden" [JL]. ii. "Triandria" [?].
+Folder 2. Empetrum nigrum [G]. i.**John Lightfoot**
 
-Folder 3. Empetrum nigrum [TA].
+**"Scotland. Yalden" [JL]. ii. "Triandria" [?].**
 
-ERIOCAULACEAE
+**Folder 3. Empetrum nigrum [TA].**
 
-Eriocaulon septangulare With.
+**ERIOCAULACEAE**
+
+**Eriocaulon septangulare With.**
 
 1 folder. Eriocaulon decangulare [TA], Flora Scotia ed. 1, 569 (1777). i. "Gathered some Aug' 31st others the 16th of Sep'." [JL].
 
-GRAMINEAE
+**GRAMINEAE**
 
-Agropyron caninum (L.) Beauv., Grasses ed. 2, 97 (1968)
+**Agropyron caninum (L.) Beauv., Grasses ed. 2, 97 (1968)**
 
 2 folders.
 
-Folder 1. Triticum caninum [TA], Flora Scotia ed. 1, 108 (1777). i. Cites Ray's Syn. 390; Morison: S: 8. T. 1. f. 2. ii. "In all the Woods upon the chalky Hills of Berkshire, Oxfordshire, & Buckinghamshire, and in the North of England frequent in the Woods. July. This is not the Elymus caninus of Lin: which I have amongst my Exotics. These Specimens have Involucra, w' the El. caninus has not" [JL]. iii. "Triticum caninum Huds:" [JL]. iv. "Elymus Berk.!" [TA].
+**Folder 1. Triticum caninum [TA], Flora Scotia ed. 1, 108 (1777). i. Cites Ray's Syn. 390; Morison: S: 8. T. 1. f. 2. ii. "In all the Woods upon the chalky Hills of Berkshire, Oxfordshire, & Buckinghamshire, and in the North of England frequent in the Woods. July. This is not the Elymus caninus of Lin: which I have amongst my Exotics. These Specimens have Involucra, w'ch the El. caninus has not" [JL]. iii. "Triticum caninum Huds:" [JL]. iv. "Elymus Berk.!" [TA].**
 
-Folder 2. Triticum caninum [G]. i. "Triticum caninum. Huds: [Elymus caninus. Lin: Moris: Sect: 8. T. 1, f. 2 deleted by JL]" [JL].
+**Folder 2. Triticum caninum [G]. i. "Triticum caninum. Huds: [Elymus caninus. Lin: Moris: Sect: 8. T. 1, f. 2 deleted by JL]" [JL].**
 
-Agropyron repens (L.) Beauv., Grasses ed. 2, 99 (1968)
+**Agropyron junceiforme (A.D. Löve) A.D. Löve, Grasses ed. 2, 105 (1968)**
+
+1 folder. Triticum junceum [G], Flora Scotia ed. 1, 109 (1777). i. Cites Ray's Syn. 391; Moris. Sect. 8, T. 2, f. 12. ii. "Foliaceous Sea Wheat-Grass. July & Aug.' By the Sea Side near Margate in Kent, & many other places" [JL]. iii. "Triticum junceum. Var. γ Huds:" [JL].
+
+**Agropyron pungens (Pers.) Roem. & Schult., Grasses ed. 2, 101 (1968)**
+
+3 folders.
+
+**Folder 1. Triticum repens [TA]; Vars. maritima [G]. i. "Gramen caninum maritimum spica triticea nostra. Ray. Syn. p. 390. n° 3" [JL].**
+
+**Folder 2. Triticum repens—Vars. maritima [G]. i. Cites Ray's Syn. 390; Hist. Ox. Sect. 8, T. 1, f. 8; Huds. Fl. Anglica. ii. "Wheat-Grass, Dog's Grass, Couch-grass. On the Essex-coast, by the Thames side, just below Grayes Thorock in great Plenty. This is a very singular Variety of the Triticum repens much altered from the usual Appearance by growing in Salt Marshes. The Leaves are glaucous, convoluted, & Pungent, like the Triticum junceum, so that I at first imagin'd it was that, but the Calyces are not truncated at their Apices. July" [JL]. iii. "Triticum repens Var:" [JL].**
+
+**Folder 3. Triticum caninum [TA]. i. "Gramen caninum maritimum spica triticea nostra. Ray Syn. 390. var. vivipora" [JL]. ii. "near Maldon" [JL]. iii. "Elymus of Berkeshant" [TA].**
+
+**Agropyron repens (L.) Beauv., Grasses ed. 2, 99 (1968)**
 
 1 folder. Triticum repens [TA], Flora Scotia ed. 1, 109 (1777). i. Cites Lin.; Huds.; Ray's Syn. 390. ii. "Dogs-Grass or Couch-grass. In Fields & Hedges almost everywhere, from June to August. It appears from the Sample marked, a [var. aristatum Baumg.], that the Spikes are sometimes a little bearded" [JL]. iii. "Chepstow Bridge" [JL].
 
-Aira praecox L., Grasses ed. 2, 261 (1968)
+**Aira praecox L., Grasses ed. 2, 261 (1968)**
 
 1 folder. Aira praecox [TA]. i. Cites Lin.; Ray's Syn. 407, Tab. 22, fig. 2; Pluk. Alm. T. 33, f. 9. ii. "Early Hair-Grass. This grows on sandy Heaths, & barren Places not unfrequent, flowering early in May" [JL]. iii. "Aira praecox" [JL].
 
-Ammophila arenaria (L.) Link, Grasses ed. 2, 289 (1968)
+**Ammophila arenaria (L.) Link, Grasses ed. 2, 289 (1968)**
 
 1 folder. Arundo arenaria [TA], Flora Scotia ed. 1, 107 (1777). i.Catalogue 193
 
@@ -3771,7 +3792,35 @@ Folder 3. Bromus pinnatus [TA]. i. Cites Linn. Sp. Pl.; Huds. Fl. Angl.; Ray's S
 Brachypodium sylvaticum (Huds.) Beauv., Grasses ed. 2, 91 (1968)
 1 folder. Bromus pinnatus [G]. i. Cites Linn. Sp. Pl.; Huds. Fl. Angl.; Ray's Syn. 394. ii. "In Woods & by Hedge-Sides common. August" [JL]. iii. "FestucaJohn Lightfoot
 
-[St. Vincent's Rock in Avon Gorge] [JL]
+194
+
+sylvatica" [JL], Flora Scotica ed. 1, 103 (1777).
+
+[See also under B. pinnatum Folder 3.]
+
+Briza media L., Grasses ed. 2, 215 (1968)
+
+1 folder. Briza media [TA]. i. Cites Ray's Syn. 412. ii. "Quaking-Grass, Cow-ques, & Ladies Hair. In Meadows & Pastures very common" [JL]. iii. "Briza media" [JL].
+
+Briza minor L., Grasses ed. 2, 211 (1968)
+
+2 folders.
+
+Folder 1. Briza minor [TA]. i. "Briza minor Lin: Corn-fields between Penzance & Marketjew [Marazion] in Cornwall. 1774" [JL] [first record of species in Cornwall]. Folder 2. Briza minor [TA]. i. Cites Lin.; Ray's Syn. 412. ii. "Small Quaking Grass. In the Island of Jersey. Hudson" [JL]. iii. "Briza minor. Lin: Guernsey Island. Mr. Yalden" [JL] [second recorded specimen from Guernsey (D. McClintock)].
+
+Bromus erectus Huds., Grasses ed. 2, 75 (1968)
+
+1 folder. Bromus erectus [TA]. i. Cites Huds. ii. "Upright Brome-Grass. In Dry & Chalky Pastures, but not common. June" [JL]. [Specimen labelled "B" is var. villo- sus Leight.]
+
+Bromus ferronii Mabille, Grasses ed. 2, 79 (1968)
+
+1 folder. Bromus squarrosus? [TA]. i. "Island in Milford Haven. vide or non Brom: squarrosus" [JL].
+
+Bromus madritensis L., Grasses ed. 2, 67 (1968)
+
+1 folder. Bromus tectorum [TA]; Bromus madritensis Huds. and B. diandrus Curtis [G]. i. Cites Ray's Syn. 413; Moris. Hist. Ox. Sect. 8, T. 7, f. 13. ii. "Upon Walls & very dry Pastures. May & June. Wall Brome-Grass" [JL]. iii. "Bromus tectorum. Lin: Bromus ciliatus. Huds:" [JL]. iv. "Vincent's Rock
+
+[St. Vincent's Rock in Avon Gorge]" [JL].
 
 Bromus mollis L., Grasses ed. 2, 79 (1968)
 
@@ -3800,7 +3849,7 @@ Folder 2. Bromus arvensis [TA and```markdown
 
 195
 
-**JL]. i. Cites Linn. Sp. Pl. ii. "N.B. Several of Linnaeus's Synonyms belong to Hudson's Bromus race-mosus. The Figure in the Flora Danica agrees exactly with this Specimen which came out of Kew Garden" [JL]. [Specimen is var. submuticus Reichb.]**
+**JL]. i. Cites Linn. Sp. Pl. ii. "N.B. Several of Linnaeus's Synonyms belong to Hudson's Bromus race- mosus. The Figure in the Flora Danica agrees exactly with this Specimen which came out of Kew Garden" [JL]. [Specimen is var. submuticus Reichb.]**
 
 **Bromus sterilis L., Grasses ed. 2, 63 (1968)**
 
@@ -3808,7 +3857,7 @@ Folder 2. Bromus arvensis [TA and```markdown
 
 **Calamagrostis canescens (Weber) Roth, Grasses ed. 2, 283 (1968)**
 
-1 folder. Arundo Epigeios [TA]; A. calamagrostis Linn. [G], Flora Scotica ed. 1, 106 (1777). i. "Arundo Epigeios. It was found in a green Lane or Road leading from Stoke-Newington to Southgate near London by Mr. Alchorne. The Specimen he gather'd there differ'd very little from the A: Calamagrostis. The Spike is much thinner set with Flowers, or more lax, the Glumes were reddish at the Points, greenish towards the Base, & hardly so much pointed as in the A: Calamagrostis. No difference was observable between the Stalks & Leaves, except in being somewhat smaller than in the A: Calamagrostis. The same was brought from Sweden by D:r Solander & given to M:r Alchorne. These Samples were uniform in their Colour, being of a yellowish brown or frillmort Colour, as if decay'd or ill'dry'd. They were otherwise like M:r Alchorne's English Specimen in all Respects. These Specimens corresponded with those in Budley's Hortus siccus in the British Museum examin'd & compar'd by M:r Alchorne. Memorandum. That I search among my Specimens, & see if I have not got this very kind"
+1 folder. Arundo Epigeios [TA]; A. calamagrostis Linn. [G], Flora Scotica ed. 1, 106 (1777). i. "Arundo Epigeios. It was found in a green Lane or Road leading from Stoke-Newington to Southgate near London by Mr. Alchorne. The Specimen he gather'd there differ'd very little from the A: Calamagrostis. The Spike is much thinner set with Flowers, or more lax, the Glumes were reddish at the Points, greenish towards the Base, & hardly so much pointed as in the A: Calamagrostis. No difference was observable between the Stalks & Leaves, except in being somewhat smaller than in the A: Calamagrostis. The same was brought from Sweden by D:r Solander & given to M:r Alchorne. These Samples were uniform in their Colour, being of a yellowish brown or frillmort Colour, as if decay'd or il'dry'd. They were otherwise like M:r Alchorne's English Specimen in all Respects. These Specimens corresponded with those in Budley's Hortus siccus in the British Museum examin'd & compar'd by M:r Alchorne. Memorandum. That I search among my Specimens, & see if I have not got this very kind"
 
 **Calamagrostis epigejos (L.) Roth, Grasses ed. 2, 285 (1968)**
 
@@ -3856,7 +3905,7 @@ Deschampsia setacea (Huds.) Hack., Grasses ed. 2, 249 (1968) 1 folder. Aira seta
 
 197
 
-wth want the Bottom leaves, they being intirely out of my reach. I have sent you four compleat ones, and beg you would give one of them to Mr Banks. [B]; "Rev'd Mr Bryant" [JL] [four specimens are present, so it appears that Lightfoot did not pass one on to Joseph Banks as Bryant requested]. ii. "Aira Setacea, Huds. Found on Cawston Decoy, 12 Miles North of Norwich. July 12th 1776" [B].
+wth want the Bottom leaves, they being intirely out of my reach. I have sent you four compleat ones, and beg you would give one of them to M' Banks." [B]; "Rev'd M' Bryant" [JL] [four specimens are present, so it appears that Lightfoot did not pass one on to Joseph Banks as Bryant requested]. ii. "Aira Setacea, Huds. Found on Cawston Decoy, 12 Miles North of Norwich. July 12th 1776" [B].
 
 **Elymus arenarius L., Grasses ed. 2, 107 (1968)**
 
@@ -3917,117 +3966,35 @@ Folder 2. Holcus lanatus Lightfoot [G].
 Folder 3. Holcus lanatus [TA]; Lightfoot [G]. i. "Holcus lanatus" [JL].
 
 Holcus mollis L., Grasses ed. 2: 265 (1968) 3 folders.
-Folder 1. Holcus mollis [TA]; Lightfoot [G]. i. Cites Linn.; Ray's Syn. 404. ii. "Creeping Soft-Grass. In Corn-fields. June & July" [JL]. Folder 2. Holcus mollis Lightfoot [G]. i. "Holcus mollis. Langley[Langley in Buckinghamshire]
-Black Park" [JL].
-Folder 3. Holcus mollis Lightfoot
-[G]. i. "Holcus mollis. Langley
-Black Park" [JL]. [Specimen a
-variety of H. mollis.]
+Folder 1. Holcus mollis [TA]; Lightfoot [G]. i. Cites Linn.; Ray's Syn. 404. ii. "Creeping Soft-Grass. In Corn-fields. June & July" [JL]. Folder 2. Holcus mollis Lightfoot [G]. i. "Holcus mollis. Langley[Langley in Buckinghamshire] Black Park" [JL].
 
-Hordelymus europaeus (L.) Harz,
-Grasses ed. 2, 109 (1968)
-2 folders.
-Folder 1. Hordeum sylvaticum
-[TA]. i. "Hordeum sylvaticum—a
-new Species. Gramen secalinum
-majus sylvaticum. R. Syn: P. 392"
-[JL].
-Folder 2. Hordeum sylvaticum
-[TA]. i. "Piercefield" [JL].
+Folder 3. Holcus mollis Lightfoot [G]. i. "Holcus mollis. Langley Black Park" [JL]. [Specimen a variety of H. mollis.]
 
-Hordeum murinum L., Grasses ed. 2,
-111 (1968)
-1 folder. Hordeum murinum [TA].
-i. "Hordeum murale. I know not
-where, no matter" [JL].
+Hordelymus europaeus (L.) Harz, Grasses ed. 2, 109 (1968) 2 folders.
 
-Hordeum secalinum Schreb., Grasses ed.
-2, 115 (1968)
-1 folder. Hordeum pratense [G]. i.
-"the β of Hudson" [TA].
+Folder 1. Hordeum sylvaticum [TA]. i. "Hordeum sylvaticum—a new Species. Gramen secalinum majus sylvaticum. R. Syn: P. 392" [JL].
 
-Koeleria cristata (L.) Pers., Grasses ed.
-2, 243 (1968)
-1 folder. Aira cristata [TA]. i. Cites
-Moris. Hist. Ox. Sect. 8, t. 4, f. 7;
-Ray's Syn. 396. ii. "Cristed Hair-
-Grass. June. This grows on Heaths
-& barren sandy Places" [JL]. iii.
-"Aira cristata" [JL].
+Folder 2. Hordeum sylvaticum [TA]. i. "Piercefield" [JL].
 
-Koeleria vallesiana (Honck.) Bertol.,
-Grasses ed. 2, 245 (1968)
-1 folder. Aira cristata [TA]. i. "Aira
-cristata? nunc Poa cristata? var.
-pompercula [?] Weston supra mare,
-opposite the Isles of Holms, Somerset-
-shire" [JL].
-[In Grasses, Hubbard states that
-this species was not found after its
-original discovery in 1726 by Dille-
-nius on Brean Down and Uphill until
-Druce rediscovered it in 1904. How-
-ever, Lightfoot certainly collected
-this specimen after 1726, probably in
-the 1760s or 1770s, and J.D. Hooker
-collected it on Brean Down in 1837,
-according to H.J. Riddelsdell in J. Bot.,
-1905.]
+Hordeum murinum L., Grasses ed. 2, 111 (1968) 1 folder. Hordeum murinum [TA]. i. "Hordeum murale. I know not where, no matter" [JL].
 
-Lolium multiflorum Lam., Grasses ed.
-2, 153 (1968)
-1 folder. Lolium novum [TA]; L.
-perenne var. maritima [G]. i. "Lo-
-lium temulent: a very singular..
-[illegible] if so. w:th 20 flowers
-instead of 8 or 10 & the Involucr:
-not longer than the inferior flower in
-the Spicula, whereas it is almost as
-long as the Spicula itself in the
-common sort. near Weymouth
-where & when?" [JL].
-[Species of fodder plant introduced
-into Britain and now naturalised; a
-native of central and southern Eu-
-rope, northwestern Africa and south-
-western Asia. In Grasses, Hubbard
-says that it was introduced into Brit-
-ain in about 1830, but Lightfoot's
-specimen from Weymouth must be
-the first record of it in Britain.]
+Hordeum secalinum Schreb., Grasses ed. 2, 115 (1968) 1 folder. Hordeum pratense [G]. i. "the β of Hudson" [TA].
 
-Lolium perenne L., Grasses ed. 2, 151
-(1968)
-1 folder and 1 sheet.
-Folder 1. Lolium perenne β [TA]. i.
-Cites Linn.; Huds.; Ray's Syn.
-395. ii. "Perennial Darnel-Grass.
-June. By Waysides & in Pastures
-almost everywhere" [JL]. iii. "Lo-
-lium perenne" [JL]. [Specimen is
-typical L. perenne with forma crista-
-tum (Pers.) on the same rootstock
-[CEH].]
-Sheet 1. "Lolium perenne β from the
-Same Root with the foregoing now
-inclosed" [TA].
+Koeleria cristata (L.) Pers., Grasses ed. 2, 243 (1968) 1 folder. Aira cristata [TA]. i. Cites Moris. Hist. Ox. Sect. 8, t. 4, f. 7; Ray's Syn. 396. ii. "Cristed Hair-Grass. June. This grows on Heaths & barren sandy Places" [JL]. iii. "Aira cristata" [JL].
 
-Lolium temulentum L., Grasses ed. 2,
-155 (1968)
-1 folder. Lolium temulentum [TA].
-i. Cites Linn.; Huds.; Ray's Syn.
-396. ii. "Annual Darnel-grass. It is
-found now & then in Corn-fields.
-July & Aug. It appears from the
-Samples that the Spikes are not
-always bearded, & therefore this
-should not be a specific Mark. Te-
-mulentos reddit. & per horas aliquot
-caecos assuntum in potu; mitius in
-pane. Flor: Suec." [JL]. iii. "Lo-
-lium temulentum: [JL]. [Awned
-spike is typical L. temulen-tum and awnless spike is var. arvense Lilj. [CEH].]
+Koeleria vallesiana (Honck.) Bertol., Grasses ed. 2, 245 (1968) 1 folder. Aira cristata [TA]. i. "Aira cristata? nunc Poa cristata? var. pompercula (?) Weston supra mare, opposite the Isles of Holms, Somersetshire" [JL].
 
+[Lolium multiflorum Lam., Grasses ed. 2, 153 (1968) 1 folder. Lolium novum [TA]; L. perenne var. maritima [G]. i. "Lolium temulent: a very singular... [illegible] if so. w:th 20 flowers instead of 8 or 10 & the Involucr: not longer than the inferior flower in the Spicula, whereas it is almost as long as the Spicula itself in the common sort. near Weymouth where & when?" [JL].
+
+[Species of fodder plant introduced into Britain and now naturalised; a native of central and southern Europe, northwestern Africa and southwestern Asia. In Grasses, Hubbard says that it was introduced into Britain in about 1830, but Lightfoot's specimen from Weymouth must be the first record of it in Britain.]
+
+Lolium perenne L., Grasses ed. 2, 151 (1968) 1 folder and 1 sheet.
+
+Folder 1. Lolium perenne β [TA]. i. Cites Linn.; Huds.; Ray's Syn. 395. ii. "Perennial Darnel-Grass. June. By Waysides & in Pastures almost everywhere" [JL]. iii. "Lolium perenne" [JL]. [Specimen is typical L. perenne with forma cristatum (Pers.) on the same rootstock [CEH].]
+
+Sheet 1. "Lolium perenne β from the Same Root with the foregoing now inclosed" [TA].
+
+Lolium temulentum L., Grasses ed. 2, 155 (1968) 1 folder. Lolium temulentum [TA]. i. Cites Linn.; Huds.; Ray's Syn. 396. ii. "Annual Darnel-grass. It is found now & then in Corn-fields. July & Aug. It appears from the Samples that the Spikes are not always bearded, & therefore this should not be a specific Mark. Temulentos reddit. & per horas aliquot caecos assuntum in potu; mitius in pane. Flor: Suec." [JL]. iii. "Lolium temulentum: [JL]. [Awned spike is typical L. temulen-tum and awnless spike is var. arvense Lilj. [CEH].]
 Melica nutans L., Grasses ed. 2, 225 (1968)
 1 folder. Melica nutans [TA]; M. montana Huds. 2. Ed. [G]. i. Cites Linn.; Huds.; Ray's Syn. 403. ii. "The Mountain Melic-Grass. June. This beautiful Variety of Melic-Grass was gathered in the North of England, in Helks Wood near Ingleton, & on Bramham Moor near Tadcaster" [JL]. iii. "Melica nutans Var: β" [JL].
 
@@ -4105,7 +4072,10 @@ Vulpia bromoides (L.) S.F.Gray, Grasses ed. 2, 157 (1968)
 
 Vulpia membranacea (L.) Dum., Grasses ed. 2, 163 (1968)
 2 folders.
-Folder 1. Lolium bromoides Huds. [G]; Festuca uniglumis Sol. [TA]. i. "Breton Ferry [Briton Ferry on the Glamorgan coast near Swansea] & c." [JL]. ii. "uniglumis. Festuca panicula subsimplici coarctata secunda erecta, aristata calyce univalvi, flosculis distantibus. F. avenacea sterilis, paniculis confertis erectioribus & c. Ray. 413, t. 17, f. 2. Hab: in littoribus marinis arenosis Angliae & Walliae australioris. Radix fibrosa: Fibrae capillares, indivisae, longa ferrugineae. Culmi pedales, ascendentes, teretes, laeves, geniculis duobus (raro tribus) inferne instructi, basi subdivisi. Ramo cauliformi. Folia caulina & radicalia brevia, planiuscula, acuminata, laevia; Panicula simplex, lineare-oblonga, coarctata subspiciforme, secunda, erecta, triuncialis. Rami alterni, breves, stricti, plerumq: uniflori & solitarii, inferiores interdum lini vel raro subramosi. Cal: Gluma univalvis, plerumq: sexflora, valvula lanceolata-subulata in aristum termina, recta, stricta, carinata, carina, sub-ciliata; latera glabra, margine membranacea. Arista valvula vix brevior, aspera. Obs: Longitudo valvulae cum aristata, 3/4 uncialis. Corolla bivalvis: Valvula exterior lanceolata-subulosa, latera glabra, longitudine glumae calycis, in aristam gluma triplo longiorem. Flosculi distantes; inf... [illegible]ius glumae calycinae oppositus, cum arista saeppe sesquiuncialis, reliqui alterni, sensim breviores, suprmi steriles" [JL] [appears to be a copy of Solander's description of his Festuca uniglumis.]
+Folder 1. Lolium bromoides Huds. [G]; Festuca uniglumis Sol. [TA]. i. "Breton Ferry [Briton Ferry on the Glamorgan coast near Swansea] & c." [JL]. ii. "uniglumis. Festuca panicula subsimplici coarctata secunda erecta, aristata calyce univalvi, flosculis distantibus. F. avenacea sterilis, paniculis confertis erectioribus & c. Ray. 413, t. 17, f. 2. Hab: in littoribus marinis arenosis Angliae & Walliae australioris. Radix fibrosa: Fibrae capillares, indivisae, longa ferrugineae. Culmi pedales, ascendentes, teretes, laeves, geniculis duobus (raro tribus) inferne instructi, basi subdivisi. Ramo cauliformi. Folia caulina & radicalia brevia, planiuscula, acuminata, laevia; Panicula simplex, lineare-oblonga, coarctata
+
+subspiciforme, secunda, erecta, triuncialis. Rami alterni, breves, stricti, plerumq: uniflori & solitarii, inferiores interdum lini vel raro subramosi. Cal: Gluma univalvis, plerumq: sexflora, valvula lanceolata-subulata in aristum termina, recta, stricta, carinata, carina, sub-ciliata; latera glabra, margine membranacea. Arista valvula vix brevior, aspera. Obs: Longitudo valvulae cum aristata, 3/4 uncialis. Corolla bivalvis: Valvula exterior lanceolata-subulosa, latera glabra, longitudine glumae calycis, in aristam gluma triplo longiorem. Flosculi distantes; inf... [illegible]ius glumae calycinae oppositus, cum arista saeppe sesquiuncialis, reliqui alterni, sensim breviores, suprmi steriles" [JL] [appears to be a copy of Solander's description of his Festuca uniglumis.]
+
 Folder 2. Lolium bromoides Huds. [G]; Festuca uniglumis [G].
 
 Vulpia myuros (L.) C.C.Gmel., Grasses ed. 2, 159 (1968)
@@ -4135,9 +4105,9 @@ Juncus biglumis L.
 
 2 folders.
 
-Folder 1. Juncus biglumis [TA]. i. "This agrees exactly in Leaves & every thing: The Leaves in the J. Triglum: are of the same size & similar, but rather more of them" [JL]. ii. "J. biglumis. Ben Lo- mond. Yald: says of it certe a var: of J. triglumis" [JL] [specimen is J. triglumis]. iii. "Mal-ghyrdy. Aug 27. N° 9" [Stuart].
+Folder 1. Juncus biglumis [TA]. i. "This agrees exactly in Leaves & every thing: The Leaves in the J. Triglum: are of the same size & similar, but rather more of them" [JL]. ii. "J. biglumis. Ben Lo- mond. Yald: says of it certe a var: of J. triglumis" [JL] [specimen is J. triglumis]. iii. "Mal-ghyrdy. Aug 27. N: 9" [Stuart].
 
-Folder 2. Juncus biglumis [G]. i. "Juncus biglumis Fl. Su: 307. Accepì a D° Laur. Montin lectum in monte alpini Snirack prope templum Kvickjock Lapponia lutensis 1749" [?]. ii. "Juncus gluma biflora terminali. Montin diff. de Sjaskcho. Ups. 1750. p. 3. n.l. f.3." [?].
+Folder 2. Juncus biglumis [G]. i. "Juncus biglumis Fl. Su: 307. Accepì a D: Laur. Montin lectum in monte alpini Snirack prope templum Kvickjock Lapponia lutensis 1749" [?]. ii. "Juncus gluma biflora terminali. Montin diff. de Sjaskcho. Ups. 1750. p. 3. n.l. f.3." [?].
 
 Juncus bufonius L.
 
@@ -4159,7 +4129,7 @@ Folder 1. Juncus [JL]. i. "Junc: in the salt Marshes near Radipole [near Weymout
 
 Sheet 1. Juncus bulbosus [TA]. i. "This Juncus has deceiv'd a friend of mine very much, he took a large Flat of Ground by the Sea side w: he thought was exceeding rich Soil but when Summer came it grew
 
-nothing but this Rush. N° 15." [?]; "This is certainly the Juncus bulbosus Lin: as appears from Morison's but quoted by him, & in all probability the J: parvus cum pericarpis [on reverse:] rotundis of Ray's Syn: 433 tho' falsely placed by Hudson under his J: acutus as a Var: This last Name of Ray is plac'd by Lin: under his J: bulbosus" [JL].
+nothing but this Rush. N: 15." [?]; "This is certainly the Juncus bulbosus Lin: as appears from Morison's but quoted by him, & in all probability the J: parvus cum pericarpis [on reverse:] rotundis of Ray's Syn: 433 tho' falsely placed by Hudson under his J: acutus as a Var: This last Name of Ray is plac'd by Lin: under his J: bulbosus" [JL].
 
 Juncus inflexus L.
 
@@ -4177,13 +4147,13 @@ Juncus squarrosus L.
 
 Juncus tridifus L.
 
-1 folder. Juncus tridifus [TA]. i. "Ben-challum. Oc' 19th N° 11" [Stuart]. ii. "Juncus tridifus. Newfoundland. Mr. Banks" [JL]. iii. "Juncus Tridifus? Draw this from the Specimen making the Leaves stand more erect, & not so much incurv'd as in the dry'd Specimen" [JL] [instructions to Moses Griffiths, Thomas Pennant's servant, who drew the plate for Flora Scotica].
+1 folder. Juncus tridifus [TA]. i. "Ben-challum. Oc' 19th N: 11" [Stuart]. ii. "Juncus tridifus. Newfoundland. Mr. Banks" [JL]. iii. "Juncus Tridifus? Draw this from the Specimen making the Leaves stand more erect, & not so much incurv'd as in the dry'd Specimen" [JL] [instructions to Moses Griffiths, Thomas Pennant's servant, who drew the plate for Flora Scotica].
 
 Juncus triglumis L.
 
 3 folders.
 
-Folder 1. Juncus [TA]; J. triglumis [G]. i. "M: Hyde. Sweden" [JL]. ii. [On reverse of separate sheet:] "Juncus Triglumis Fl: Su: 306" [?]. [Includes specimen of J. biglumis.]**Catalogue**
+Folder 1. Juncus [TA]; J. triglumis [G]. i. "M: Hyde. Sweden" [JL]. ii. "On reverse of separate sheet: "Juncus Triglumis Fl: Su: 306" [?]. [Includes specimen of J. biglumis.]**Catalogue**
 
 205
 
@@ -4313,7 +4283,7 @@ Polygonatum odoratum (Mill.) Druce
 
 Folder 1. Convallaria polygonatum [TA]. i. "Rock near Tenbigh [Tenby]" [JL].
 
-Folder 2. Convallaria multiflora β [TA]. i. [Label torn:] "...olygonatum Physic Gard: Oxford" [JL].
+Folder 2. Convallaria multiflora β [TA]. i. [Label torn:] "... olygonatum Physic Gard: Oxford" [JL].
 
 Scilla autumnalis L.
 
@@ -4371,398 +4341,4 @@ Goodyera repens (L.) R.Br.
 
 Herminium monorchis (L.) R.Br.
 
-1 folder. Ophris Monorchis [TA]. i. Cites Ray's Syn. 378. ii. "The Yellow Musk Orchis. I gathered these Specimens on the Sides of theChalk Hills by Cawsham near Reading. I have seen it likewise in some old Chalk Pits at Bulstrode near Beaconsfield, Bucks. It is in full flower about the End of June" [JL].
-
-Himantoglossum hircinum (L.) Spreng. 1 folder. Satyrium hircinum [G].
-
-Leucorchis albida (L.) E.Mey. 1 folder. Satyrium albidum [TA], Flora Scotica ed. 1, 519 (1777). [Specimen at outer edge of folder is Orchis ustulata.]
-
-Neottia nidus-avis (L.) Rich. 3 folders. Folder 1. Ophris Nidus Avis [? TA]. i. "from M: Hyde" [JL]. ii. "Ophrys Nidus avis. In Overton's Grove, Heydon [Heydon, Norfolk]; found 5 Plants of it June 10th 1776" [B]. Folder 2. Ophrys Nidus Avis [? G], Flora Scotica ed. 1, 522 (1777). Folder 3. Ophrys Nidus Avis [? G].
-
-Ophrys apifera Huds. 1 folder. Ophrys apifera [TA].
-
-Ophrys muscifera Huds. 2 folders. Folders 1 and 2. Ophrys muscifera Huds. [G].
-
-Orchis simia Lam. 1 folder. Orchis militaris [TA].
-
-Orchis ustulata L. [See under Leucorchis albida]
-
-Platanthera bifolia (L.) Rich. 1 folder. Orchis bifolia [G], Flora Scotica ed. 1, 512 (1777).
-
-Platanthera? chlorantha (Cust.) Rchb. 1 folder. Orchis bifolia [TA]. [No flowers.]
-
-Spiranthes spiralis (L.) Chevall. 1 sheet. Ophrys spiralis [TA].
-
-POTAMOGETONACEAE Potamogeton acutifolius Link 1 folder. Potamogeton compressum [TA]. i. "I rec'd this from M: Banks for the Pot: gramineum, with w: Ray's fig. & Loesel's do very well agree, but upon comparing the larger Specimens with the fig: in the Fl. Dan: of the Pot: compressum, & seeing the Stalk to be compress'd, I am induc'd to think (if that fig: may be trusted too) it shd: be rather the Pot: compressum, as it agrees extremely well. The Pot: gramineum in the Flor: Dan: has shorter Leaves, lanceolate, hardly linear, & a small round Stalk with a larger & longer Spike of flowers from the Summit of the Branch. It is certainly therefore the P: compressum of Fl: Dan: & I think too of Lin:" [JL]. [Specimen at top corner is P. obtusifolius.]
-
-Potamogeton berchtoldii Fieb. 1 folder. Potamogeton pusillum [TA]. i. "Pot: pusillum. It agrees well with Loesel. & Vaillant's figures. There can be no Doubt. Percy Lodge [near Colnbrook]. Pond & c." [JL]. ii. "Potamg. pusillum. Percy Lodge" [JL]. [Specimen entwined with material of P. trichoides.]
-
-Potamogeton crispus L. 1 folder. Potamogoton crispum [TA].
-
-Potamogeton obtusifolius Mert. & Koch 1 folder. Potamogeton compressum [TA]. [Same folder as for P. acutifolius; see JL label there.]
-
-Potamogeton pectinatus L. 2 folders. Folder 1. Potamogeton [TA]; P. marinum [G]. i. "Potamogeton marinum. Mr. Crow. Norfolk" [JL]. ii. "The same with Mr. Crowe's P: marinum. sent by him at the same Time" [JL]. iii. "I imagine this to be evidently that of Ray Pag: 150. No: 13 w: ch is Hudson's Syn: for P: marinum. But from Description I take the Plant to be P: pectinatum Lin:" [JL]. Folder 2. Potamogeton pectinatum [TA]. i. "Coln in Colly-mead [may mean the River Colne in Cowley meadow near Uxbridge]. Aug'. Pot: marinum is extremely like this. Fl: Dan: has scarcely any Difference" [JL].
-
-Potamogeton perfoliatus L. 1 folder. Potamogoton perfoliatum[TA]. i. "P. perfoliatum. Scotland." [JL].
-
-Potamogeton polygonifolius Pourr.
-
-1 folder. Potamogeton natans [TA]. i. "P: natans" [JL].
-
-Potamogeton pusillus L.
-
-1 folder. Potamogeton pusillum [G]. i. "Potamogeton pusillum. Mr. Bryant" [JL]. [Includes a specimen of P. trichoides.]
-
-Potamogeton trichoides Cham. & Schlect.
-
-2 folders.
-
-Folder 1. Potamogeton pusillum [G]. i. "Pot: pusillum pro certo. foliis oppositis alternisq: basi distinctis concordat cum fig: Vallant. t. 32. f.5." [JL]. [Includes material of P. pusillus.]
-
-Folder 2. Potamogeton pusillum [TA]. i. "Pot: pusillum. It agrees well with Loesel. & Vaillant's figures. There can be no Doubt. Percy Lodge. Ponds & c." [JL]. ii. "Potamg. pusillum. Percy Lodge" [JL]. [Includes material of P. berchtoldii.]
-
-[See also under P. berchtoldii and P. pusillus.]
-
-Ruppiaceae
-
-Ruppi maritima L.
-
-1 folder. Ruppi maritima [TA]. i. "Scotland. Invernesshire" [JL].
-
-Sparganiaceae
-
-Sparganium erectum L.
-
-1 folder. Sparganium erectum [TA]. i. Cites Ray's Syn. 437. ii. "Great Branched Bur-reed. July. In Ditches & on Banks of Rivers common" [JL].
-
-Sparganium minimum Wallr.
-
-2 folders and 1 sheet.
-
-Folder 1. Sparganium natans and S. minimum [TA], Flora Scotica ed. 1, 540 (1777). i. Cites Ray's Syn. p. 437 [TA].
-
-Folder 2. Sparganium natans [G]. Sheet 1. Sparganium natans [G]. i. "Sparganium natans. Monoec: 3- and:" [JL].
-
-Typhaceae
-
-Typha angustifolia L.
-
-2 folders.
-
-Folder 1. Typha angustifolia [G]. i. Cites Ray's Syn. 436. ii. "Narrow-leaved Cats-Tail. July. This is found in Ditches & Ponds, but not frequent. -I gather'd these Specimens in a Ditch not a Mile from Oxford, by the Road Side going towards Dorchester" [JL].
-
-Folder 2. Typha angustifolia [TA].
-
-Zannichelliaceae
-
-Zannichellia palustris L.
-
-2 folders.
-
-Folder 1. Zannichellia palustris [TA]. i. "Zannichellia palustris. In the Ditches on the Meadows near Norwich. Mr. John Pitchford" [B]; "Mr. Bryant" [JL].
-
-Folder 2. Zannichellia palustris [G].
-
-Zosteraceae
-
-Zostera angustifolia (Hornem.) Rchb.
-
-1 sheet. Zostera marina [JL]. i. "Zostera marina. Gynand: Polyand:" [JL]. [A loose sheet in the folder containing Z. marina.]
-
-Zostera marina L.
-
-1 folder. Zostera marina [TA]. [Contains a sheet with a specimen of Z. angustifolia.]
-
-Pteridophyta
-
-Lycopodiaceae
-
-Lycopodium alpinum L., British ferns and mosses, 41 (1960)
-
-2 folders.
-
-Folder 1. Lycopodium alpinum [?]. i. Cites Linn. ii. "On the Summits of the highest Mountains in the North of England, & in Wales. August. These specimens I gathered on the Top of Ingleborough Hill in Craven, Yorkshire" [JL].
-
-Folder 2. Lycopodium alpinum [?]. i. "Lycopodium alpinum. Scotland. Stew." [Stuart] [JL].
-
-Lycopodium annotinum L., British ferns and mosses, 39 (1960)
-
-1 folder. Lycopodium annotinum [?]. i. Cites Linn.; Ray's Syn. 107; Dill. Musc. t. 69, f. 9. ii. "Welch Club-Moss. July & Aug." This rare Species was found in Carnarvon-**Catalogue**
-
-**EQUISETACEAE**
-
-**Equisetum hyemale L., British ferns and mosses, 75 (1960)**
-
-1 folder. Equisetum hyemale [TA].
-
-i. "Equisetum hyemale. In Amringdale Wood, about 3 miles from Norwich" [B]; "This is right & not a common Plant" [JL]. ii. "Equisetum nudum R., hyemale Lin: Shave-grass" [JL].
-
-**Equisetum limosum L., British ferns and mosses, 67 (1960)**
-
-2 folders.
-
-Folder 1. Equisetum limosum [TA].
-
-i. "I take this to be a var. only of Equis: limosum, on Account of the striated Stalk of the Fructific: being upon a foliaceous Stalk, w:th last will not agree w:th E. fluviatile" [JL].
-
-Folder 2. Equisetum palustre [G].
-
-**Equisetum palustre L., British ferns and mosses, 65 (1960)**
-
-1 folder. Equisetum palustre [TA].
-
-**Equisetum sylvaticum L., British ferns and mosses, 59 (1960)**
-
-1 folder. Equisetum sylvaticum [TA].
-
-**Equisetum telmateja Ehrh., British ferns and mosses, 56 (1960)**
-
-1 folder. Equisetum fluviatile [?]. i. "Equisetum fluviatile. The Stalk not furrowed but white. The Fructif. on distinct naked Stalks like E. arvense" [JL].
-
-**OSMUNDACEAE**
-
-**Osmunda regalis L., British ferns and mosses, 84 (1960)**
-
-3 folders.
-
-Folder 1. Osmunda regalis [TA]. i. "Osmunda Regalis a var: foliol: dentatis nast" [JL]. ii. "Common in our moist Woods; in a little wood, for Instance, near Cawston Decoy, ab: 2 Miles from Heydon [in Norfolk]" [B]. Folders 2 and 3. Osmunda regalis [G].
-
-**POLYPODIACEAE**
-
-**Asplenium adiantum-nigrum L., British ferns and mosses, 105 (1960)**
-
-1 folder. Asplenium adiantum-nigrum [TA]. i. "Viola lutea, &Portugal Asplen. from Bulstrode w:ch seems to be no other than Asplen: adian: nig:" [JL].
-
-Asplenium marinum L., British ferns and mosses, 109 (1960)
-
-3 folders.
-Folder 1. Asplenium marinum [G].
-Folder 2. Asplenium marinum [TA]. i. "Weems Caves. Scotland" [JL].
-Folder 3. Asplenium marinum var. [G]. i. "Starvling Asplenium marinum from Weems Caves in Fife mistaken by Sibbald for Trichomanes trapeziforme" [JL]. [Adiantum trapeziforme Huds. according to Sibbald.]
-
-Asplenium? obovatum Viv., British ferns and mosses, 108 (1960)
-
-1 folder. Asplenium viride? [G]. i. "This by Hudson from Cornwall. He seems to think it must be the Adiantum trichomanes ramosum. Quare a var: of Asplen: Adiant. nigrum" [JL]. ii. [Written on a small capsule stuck to folder:] "The enclosed is a small Fern grows upon the edges of our Northern Moors, & is in perfect fructification. I do not... [illegible]" [?]; "I take it to be a small Var: of Pol: cristatum" [JL].
-
-Asplenium ruta-muraria L., British ferns and mosses, 114 (1960)
-
-1 folder. Asplenium ruta muraria [TA]. i. "Asp: ruta murar: Var: β" [JL].
-
-Asplenium septentrionale (L.) Hoffm., British ferns and mosses, 115 (1960)
-
-2 folders.
-Folder 1. Acrostichum septentrionale [G], Flora Scotica ed. 1, 656 (1777). i. Cites Linn. Sp. Pl.; Ray's Syn: 120. ii. "Forked or Horned Fern. August. On the Mountains of North Wales, Westmoreland, and in Edenborough [Edinburgh] Park, Scotland" [JL]. iii. "from M: Hyde" [JL].
-Folder 2. Acrostichum septentrionale [TA].
-
-Asplenium trichomanes L., British ferns and mosses, 111 (1960)
-
-2 folders.
-Folder 1. Asplenium trichomanoides [TA], Flora Scotica ed. 1, 662 (1777). i. "Little Loch Broom. Scotland" [JL]. ii. "Asplenium Trichomanes" [JL].
-Folder 2. Asplenium trichomanoides [TA].
-
-Asplenium viride Huds., British ferns and mosses, 113 (1960)
-
-2 folders.
-Folder 1. Asplenium viride [G]. i. Cites Linn.; Huds. Fl. Angl.; Ray's Syn. 119. ii. "Green Maiden-hair. Upon the Rocks of North Wales abundantly. This Sample I gathered at Gordil Cove [probably Gordale Cove] near Settle in Yorkshire" [JL]. iii. "Snowdon" [JL].
-Folder 2. Asplenium viride [TA].
-
-Athyrium filix-femina (L.) Roth., British ferns and mosses, 121 (1960)
-
-3 folders.
-Folder 1. Polypodium filix foemina [G], Flora Scotica ed. 1, 673 (1777). i. "Polyp: Filix Foemina. England. frequent" [JL].
-Folder 2. Polypodium filix foemina [G]. i. "English from Kew" [JL].
-Folder 3. Polypodium filix foemina [TA]. i. "Kew. The same w:th mine from Ben Lomond. red-stalk'd"
-
-[See also under Dryopteris spinulosa.]
-
-Blechnum spicant (L.) Roth., British ferns and mosses, 101 (1960)
-
-1 folder. Osmunda spicant [TA], Flora Scotica ed. 1, 654 (1777); Blechnum spicanthus With. [?]. i. Cites Linn. Sp. Pl.; Ray's Syn. 118. ii. "Rough Spleenwort. In Woods & Heaths. July" [JL].
-
-Ceterach officinarum DC., British ferns and mosses, 119 (1960)
-
-1 folder. Asplenium ceterach [TA], Flora Scotica ed. 1, 661 (1777). i. Cites Linn. Sp. Pl.; Ray's Syn. 118. ii. "Spleenwort. On the old Walls about Bristol, Tintern Abbeyin Monmouthshire, & very frequently in Glamorganshire, upon the old Walls & Castles. I gathered these Samples at Clewer Wall near Mitchel-Dean in Glocesthershire" [JL].
-
-Cryptogramma crispa (L.) R.Br., British ferns and mosses, 94 (1960) 2 folders.
-Folder 1. Osmunda crispa [TA], Flora Scotia ed. 1, 655, 1130 (1777); Pteris crispa Wither [?]. i. Cites Linn. ii. "On old Walls & Rocks in the North of England. I found it in great Plenty at the Top of Longsledale [Long Sleddale, a valley northwest of Kendal] about 8 miles from Kendel in Westmoreland. August 1763. & in several other Places. Anglis. Stone Fern" [JL].
-Folder 2. Osmunda crispa [G]; Pteris crispa With. [?]. i. "Scotland. Yalden" [JL]. ii. "N° 21. Corry-yad and Ben-dòrain" [Stuart]; "Osmunda crispa. in Glenco" [JL].
-
-Cystopteris fragilis (L.) Bernh., British ferns and mosses, 125 (1960) 5 folders.
-Folder 1. Polypodium fragile [TA], Flora Scotia ed. 1, 677 (1777). i. Cites Linn.; Ray's Syn. 125. ii. "The finecut brittle Polypody. July. Upon old Stone Walls, & rocky mountainous Places non uncommon in the North of England, but rare in the South. I have found it growing out of the Stone Walls about Hyde, near Stroud in Glocesthershire" [JL]. iii. "England. Poly-pod: Rhaeticum or P. fragile" [JL]. iv. "Scotland" [JL]. v. "P. fragile. Scotland" [JL].
-Folder 2. Polypodium rhaeticum [TA], Flora Scotia ed. 1, 678, 1130 (1777). i. "Polypodium rhaeticum Lin: ex Helvetia accepì a D. Banks" [JL].
-Folder 3. Polypodium fragile [G]. i. "P. fragile. Yald: [Yalden] perhaps Rhaeticum. stalk white in every
-
-Specimen" [JL].
-Folder 4. Polypodium rhaeticum? [G]. i. "From Mr. Bolton. He called it a little Marsh Fern" [JL]. Folder 5. Polypodium rhaeticum? [G]. i. "Polyp: rhaeticum as I think. Kew. Stalk not black. more tender then fragile" [JL]. ii. Polypod: Q. call'd Rhaeticum?" [JL]. iii. "Polyp: rhaeticic? according to Weis who studied the subject much" [JL].
-
-Dryopteris aemula (Ait.) Kuntze, British ferns and mosses, 145 (1960) 1 folder. Polypodium cristatum var. [G]. i. "Polyp: cristatum a Variety w'th tripinnate & pinnatifid Leaves from Scotland. I think near Corry in Arran" [JL].
-
-Dryopteris dilatata (Hoffm.) A.Gray, British ferns and mosses, 144 (1960) 2 folders.
-Folder 1. Polypodium cristatum—var. foliis tripinnatis [G]. i. "Polyp: cristatum varities. Cumberland" [JL]. ii. "Polyp. cristatum the var: w'th tripinnate Leaves" [JL]. iii. "Polyp: cristatum. a Variety from the North" [JL].
-Folder 2. Polypodium cristatum [G].
-
-Dryopteris filix-mas L., British ferns and mosses, 133 (1960) 1 folder. Polypodium filix mas [G], Flora Scotia ed. 1, 671 (1777). i. "Bolton's Fern from Yorkshire flower'd at Bullstrode. June 1773. P. fragans [deleted by JL],? filix mas" [JL]. ii. "an English Polypody from Kew first out of Dr. Fothergill's Garden. Only a Var. young of P. Fil. mas" [JL]. iii. "This from Yorkshire sent by Mr. Bolton [James Bolton, the Yorkshire naturalist from Halifax] to D'ss of P. [Dowager Duchess of Portland] at Bullstrode & gather'd in her Garden. I never could see the Fructifications. Q: what is it—only a young var. of Poly filix mas" [JL]. [See also under Thelypteris oreopteris.]Dryopteris spinulosa (Mull.) Kuntze, British ferns and mosses, 141 (1960)
-
-1 folder. Polypodium cristatum [TA]. i. "N: 5. In Woods" [Teesdale]; "Yorkshire. Mr. Teesdale" [JL]; "This I take to be young Samples of P: cristatum, or else it must be a new Species to me, perhaps P: rhaeticum. Vide. or var. of F. Mas?" [JL]. ii. "N: 7. In sylvis" [Teesdale]; "If this be not a small Sample or a Variety of P: cristatum, I can see no Reason why it may not be P. rhaeticum" [JL]. [Specimen labelled in pencil "4" is Athyrium filix-femina.]
-
-Dryopteris villarsii (Bell.) Woynar, British ferns and mosses, 136 (1960)
-
-2 folders.
-Folder 1. Polypodium cristatum [G]. i. "Polyp: cristatum Lin." [JL].
-Folder 2. Polypodium cristatum [G]. i. "N: 17. in sylvis" [Teesdale]; "Polypod: Fil: mas [deleted by JL] Polyp. rhaeticum?" [JL].
-
-Gymnocarpium dryopteris (L.) Newm., British ferns and mosses, 161 (1960)
-
-2 folders.
-Folder 1. Polypodium dryopteris [G], Flora Scotica ed. 1, 678, 1130 (1777). i. Cites Linn.; Ray's Syn. 125. ii. "The leper Branched Fern. This grows plentifully in the North of England & now & then, but rarely in the South. I have found it in stony Places near Stroud & Minchinhampton in Glocestershire, & in Penyard Wood near Ross in Herefordshire, & c." [JL].
-Folder 2. Polypodium dryopteris [G].
-
-Asplenium scolopendrium (L.) Newm., British ferns and mosses, 103 (1960)
-
-3 folders.
-Folder 1. Asplenium scolopendrium [TA], Flora Scotica ed. 1, 660 (1777).
-
-Folder 2. Asplenium scolopendrium var. [G].
-Folder 3. Asplenium scolopendrium var. monstrosa [G].
-[Specimens in Folder 2 slightly abnormal; that in Folder 3 abnormal.]
-
-Polypodium vulgare L., British ferns and mosses, 165 (1960)
-
-2 folders.
-Folder 1. Polypodium vulgare [TA]. i. Cites Linn.; Ray's Syn. 117. ii. "Common Polypody. [Perennial] Upon old Walls, Roots of Trees. & Crevices of Rocks" [JL].
-Folder 2. Polypodium vulgare var. [G]. i. "Polypodium—a Variety with serrated Leaves" [JL].
-
-Polypodium vulgare var. cambricum (L.) Lightfoot, Flora Scotica ed.1, 668 (1777), British ferns and mosses, 166 (1960)
-
-1 folder. Polypodium cambricum [TA]; P. vulgare var. cambricum [G]. i. "Conway" [JL].
-
-Polystichum aculeatum (L.) Roth, British ferns and mosses, 150 (1960)
-
-1 folder. Polypodium aculeatum [?]; P. lobatum Huds. [G]. i. "England" [JL].
-[See also under P. lonchitis Folder 4 and P. setiferum Folders 5 and 6.]
-
-Polystichum lonchitis (L.) Roth, British ferns and mosses, 152 (1960)
-
-4 folders.
-Folder 1. Polypodium aculeatum Lin. [?]; P. lobatum Huds. [?]. i. "Pol: lobatum of Yalden" [JL].
-Folder 2. Polypodium lonchitis [TA]. i. "Snowdon" [JL].
-Folder 3. Polypodium lonchitis [G].
-Folder 4. Polypodium aculeatum [?]; P. lobatum Huds. [G]. i. [On outside of capsule:] "Polypodium Lobatum not in Fructification Yeat 'tis very Frequent to find Plants no Larger than they enclosed very much rep... [illegible] with them this grows in Plenty about W. Clough" [?]. ii. [On inside of capsule:] "You may call this Huds: Pol: lobatum, with which it agrees, but**Catalogue**
-
-213
-
-**Polystichum setiferum (Forsk.) Woynar, British ferns and mosses, 148 (1960) 6 folders.**
-
-Folder 1. Polypodium aculeatum Huds. [G]. i. “Teesdale [may be Mr. Teesdale of Yorkshire rather than the place]. Yorkshire. P. aculeatum. va... [cut off]” [JL]
-
-Folder 2. Polypodium aculeatum Huds. [G]. i. “English from Kew. P. aculeat. a var.” [JL]
-
-Folder 3. Polypodium aculeatum Huds. [G].
-
-Folder 4. Polypodium aculeatum [TA]. i. “Polyp: aculeat:? Kew” [JL]
-
-Folder 5. Polypodium aculeatum Lin. [?]; P. lobatum [TA]; Huds. [G]. [Specimen no. 2 is P. aculeatum.]
-
-Folder 6. Polypodium aculeatum [?]; P. lobatum Huds. [G]. i. “Polypod: lobat Hudsoni:” [B]; “England” [JL]. [Specimen no. 2 is? P. aculeatum.]
-
-**Thelypteris oreopteris (Ehrh.) C.Chr., British ferns and mosses, 155 (1960) 4 folders.**
-
-Folder 1. Polypodium thelypteris [G]. i. [On capsule:] “Acrostichum Thelypteris” [?]. ii. “If I did not send Samples of this Fern before, & you are desirous to have some fair ones please to let me know” [?].
-
-**Thelypteris palustris Schott, British ferns and mosses, 156 (1960) 2 folders.**
-
-Folder 1. Polypodium thelypteris [TA].
-
-Folder 2. Acrosticum thelypteris [TA]; Polypodium thelypteris [G]. i. Cites Linn. Sp. Pl.; Ray’s Syn. 122. ii. “Marsh Fern. In Peat Bogs near Sunning-Hill in Berkshire, and in a Peat Bog near Bagley Wood about three miles from Oxford. The two uppermost samples show the Fructifications on the Back of the Leaves. The lowermost is a Sample of the barren Leaves” [JL].
-
-**Thelypteris phegopteris (L.) Slosson, British ferns and mosses, 158 (1960) 3 folders.**
-
-Folder 1. Polypodium phegopteris [G], Flora Scotica ed. 1, 669 (1777). i. Cites Linn. Sp. Pl.; Ray’s Syn. 122. ii. “I gathered this near Orton in Westmoreland going from Kendal” [JL].
-
-Folder 2. Polypodium phegopteris [G]. i. “Scotland. Yalden” [JL].
-
-Folder 3. Polypodium phegopteris [TA].
-
-**Woodsia ilvensis R.Br., British ferns and mosses, 130 (1960) 1 folder. Acrostichum ilvensis [TA]. i. Cites Linn.; Ray’s Syn. 118. ii. “Hairy Fern with Red-Rattle Leaves. This very rare Fern is said to have been found on a moist black Rock almost at the Top of Clogwyn y Garnedh, facing North-West, on Mount Snowdon, by Dr. Richardson & Mr. Lhwyth; but it has not been found there lately tho’ many Researches have been made for it. It throws out many Leaves from one Root, the young ones of which**are curl’d & very hairy. The Leaf here exhibited came from Linnaeus in Sweden, & was one of the largest that grew from the same Root" [JL]. iii. "Acrostichum Ilvense. This very Specimen was gathered upon Snowdon & given to me by Mr. Dickson" [JL].
-
-OPHIOGLOSSACEAE
-
-Botrychium lunaria (L.) Sw., British ferns and mosses, 169 (1960) 2 folders.
-
-Folder 1. Osmunda lunaria [TA], Flora Scotia ed. 1, 652 (1777). i. Cites Linn.; Ray's Syn. ii. "Anglis. Moonwort. May. On Hills & mountainous Pastures in many Parts of England" [TA].
-
-Folder 2. Osmunda lunaria [?]. i. "Osmunda Lunaria at S't Faith's, near the old Abby, & on Mo... [illegible] shold Heath, near Norwich" [B]; "Bryant" [JL].
-
-Ophioglossum vulgatum L., British ferns and mosses, 171 (1960) 1 folder. Ophioglossum vulgatum
-
-[TA]. i. "from Dr H. [probably Dr. Hope] why not bring a better there is plenty. Scotland" [JL].
-
-HEPATICAE
-
-[Most of the foreign specimens were sent to Lightfoot by Mr. Dickson, who seems to have travelled widely. Many of the British specimens were collected by Dickson, James Bolton, Mr. Frankland and Mr. Teesdale.]
-
-Anthoceros spp. 8 folders. British and foreign.
-
-Blasia spp. 4 folders. British.
-
-Jungermannia spp. 42 folders. British and foreign.
-
-Marchantia spp. 20 folders. British and foreign.
-
-Riccia spp. 16 folders. British and foreign.
-
-Algae
-
-Chara spp. 5 folders.
-
-Figure 7. Specimen of Lightfoot's "best" handwriting, for comparison with his other, less clear scripts.Allen, D. E. 1976. The naturalist in Britain. London, Allen Lane.
-
-Anonymous. 1777a. [Review of Lightfoot's Flora Scotica.] Crit. Rev. 44: 285-287.
-
-_____. 1777b. [Reviews of Lightfoot's Flora Scotica.] London Mag. 46: 441-536.
-
-_____. 1777c. A review of the Flora Scotica. Gent. Mag. 47: 296.
-
-_____. 1778. A review of the Flora Scotica and a summary of Lightfoot's work. Monthly Rev. 59: 370-374.
-
-_____. 1787. [Review of Bolton's Filices Britannicae.] Monthly Rev. 76: 129-132.
-
-_____. 1788. [Obituary notice of Rev. John Lightfoot.] Gent. Mag. 58: 183, 269.
-
-_____. 1812. Notices and anecdotes of literati, collectors &c. from a MS by the late Mendes de Costa and collected between 1747 and 1788. Gent. Mag. 82: 205-207, 513-517.
-
-_____. 1859. Sale of dried plants, specimens and sections of woods, &c. Gard. Chron. 33: 676.
-
-Austen, J. 1952. Jane Austen's letters to her sister Cassandra and others, ed. R. W. Chapman, ed. 2. London, New York and Toronto, Oxford University Press. Pp. 493-495.
-
-Banks, J. and D. Solander. 1905. Illustrations of Australian plants collected in 1770 during Captain Cook's voyage round the world in HMS Endeavour. With determinations by James Britten. 3 vols. London, British Museum.
-
-Bolton, J. 1785. Filices Britannicae; an history of the British proper ferns. Leeds, John Binns.
-
-Boulger, G. S. 1885. Lightfoot, John (1735-1788). In Dictionary of national biography. Vol. 33. London, Smith, Elder and Co. Pp. 231-232.
-
-Britten, J. 1915. The herbarium of John Lightfoot. J. Bot. 53: 269-271.
-
-_____. 1931. A biographical index of deceased British and Irish botanists. London, Taylor & Francis. Pp. 187-188.
-
-Clapham, A. R., T. G. Tutin and E. F. Warburg. 1962. Flora of the British Isles. Cambridge University Press.
-
-Crossland, C. 1910. An eighteenth century naturalist: James Bolton, Halifax. (Reprinted with slight alterations from an article in the Halifax Guardian.)
-
-Curtis, W. 1777-1798. Flora Londinensis. 2 vols., folio. London, Curtis.
-
-Curtis, W. H. 1941. William Curtis 1746-1799. Winchester, Warren & Son.
-
-Dance, S. P. 1962. The authorship of the Portland catalogue (1786). J. Soc. Bibliogr. Nat. Hist. 4: 30-34.
-
-Davey, F. H. 1909. Flora of Cornwall. Penryn, F. Chegwidden. P. xxxiv.
-
-Dawson, W. R., ed. 1958. The Banks letters. A calendar of the manuscript correspondence of Sir Joseph Banks. London, Trustees of the British Museum. Pp. 540-541.
-
-Desmond, R. 1977. Dictionary of British and Irish botanists and horticulturists. London, Taylor & Francis. Pp. 385-386.
-
-Dixon, P. S. 1959. Notes on two important algal herbaria. Brit. Phycol. Bull. 1: 35-42.
-
-_____. 1983. The algae of Lightfoot's Flora Scotica. Bull. Brit. Mus. (Nat. Hist.), Bot. 11(1).
-
-215
+1 folder. Ophris Monorchis [TA]. i. Cites Ray's Syn. 378. ii. "The Yellow Musk Orchis. I gathered these Specimens on the Sides of the
