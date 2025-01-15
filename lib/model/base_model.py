@@ -229,6 +229,7 @@ class BaseModel:
                 while count < self.timeout:
                     print("="*10)
                     # If not verified
+                    # TODO: Rework the JSON error fixing code
                     if not(json_verified):
                         print("Error Noticed in JSON")
                         print("Fixing Error")
@@ -250,6 +251,7 @@ class BaseModel:
                     time.sleep(1) # Adding a delay to not overwhelm the system
                 print("=" * 10)
                 # save to file after getting json for each family to ensure read data is saved.
+                # TODO: Add counter to save after n families/iterations
                 if save:
                     save_json(organised_blocks, json_file_name, self.save_path)
                     save_csv_from_json(os.path.join(self.save_path, json_file_name), save_file_name, self.save_path)

@@ -1,13 +1,13 @@
 import pandas as pd
 import os
 import json
-
+from lib.utils.utils import debugPrint
 
 #==================================
 # Saving JSON
 #==================================
 
-def save_json(json_file: dict, file_name: str = "sample", save_path: str = "./outputs/"):
+def save_json(json_file: dict, file_name: str = "sample", save_path: str = "./outputs/", debug: bool = True):
     
     # Check if file name is valid
     if not(file_name.endswith(".json")):
@@ -16,7 +16,7 @@ def save_json(json_file: dict, file_name: str = "sample", save_path: str = "./ou
     # Load file path (path in which the json is saved)
     file_path = os.path.join(save_path, file_name)
 
-    print(f"Dumping extracted text into {file_path}")
+    debugPrint(f"Dumping extracted text into {file_path}", debug)
     with open(file_path, "w", encoding="utf-8") as save_file:
             json.dump(json_file, save_file, indent=4)
 
@@ -38,7 +38,7 @@ def check_for_lists_and_dicts(dataframe: object):
 
     return len(list_of_columns) > 0, list_of_columns
 
-def save_csv_from_json(json_file: str | dict, file_name: str = "sample", save_path: str = "./outputs"):
+def save_csv_from_json(json_file: str | dict, file_name: str = "sample", save_path: str = "./outputs", debug: bool = True):
 
     # Load the json data from either file or provided dictionary
     if isinstance(json_file, str):
@@ -85,12 +85,12 @@ def save_csv_from_json(json_file: str | dict, file_name: str = "sample", save_pa
                 normalised_df = pd.concat([normalised_df, dict_df], axis=1)
     
     # Save as csv
-    save_csv(normalised_df, file_name, save_path)
+    save_csv(normalised_df, file_name, save_path, debug)
 
 
 
 
-def save_csv(csv_file: object, file_name: str = "sample", save_path: str = "./outputs"):
+def save_csv(csv_file: object, file_name: str = "sample", save_path: str = "./outputs", debug: bool = True):
     # Check if file name is valid
     if not(file_name.endswith(".csv")):
         file_name += ".csv"
@@ -99,5 +99,5 @@ def save_csv(csv_file: object, file_name: str = "sample", save_path: str = "./ou
     file_path = os.path.join(save_path, file_name)
 
     # Save to CSV
-    print(f"Dumping extracted text into {file_path}")
+    debugPrint(f"Dumping extracted text into {file_path}", debug)
     csv_file.to_csv(file_path, encoding="utf-8", index=False)
