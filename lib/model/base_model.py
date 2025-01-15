@@ -82,21 +82,21 @@ class BaseModel:
         else:
             raise ValueError("Received None for prompt and None for conversation")
 
-    def _save_to_temp(self, text):
+    def _save_to_file(self, file, text, mode="w"):
         """
         (Private function)
-        Saves the extracted text to the temporary file
+        Saves the extracted text to the file
 
         """
 
-        with open(self.TEMP_TEXT_FILE, "w") as f:
+        with open(file, mode) as f:
             f.write(text)
     
 
-    def _load_from_temp(self):
+    def _load_from_file(self, file):
         """
         (Private function)
-        Load the extracted text from the temporary file
+        Load the extracted text from the file
 
         Returns:
             text: the text read from the file
@@ -105,7 +105,7 @@ class BaseModel:
 
         text = ""
 
-        with open(self.TEMP_TEXT_FILE, "r") as f:
+        with open(file, "r") as f:
             text = f.read()
         
         return text
@@ -163,7 +163,7 @@ class BaseModel:
 
             if (ind + 1) % self.SAVE_TEXT_INTERVAL == 0:
                 debugPrint("\tStoring at interval...", debug)
-                self._save_to_temp(joined_text)
+                self._save_to_file(self.TEMP_TEXT_FILE, joined_text)
 
             debugPrint("\tBatch Finished", debug)
 
@@ -184,6 +184,7 @@ class BaseModel:
         self.info()
         save_file_name = self._get_save_file_name(save_file_name)
         json_file_name = save_file_name + ".json"
+        error_text_file = os.path.join(self.save_path, save_file_name + "_errors.txt")
         #===================================================
         # Extracting text from image or loading a temp file
         #===================================================
@@ -211,8 +212,9 @@ class BaseModel:
         print("Organising text into JSON blocks")
         # Add tqdm for the outer loop over divisions
         for division, families in text_blocks.items():
-
+            save_counter = 0
             # Add tqdm for the inner loop over families
+            self._save_to_file(error_text_file, f"{division}\n", mode="a")
             for family in tqdm(families, desc=f"Processing Families in {division}", unit="family", leave=True):
                 # Load the system conversation with text blocks added to the prompt
                 json_conversation = self.prompt.get_conversation(family)
@@ -225,34 +227,39 @@ class BaseModel:
                 # Json loaded is the post-processed form of the text into dict (removing and cleaning done)
                 json_verified, json_loaded = verify_json(json_text[0], clean=True, out=True)
                 # Start a while loop for a count of timeout
-                count = 0
-                while count < self.timeout:
-                    print("="*10)
+                #count = 0
+                #while count < self.timeout:
+                    #print("="*10)
                     # If not verified
                     # TODO: Rework the JSON error fixing code
-                    if not(json_verified):
-                        print("Error Noticed in JSON")
-                        print("Fixing Error")
-                        error_fix_prompt = self.prompt.getJsonPrompt(json_text[0], json_loaded)
-                        print(error_fix_prompt)
-                        json_text = self.model(error_fix_prompt, None, debug)
-                        print(json_text)
-                        json_verified, json_loaded = verify_json(json_text[0], clean=True, out=True)
+                if not(json_verified):
+                    # print("Error Noticed in JSON")
+                    # print("Fixing Error")
+                    # error_fix_prompt = self.prompt.getJsonPrompt(json_text[0], json_loaded)
+                    # print(error_fix_prompt)
+                    # json_text = self.model(error_fix_prompt, None, debug)
+                    # print(json_text)
+                    # json_verified, json_loaded = verify_json(json_text[0], clean=True, out=True)
+
+                    # storing all erroneous JSON format in error.txt
+                    self._save_to_file(error_text_file, f"{family}\n", mode="a")
+                        
                     
-                    # If verified, add to organised block and break
-                    if json_verified:
-                        if division in organised_blocks:
-                            organised_blocks[division].append(json_loaded)
-                        else:
-                            organised_blocks[division] = [json_loaded]
-                        break
-                    
-                    count += 1
-                    time.sleep(1) # Adding a delay to not overwhelm the system
+                # If verified, add to organised block and break
+                if json_verified:
+                    if division in organised_blocks:
+                        organised_blocks[division].append(json_loaded)
+                    else:
+                        organised_blocks[division] = [json_loaded]
+                    #break
+                                        
+                #count += 1
+                #time.sleep(1) # Adding a delay to not overwhelm the system
                 print("=" * 10)
-                # save to file after getting json for each family to ensure read data is saved.
-                # TODO: Add counter to save after n families/iterations
-                if save:
+                save_counter += 1
+                # save to file after 10 iterations
+                if save and (save_counter == 10):
+                    save_counter = 0
                     save_json(organised_blocks, json_file_name, self.save_path)
                     save_csv_from_json(os.path.join(self.save_path, json_file_name), save_file_name, self.save_path)
 
