@@ -109,7 +109,26 @@ class BaseModel:
             text = f.read()
         
         return text
-    
+
+
+    def _get_save_file_name(self, save_file_name):
+
+        files = [file for file in os.listdir(self.save_path) if os.path.isfile(file)]
+
+        id = 0
+
+        while True:
+
+            if id == 0:
+                final_save_file_name = save_file_name
+            else:
+                final_save_file_name = save_file_name +  f"_{id}"
+
+            if not((final_save_file_name + ".json") in files):
+                return final_save_file_name
+            
+            id += 1
+
 
     def extract_text(self, images: list, debug: bool = False):
         """
@@ -163,7 +182,8 @@ class BaseModel:
         """
 
         self.info()
-
+        save_file_name = self._get_save_file_name(save_file_name)
+        json_file_name = save_file_name + ".json"
         #===================================================
         # Extracting text from image or loading a temp file
         #===================================================
@@ -197,16 +217,26 @@ class BaseModel:
                 # Load the system conversation with text blocks added to the prompt
                 json_conversation = self.prompt.get_conversation(family)
 
+                # Perform inference on text
+                json_text = self.model(json_conversation, None, debug)
+                
+                # Check the integrity of the JSON output. 
+                # Json verified is boolean to check if the integrity of the JSON output is valid
+                # Json loaded is the post-processed form of the text into dict (removing and cleaning done)
+                json_verified, json_loaded = verify_json(json_text[0], clean=True, out=True)
                 # Start a while loop for a count of timeout
                 count = 0
                 while count < self.timeout:
-                    # Perform inference on text
-                    json_text = self.model(json_conversation, None, debug)
-                    
-                    # Check the integrity of the JSON output. 
-                    # Json verified is boolean to check if the integrity of the JSON output is valid
-                    # Json loaded is the post-processed form of the text into dict (removing and cleaning done)
-                    json_verified, json_loaded = verify_json(json_text[0], clean=True, out=True)
+                    print("="*10)
+                    # If not verified
+                    if not(json_verified):
+                        print("Error Noticed in JSON")
+                        print("Fixing Error")
+                        error_fix_prompt = self.prompt.getJsonPrompt(json_text[0], json_loaded)
+                        print(error_fix_prompt)
+                        json_text = self.model(error_fix_prompt, None, debug)
+                        print(json_text)
+                        json_verified, json_loaded = verify_json(json_text[0], clean=True, out=True)
                     
                     # If verified, add to organised block and break
                     if json_verified:
@@ -215,15 +245,19 @@ class BaseModel:
                         else:
                             organised_blocks[division] = [json_loaded]
                         break
-
+                    
                     count += 1
                     time.sleep(1) # Adding a delay to not overwhelm the system
+                print("=" * 10)
+                # save to file after getting json for each family to ensure read data is saved.
+                if save:
+                    save_json(organised_blocks, json_file_name, self.save_path)
+                    save_csv_from_json(os.path.join(self.save_path, json_file_name), save_file_name, self.save_path)
 
         #===================================================
         # Saving the outputs if prompted
         #===================================================        
         if save:
-            json_file_name = save_file_name + ".json"
             save_json(organised_blocks, json_file_name, self.save_path)
             save_csv_from_json(os.path.join(self.save_path, json_file_name), save_file_name, self.save_path)
         
