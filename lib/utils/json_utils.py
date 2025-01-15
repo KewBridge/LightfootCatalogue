@@ -38,19 +38,22 @@ def verify_json(text: str, clean: bool = False, out: bool = False) -> bool:
         Verification : True or False depending on if the input text is json format or not
     """
 
+    verified = False
+    message = None
+    
     try:
         text = clean_json(text) if clean else text
         json_loaded = json.loads(text)
-        if out:
-            return True, json_loaded
-        return True
+        verified = True
+        message = json_loaded
     except Exception as e:
         print(f">>> Non JSON format found in input text")
         print(f">>> Error: \n {e}")
+        message = e
 
     if out:
-        return False, None
-    return False
+        return verified, message
+    return verified
 
     
 def dump_json(text: str, file_name: str = "sample.json", save_path : str = None):

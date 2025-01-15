@@ -11,6 +11,9 @@ from lib.config import CROPPED_DIR_NAME
 import lib.utils.utils as utils
 import lib.pages.roi as roi
 from lib.model.base_model import BaseModel
+from torch.cuda import is_available
+
+print(f"GPU Status: {is_available()}")
 
 def parse_args():
     """
@@ -31,6 +34,7 @@ def parse_args():
     parser.add_argument('--save-path', default=None, help="Save path for json files")
     parser.add_argument('-b','--batch', default=1, help="Batch Size for inference if more than one image provided")
     parser.add_argument('-c', '--crop', default=True, help="Choose to crop and resize an image before parsing into system")
+    parser.add_argument('--debug', default=False, help="Debug mode where testing on only the first 5 images")
     args = parser.parse_args()
 
     return args
@@ -64,6 +68,10 @@ def main():
     print(args)
     # Load a list of all image paths (with their absolute path)
     images = get_images(args.images, args.crop)
+
+    if args.debug:
+        images = images[:5]
+    
     batch = int(args.batch) if (args.batch is not None) else None
     max_tokens = int(args.max_tokens) if (args.max_tokens is not None) else None
     

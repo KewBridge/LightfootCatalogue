@@ -459,21 +459,21 @@
             "familyName": "CARYOPHYLLACEAE",
             "species": [
                 {
-                    "speciesName": "Minuartia verna",
+                    "speciesName": "Silene noctiflora L.",
                     "folders": [
                         {
-                            "description": "Arenaria verna [TA], Flora Scotica ed. 1, 231, 1140 (1777). i. Cites Lin: Syst: Nat: in Mantissa, page 72; Ger: Provinc: Tab: 15. f: 1.; R: Syn. 350. ii. Mountain vernal Chickweed. May. Upon the Mountains in Scotland, & the North of England. This Plant is calld by Hudson Arenaria saxatilis, but I think his Characters of that Species will not agree with the Samples here exhibited, particularly as the Calyces are not obtuse. They are striated & acuminated, & the Figure of Gerard above-cited agrees perfectly well with these Samples [JL]."
+                            "description": "Silene noctiflora [G]. i. \"Silene noctiflora. 10- and: 3-g:\" [JL]. ii. \"Silene noctiflora cream colour'd flowers\" [JL]."
                         },
                         {
-                            "description": "Arenaria laricifolia [TA and G]. i. Scotland, Yalden [JL]."
+                            "description": "Silene noctiflora [TA]. i. \"10- and: 3-g.\" [JL]."
                         }
                     ]
                 },
                 {
-                    "speciesName": "Moehringia trinervia",
+                    "speciesName": "Silene nutans L.",
                     "folders": [
                         {
-                            "description": "Arenaria trinervia [TA]"
+                            "description": "N/A"
                         }
                     ]
                 }

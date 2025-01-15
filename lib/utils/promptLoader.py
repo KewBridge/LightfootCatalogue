@@ -136,4 +136,27 @@ class PromptLoader:
                 
             
 
-    
+    def getJsonPrompt(self, json_text, error):
+        """
+        Define a system prompt including the errorneous json text and the json verificiation error to fix issue
+
+        Parameters:
+            json_text: Errorneous json object in string form
+            error: the error exception as denoted by verify json function  
+        """
+
+        prompt = f"""
+            Fix the following JSON prompt given the error as defined below.
+
+            Json prompt:
+
+            {json_text}
+
+            Error:
+
+            {error}
+
+         """
+
+        return [dict(role="system", content=[dict(type="text", text=prompt)])]
+     
