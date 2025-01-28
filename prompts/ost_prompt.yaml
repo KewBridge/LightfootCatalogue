@@ -1,0 +1,101 @@
+# define to inherit any missing prompts from the default prompt
+inherit_default: False
+# Path to default file if inheriting from another custom prompt
+default_file: None
+# Any divisions in the catalogue
+divisions: ["Dicotyledones", "Monocotyledones", "Pteridophyta", "Hepaticae", "Algae"]
+# System defines the system prompt to the model
+system:
+  # Setup defines the model setup prompt. This lets the model know what area of knowledge to focus on for this task
+  setup: >
+    You are a system designed to expertly reformat text into JSON
+  # context defines the context of the task. This includes the input to the model and the description of said input
+  # instructions define the step-by-step instructions for the model to follow through
+  instructions: |
+    Reformat the following botanical text into JSON without generating new
+    text, modifying terms, or adding content. Only restructure the input
+    into the specified format. Use the provided rules, schema and examples as a guide.
+    Ensure JSON is valid with no trailing commas or unquoted keys.
+  # rules define the key-value rules for each expected key in the output json dict
+  rules:
+    familyName: >
+      The scientific family name in uppercase. If not available, set as "N/A". 
+    species: A list of dictionaries for each species under the family, containing `speciesName` and `folders`.
+    speciesName: >
+      The full scientific name of the species as written in the image. No corrections.
+    folderNo: an integer representing the number of folders under this family
+    folders: A list of dictionaries, each representing a folder with `description`.
+    description: >
+      A description of the folder contents, including location or collection details.
+
+  # schema defines the output json structure
+  schema: |
+    {
+      "familyName": "<extracted family name>", 
+      "species": [ 
+        {
+          "speciesName": "<extracted species name>",
+          "folderNo": <extracted number of folders>,
+          "folders": [ 
+                {
+                  "description": "<extracted description>"
+                }
+          ]    
+        }
+      ]
+    }
+
+  examples: 
+    - input: |
+        ACERACEAE
+
+        Acer campestre L.
+
+        1 folder. Acer campestre [TA]
+
+        Acer pseudoplatanus L.
+
+        2 folders.
+
+        Folder 1. Acer Pseudo-Platanus [G]. i. "Maple. Bulls: [Bulstrode] Park" [JL]
+
+        Folder 2. Acer Pseudo-Platanus [TA].
+    - output: |
+        {
+        "familyName": "ACERACEAE", 
+        "species": [ 
+            {
+              "speciesName": "Acer campestre L.",
+              "folderNo": 1,
+              "folders": [ 
+                    {
+                      "description": "Acer campestre [TA]"
+                    }
+              ]    
+            },
+            {
+              "speciesName": "Acer pseudoplatanus L.",
+              "folderNo": 2,
+              "folders": [
+                    {
+                      "description": "Folder 1. Acer Pseudo-Platanus [G]. i. \"Maple. Bulls: [Bulstrode] Park\" [JL]"
+                    },
+                    {
+                      "description": "Folder 2. Acer Pseudo-Platanus [TA]."
+                    },
+              ]
+            }
+          ]
+        }
+
+
+# user defines the user input. This can contain more than one prompt. 
+# Different prompts will be passed to the model as individual inputs
+user:
+  # the prompt defines the user's prompt to the model
+  text: | 
+   Reformat the text below
+  
+   Extracted text:
+   {extracted_text} 
+    

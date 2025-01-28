@@ -1,0 +1,601 @@
+{
+    "Dicotyledones": [
+        {
+            "familyName": "BALSAMINACEAE",
+            "species": [
+                {
+                    "speciesName": "Impatiens noli-tangere L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Impatiens Noli me tangere [G]."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "CELASTRACEAE",
+            "species": [
+                {
+                    "speciesName": "Euonymus europaeus L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Euonymus europaeus [TA]."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "Ceratophyllaceae",
+            "species": [
+                {
+                    "speciesName": "Ceratophyllum demersum L.",
+                    "folderNo": 3,
+                    "folders": [
+                        {
+                            "description": "Ceratophyllum demersum [TA]. i. \"Ceratophyll: Hounsslow Heath River\" [JL]."
+                        },
+                        {
+                            "description": "Ceratophyllum demersum [G]. i. \"somewhere in the West\" [JL]."
+                        },
+                        {
+                            "description": "Ceratophyllum demersum [G]. i. \"Ceratophyllum demersum\" [JL]."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "CHENOPODIACEAE",
+            "species": [
+                {
+                    "speciesName": "Atriplex hastata L.",
+                    "folderNo": 5,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Atriplex hastata [G]. i. \"Atriplex hastata var. - an Huds: By the Sea Side at Cley in Norfolk\" [JL]."
+                        },
+                        {
+                            "description": "Folder 2. Atriplex hastata var. [G]. i. \"No.1 Atrip: hastata var. Huds: Atrip: pedunculata var. is s'd to have been found near Lynn in Norfolk by Plukenet. See Ray p.153.n 9\" [JL]. ii. \"N II. Atriplex hastata var. Huds. Atriplex maritima ad foliosum basin auriculata procumbens, & ne vix cinnata. Ray 152\" [JL]."
+                        },
+                        {
+                            "description": "Folder 3. Atriplex hastata? [G]. i. \"N 2. The Seed of N 1. Sown in the Garden produced N 2\" [?]; \"I see no specific Difference whatever might be in the Habit\" [JL]."
+                        },
+                        {
+                            "description": "Folder 4. Atriplex hastata var. tatarica Huds.? [G]."
+                        },
+                        {
+                            "description": "Folder 5. Atriplex hastata var. [G]. i. \"An eadem cum altera? It seems to be a Chenopod: the same Place\" [JL]. ii. \"Atriplex hastata? It grows procumbent. Greys Thor:\" [JL]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Atriplex laciniata L.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Atriplex laciniata [G]. i. \"Lodmore Beach. Stones\" [JL]. ii. \"Weymouth\" [JL]. iii. \"from Mr. Sheffield\" [JL]."
+                        },
+                        {
+                            "description": "Folder 2. Atriplex laciniata [TA]. i. \"Feversham [probably Favershamnear Canterbury in Kent] [JL]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Atriplex littoralis L.",
+                    "folderNo": 4,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Atriplex littoralis [G]. \"Dorsetshire I think at Weymouth\" [JL]."
+                        },
+                        {
+                            "description": "Folder 2. Atriplex littoralis [TA]."
+                        },
+                        {
+                            "description": "Folder 3. Atriplex serrata [TA]. i. \"This I take to be the Atriplex [laciniata deleted by JL] Lin: marina Lin: serrata Huds: Atriplex maritima Ray at Sheerness\" [JL]. ii. \"Atriplex serrata Hud: marina Lin: Indented Sea Orache\" [JL]."
+                        },
+                        {
+                            "description": "Folder 4. Atriplex serrata [G]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Atriplex patula L.",
+                    "folderNo": 3,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Atriplex patula [G]. i. \"This I think from Pembrokeshire Coast\" [JL]."
+                        },
+                        {
+                            "description": "Folder 2. Atriplex patula [G]."
+                        },
+                        {
+                            "description": "Folder 3. Atriplex hastata [G]. \"Atriplex hastata var? seu Atriplex patulae var. maritima? Videtur esse Atriplex sylvestris polygoni folio similis, spi... [illegible] seminalibus dense stipatis. R. Syn: p. 151. Nota sub N 1. On the Sea Shore at Cley in Norfolk\" [JL]."
+                        },
+                        {
+                            "description": "Folder 4. Atriplex hastata [G]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Beta vulgaris L. subsp. maritima (L.) Thell.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Beta maritima [TA], Flora Scotica ed. 1, 150 (1777). i. \"Beta vulgaris Lin: Beta sylvestris maritima. Ray. Sea Beet. 5- and: 2-gyn. At Sheerness. Cal: 5-phyll: Corol: 0. Semen intra substantiam calycis\" [JL]."
+                        },
+                        {
+                            "description": "Folder 2. Beta vulgaris [TA]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Chenopodium album L.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Chenopodium album [G]. i. \"Chen: album. certe. Cowley field\" [JL]. ii. \"Chenop: album. Cowley field [near Uxbridge in Middlesex], large\" [JL]."
+                        },
+                        {
+                            "description": "Folder 2. Chenopodium album [TA]. i. \"Chenop: album\" [JL]. ii. \"Chenop: album. Essex\" [JL]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Chenopodium bonus-henricus L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Chenopodium Bonus Henricus [TA]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Chenopodium glaucum L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Chenopodium glaucum [TA]. i. \"Chenop: glaucum. Tothill fields\" [JL]. ii. \"Chenopodium glaucum. Wrasbury & Horton Common\" [JL]. iii. \"Chenop: glaucum. Horton common Dunghills & Mr. Harcourts, Wrasbury\" [JL]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Chenopodium hybridum L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Chenopod: Hybridum [TA]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Chenopodium murale L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Chenopod. murale [TA]. i. \"According to the Specimens in the Hort. siccus of Lin: this is the Chenopodium murale, not serotinum\" [JL]. ii. \"Ch: serot: Lin: has pretty large deltoid angular leaves, but no flowers, not unlike our viride\" [JL]. iii. \"Pool [Poole] in Dorset\" [JL]. iv. \"Chenopod. murale. ubique\" [JL]."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "COMPOSITAE",
+            "species": [
+                {
+                    "speciesName": "Gnaphalium supinum L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Gnaphalium alpinum [TA], Flora Scotica ed. 1, t. xx, 470 (1777); Gnaphalium supinum [TA]. i. \"Gnaphalium alpinum. Draw exactly from the Specimen, only make the top Flower like the middle one, & express the Woolliness of the Leaves. It is figur'd in the Fl: Dan: Tab: 332, but not to please me\" [JL] [instructions presumably to the artist Moses Griffiths]. ii. \"On comparing this with the Specimens in the Hort: Sicc: Lin: it appears that this Plant is his Gnaph: supinum Lin:\" [JL]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Gnaphalium sylvaticum L.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Gnaphalium sylvaticum Huds. and G. rectum [G]. i. \"Gnaphalium Anglicum\" [JL]."
+                        },
+                        {
+                            "description": "Gnaphalium sylvaticum [TA]; Huds. [G]; Gnaphalium rectum [G]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Gnaphalium uliginosum L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Gnaphalium uliginosum [TA]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Hieracium alpinum L.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Hieraceum alpinum [G]. i. \"No. 66. Corry-yaal\" [John Stuart]; \"Hierac: alpin: the true\" [JL]. ii. \"No. 65. Corry-yaal in Glenco\" [John Stuart]; \"Hieracium alpin: a var. only\" [JL]."
+                        },
+                        {
+                            "description": "Hieracium alpinum [G]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Hieracium lactucella Wallr.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Hieracium dubium [G]. i. \"hab: in pratis upl: varius. Rarissime A palsim occurit major Hieracio auric: forte hybrida vel alia qualiscunque varietae omnibus partibus major nec repens\" [?]."
+                        },
+                        {
+                            "description": "Hieracium dubium [TA]; Hieracium auricula [G]. i. \"H: dubium? Kew\" [JL]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Hieracium murorum agg., Flora Scotica ed. 1, 437 (1777)",
+                    "folderNo": 4,
+                    "folders": [
+                        {
+                            "description": "Hieracium murorum [TA]. i. \"Hieracium murorum Albury Surrey & c.\" [JL]. ii. \"Pulmonar: Gallica\" [JL]."
+                        },
+                        {
+                            "description": "Hieracium murorum [G]. i. \"I consider these a Var: of H. murorum. That w: oval Leaves & naked Stalks grows near Spring plentifully. It is the same w: Mr. Yald: [Thomas Yalden] H: muror: in the Catalog: of Plants in the Rink's Park, the other has lanceolate &... [reverse of label obscured]\" [JL]."
+                        },
+                        {
+                            "description": "Hieracium murorum [G]. i. \"a garden specimen?\" [G]."
+                        },
+                        {
+                            "description": "Hieracium murorum [G]. i. \"Hier: umbellat: Scotland. Yalden\" [JL]. ii. \"Pembrokeshire. Holkam [? Rev. John Holcombe] [JL].\""
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Hieracium perproquinquum (Zahn) Druce",
+                    "folderNo": 3,
+                    "folders": [
+                        {
+                            "description": "Hieraceum sabaudum [G], Flora Scotica ed. 1, 439 (1777). i. \"Hieracium sabaudum\" [JL]."
+                        },
+                        {
+                            "description": "Hieracium sabaudum [G]."
+                        },
+                        {
+                            "description": "Hieracium sabaudum L: f: a Starv'd [TA]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Hieracium pilosella L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Hieracium pilosella [TA]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Hieracium umbellatum L.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Hieracium umbellatum [TA]. i. \"Hier: umbellat: Scotland. Yalden\" [JL]. ii. \"Pembrokeshire. Holkam [? Rev. John Holcombe] [JL].\""
+                        },
+                        {
+                            "description": "Hieracium umbellatum [G]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Hypochoeris glabra L.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Hypochoeris glabra [TA]."
+                        },
+                        {
+                            "description": "Hypochoeris glabra [G]. i. \"Hypochoeris glabra. I send you this plant again for Re examination because it is not foliis glabris, sed ciliatisnor does it agree w:th Ray's Description\" [B]; \"Bryant\" [JL]; \"must be Hypochaeris glabra\" [JL]. ii. \"Hypochoeris glabra. Between the 7 & 8 Mile Stones, on Cawston heath, in the Road from Norwich to the Wood-Row. plentifully\" [B]."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "CORNACEAE",
+            "species": [
+                {
+                    "speciesName": "Chamaepericlymenum suecicum (L.) Aschers. & Graebn.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Cornus suecica [TA], Flora Scotica ed. 1, 119, 1116(1777). i. Cites Linn. Sp. Pl. 118; Ray's Syn. 261. ii. \"Dwarf Honey-suckle. June. Upon the Cheviot Hills in Northumberland; & in a Place call'd Hold of Hurkam upon the Moors North of Pickering near Malton, Yorkshire\" [JL]. iii. \"Ross shire. L. Broom [Loch Broom]\" [JL]."
+                        },
+                        {
+                            "description": "Folder 2. Cornus canadensis [TA]; Cornus suecica [G]. i. \"Cornus canadensis, ramis nullis. Newfoundland. M' Banks\" [JL]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Thelycrania sericea (L.) Dandy",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Cornus sanguinea [TA]. i. \"Cornus canadensis, ramis nullis. Newfoundland. M' Banks\" [JL]. [Specimen apparently given by Joseph Banks.]"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "CRUCIFERAE",
+            "species": [
+                {
+                    "speciesName": "Alliaria petiolata (Bieb.) Cavara & Grande",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Erysimum Alliaria [TA], Flora Scotica ed. 1, 356 (1777)."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Arabis hirsuta (L.) Scop.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Turritis hirsuta [TA], Flora Scotica ed. 1, 358 (1777). i. \"I must beg Leave, my good Friend, to retract what I mentioned to you concerning the plant I picked up in Glostershire, for on Inspection, I perceived my mistake. I likewise examined Dr. Randolph's Specimens of Cardamine bellidifolia & found them all Turritis hirsuta, tho' He said Dr. Dillenius gave Him one of the Specimens I sawtogether w' th the nameI have enclosed a Specimen of the plant ICataloguecollected which you will easily knowas it is our Election Week all the fellows are up, so that I have scarce time to say how much I am obliged by the curious specimens Mr. Woods brought that I am & always shall be yr. affectionate Friend & Serv. W. Sheffield [Keeper of the Museum at Oxford]. Are you got thro' the Syngenescallass? WorColl. [presumably Worcester College, Oxford] Friday afternoon\" [Sheffield]."
+                        },
+                        {
+                            "description": "Turritis hirsuta [TA]. i. \"Thlaspi Hirsuta. These Specimens I found in a Lane upon a dytch Bank on the right hand going from Rochdale to Middletown the footway, not noted in the same place before\" [?]. ii. \"Turritis hirsuta\" [JL]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Arabis petraea (L.) Lam.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Cardamine petraea [TA], Flora Scotica ed. 1, 347 (1777). i. \"Scotland\" [JL]."
+                        },
+                        {
+                            "description": "Cardamine petraea [G]. i. \"Clogwyn d\" [JL]. ii. \"Cardamine petraea. Clogwyn d yr Arddu. Snowden. June 16th. 1767\" [?]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Arabis turrita L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Arabis turrita [TA]. i. \"Arabis turrita, near Oxford\" [JL]. [Also on this folder is a pencil sketch of an Arabis species, probably by JL; see under Arabis sp.]"
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Arabis sp.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Arabis Alpina? a Var: seu Arabis Bellidifolia? or a new Species? Type of the radical Leaves red setae. Arabis Thaliana comes near. [here a pencil sketch of the plant, almost certainly by JL] Tetradyamia siliquosa, small white entire Petals, shut Calyx, about 6 flowers at Top. radical Leaves two Dents in them their Petioles scarcely hairy, the rest smooth\" [JL]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Barbara vulgaris R.Br.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Erysimum barbara [TA], Flora Scotica ed. 1, 355 (1777)."
+                        },
+                        {
+                            "description": "Erysimum barbara [G]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Brassica napus L.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Brassica napus [TA]. i. \"Brassica Napus. Scotland. Yalden\" [JL]."
+                        },
+                        {
+                            "description": "Brassica napus? [TA]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Brassica nigra (L.) Koch",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Erysimum officinale [G]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Brassica oleracea L.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Brassica oleracea [TA]. i. \"Chepstone Castle & Tenbigh Castle\" [JL]."
+                        },
+                        {
+                            "description": "Brassica oleracea [G]. i. \"Tenbigh [Tenby]\" [JL]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Cakile maritima Scop.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Bunias Cakile [G], Flora Scotica ed. 1, 363 (1777)."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Camelina sativa (L.) Crantz",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Myagrum Sativum [TA], Flora Scotica ed. 1, 336 (1777). i. \"Myagrum sativum. These are the best I have\" [P]; by Mr. Pitchford [JL]. ii. \"Myagrum sativum. Gold of Pleasure. Kew. Aug. Anglia\" [JL]."
+                        },
+                        {
+                            "description": "Myagrum sativum. These are the best I have\" [P]; by Mr. Pitchford [JL]. ii. \"Myagrum sativum. Gold of Pleasure. Kew. Aug. Anglia\" [JL]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Capsella bursa-pastoris (L.) Medicus",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Thlaspi Bursa-pastoris [TA], Flora Scotica ed. 1, 342 (1777); Thlaspi alpestris [G]. i. \"Send a specimen of Thlas: perfoliatum\" [JL]. ii. \"Thlaspi Bursa Pastoris. var. No. 12\" [B]. iii. \"It is truly a Var: of Th: Bursa pastoris as you suppose, & not the Thlaspi alpestre, wch last I never saw, unless it be merely an unbranched var: of Th: perfoliatum, wch is not uncommon, & I believe is what Huds: means\" [JL]."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "CUCURBITACEAE",
+            "species": [
+                {
+                    "speciesName": "Bryonia dioica Jacq.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Bryonia alba [TA]."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "DROSERACEAE",
+            "species": [
+                {
+                    "speciesName": "Drosera anglica Huds.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Drosera longifolia [TA], Flora Scotica ed. 1, 175, 1098 (1777). i. \"Drosera longifolia 5- and: 5-g.\" [JL]. ii. \"Scotland\" [JL]. [A mixed gathering; central specimen and two lowest ones are D. anglica]"
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Drosera rotundifolia L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Drosera rotundifolia [TA]."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "FRANKENIACEAE",
+            "species": [
+                {
+                    "speciesName": "Frankenia laevis L.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Frankenia laevis. At Cley, on the Beach towards Salthouse [small villages on the north Norfolk coast near Blakeney]",
+                            "folderNo": 1
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Frankenia pulverulenta L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Frankenia pulverulenta. Africa leg. Thouars",
+                            "folderNo": 1
+                        },
+                        {
+                            "description": "Frankenia pulverulenta. Flos in quinque petala dividitur ad tubulum cohaerentia, basi denuo petala separatum & arcte amplex... [illegible] fructum oblongum pentagonum, monangium, plurimus seminibus fatum. Calyx longus striatus, quinquefidus est. Flores arcte geniculis ramulosum adnascuntum",
+                            "folderNo": 2
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "F",
+            "species": [
+                {
+                    "speciesName": "Centaurium pulchellum (Sw.) Druce [See under C. erythraea]",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Cicendia filiformis (L.) Delarbre 1 folder. Gentiana filiformis [TA]; Exacum filiforme. English Botany. Sowerby [G]. i. \"Pool [Poole, Dorset] Heath & Cornwall\" [JL]. ii. \"Isle of Purbeck near Corf [Corfe, Dorset]\" [JL]. iii. \"Isle of Purbeck. Dorset\" [JL]. iv. \"The little yellow Marsh Centory. In Rotten marshy Gound in Dorsetshire, Devonshire, & Cornwall. July & August\" [JL]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Gentiana pneumonanthe L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Gentiana pneumonanthe [TA]. i. \"Gentiana Pneumonanthe. Lin: Stockton Heath near York\" [JL]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Gentiana amarella (L.) Brner",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Gentiana Amarella [TA], Flora Scotica ed. 1, 152 (1777)."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Gentianella campestris (L.) Brner",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Gentiana campestris vide Pentandria Digynia [TA], Flora Scotica ed. 1, 152 (1777). i. \"Gen: campestris. Teesdale\" [JL]. ii. \"Gentiana campestris Hud:\" [? Banks]. iii. \"Gentiana campestris. Wales. Mr Banks\" [JL]."
+                        },
+                        {
+                            "description": "Gentiana amarella [G]. i. \"Scotland\" [JL]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Swertia perennis L., Flora Europaea 3: 67 (1972)",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Swertia perennis [TA]. i. \"Swertia perennis Lin: ex Helvetia a D. Banks\" [JL]. [One of Banks' specimens from Switzerland.] [For distribution see Flora Europaea: \"Wet places, mainly in the mountains. From NC France & NW Russia southwards to N Spain, Bulgaria & S Ural.\"]"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "GROSSULARIACEAE",
+            "species": [
+                {
+                    "speciesName": "Ribes alpinum L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Ribes Rubra [TA]; R. alpinum [G]."
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

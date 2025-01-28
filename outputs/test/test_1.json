@@ -1,0 +1,165 @@
+{
+    "Dicotyledones": [
+        {
+            "familyName": "ACERACEAE",
+            "species": [
+                {
+                    "speciesName": "Acer campestre L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Acer campestre [TA]"
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Acer pseudoplatanus L.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Acer Pseudo-Platanus [G]. i. \"Maple. Bulls: [Bulstrode] Park\" [JL]"
+                        },
+                        {
+                            "description": "Folder 2. Acer Pseudo-Platanus [TA]."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "ARALIACEAE",
+            "species": [
+                {
+                    "speciesName": "Hedera helix L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Hedera Helix [TA]."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "ARISTOLOCHIACEAE",
+            "species": [
+                {
+                    "speciesName": "Asarum europaeum L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Asarum europaeum [TA]. i. \"Asarum europaeum Lin: Asara- bacca. Anglis. ex horto\" [JL]."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "BALSAMINACEAE",
+            "species": [
+                {
+                    "speciesName": "Impatiens noli-tangere L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Impatiens Noli me tangere [G]."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "BETULACEAE",
+            "species": [
+                {
+                    "speciesName": "Alnus glutinosa (L.) Gaertn.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Betula Alnus [TA]"
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Betula nana L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Betula nana [G]."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "CAPRIFOLIACEAE",
+            "species": [
+                {
+                    "speciesName": "Linnaea borealis L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Linnaea borealis [JL]. i. Cites Linn. Sp. Pl. 631; Bauh. Pin. 93. ii. \"This is a Native of Sweden, Sibiria, Switzerland, Russia, Canada, & c. This Specimen was gathered & communicated by Jos: Banks Esqr. who discover'd it in Abundance in the Woods in Newfoundland\" [JL]. iii. \"In ScotlandSee English Botany N.433\" [? G]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Lonicera periclymenum L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Lonicera periclymenum [TA]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Viburnum lantana L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Viburnum lantana [TA]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Viburnum opulus L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Viburnum opulus [TA]."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "CARYOPHYLLACEAE",
+            "species": [
+                {
+                    "speciesName": "Silene noctiflora L.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Silene noctiflora [G]. i. \"Silene noctiflora. 10- and: 3-g:\" [JL]. ii. \"Silene noctiflora cream colour'd flowers\" [JL]."
+                        },
+                        {
+                            "description": "Folder 2. Silene noctiflora [TA]. i. \"10- and: 3-g.\" [JL]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Silene nutans L.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Silene nutans [G]. i. \"Silene nutans. 10- and: 3-g:\" [JL]. ii. \"Silene nutans cream colour'd flowers\" [JL]."
+                        },
+                        {
+                            "description": "Folder 2. Silene nutans [TA]. i. \"10- and: 3-g.\" [JL]."
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,19 +1,22 @@
-# -*- coding: utf-8 -*-
-
+# Python Modules
 import cv2
 import numpy as np
 #import matplotlib.pyplot as plt
 #import os
 
-def filter_lines(lines : list, middle_line: int, margin_perc: float = 0.20):
+
+def filter_lines(lines : list, middle_line: int, margin_perc: float = 0.20) -> list:
     """
     Given a list of possible lines and a presumed middle line, filter out the possible lines that are closer to the middle for inspection
 
     Parameters:
         lines (list): a list of all possible lines
-        middle_line: the x axis that is the presumed middle
-        margin_perc: defines how close to the presumed middle line the possible lines should be.
+        middle_line (int): the x axis that is the presumed middle
+        margin_perc (float): defines how close to the presumed middle line the possible lines should be.
                      smaller the closer to the presumed middle line
+
+    Returns:
+        middle_lines (list): A list of all the vertical lines found that are at middle of the image (defines the cut off point)
     """
     # Calculate margin
     margin = margin_perc * middle_line
@@ -41,8 +44,18 @@ def filter_lines(lines : list, middle_line: int, margin_perc: float = 0.20):
 
     return middle_lines
 
-def getLines(image: object):
-    
+
+def getLines(image: object|str) -> np.array:
+    """
+    Given an image, perform binary thresholding, Canny edge detection
+    and Hough Lines Transformation to detect all lines in the image.
+
+    Parameters:
+        image (object|str): Image object or path to image
+
+    Returns:
+        lines (np.array): an array of lines in the image
+    """
     if isinstance(image, str):
         image = cv2.imread(image)
 
@@ -57,8 +70,19 @@ def getLines(image: object):
     
     return lines
 
-def split_image(path, name = None):
 
+def split_image(path: object|str, name: str = None) -> tuple[np.array, np.array]:
+    """
+    Given an image split it down the page break (middle line) using Hough line transformation to find the middle lines
+
+    Parameters:
+        path (object|str): the path to the image or the Image object. Must be a cv2 Image object (np.array).
+        name (str): The filename or the name for this image
+
+    Returns:
+        image_1 (np.array): Left side of image
+        image_2 (np.array): Right side of image
+    """
     if isinstance(path, str):
         image = cv2.imread(path)
         name = path
@@ -91,7 +115,19 @@ def split_image(path, name = None):
         
         return split_image_with_thresholding(path, name)
 
-def split_image_with_gradient(path, name = None):
+
+def split_image_with_gradient(path: object|str, name: str = None) -> tuple[np.array, np.array]:
+    """
+    Given an image split it down the page break (middle line) using line gradients to find the middle lines
+
+    Parameters:
+        path (object|str): the path to the image or the Image object. Must be a cv2 Image object (np.array).
+        name (str): The filename or the name for this image
+
+    Returns:
+        image_1 (np.array): Left side of image
+        image_2 (np.array): Right side of image 
+    """
 
     if isinstance(path, str):
         image = cv2.imread(path)
@@ -134,8 +170,19 @@ def split_image_with_gradient(path, name = None):
     print(f"Image {name} successfully split down the middle")
     return image_1, image_2
 
-def split_image_with_thresholding(path, name = None):
 
+def split_image_with_thresholding(path: object|str, name: str = None) -> tuple[np.array, np.array]:
+    """
+    Given an image split it down the page break (middle line) using thresholding to find the middle lines
+
+    Parameters:
+        path (object|str): the path to the image or the Image object. Must be a cv2 Image object (np.array).
+        name (str): The filename or the name for this image
+
+    Returns:
+        image_1 (np.array): Left side of image
+        image_2 (np.array): Right side of image 
+    """
     if isinstance(path, str):
         image = cv2.imread(path)
         name = path

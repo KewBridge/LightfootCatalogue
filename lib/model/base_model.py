@@ -1,8 +1,8 @@
+# Python Modules
 import os
 from tqdm import tqdm
-import time
-import json
-import pandas as pd
+
+# Import Custom Modules
 from lib.model import get_model
 from lib.utils.promptLoader import PromptLoader
 from lib.utils.utils import debugPrint
@@ -20,10 +20,10 @@ class BaseModel:
                  model_name: str,
                  prompt: str = None,
                  conversation: list = None,
-                 batch_size: int = 3, # Batch size for inference
-                 max_new_tokens: int = 5000, # Maximum number of tokens
-                 temperature: float = 0.2, # Model temperature. 0 to 2. Higher the value the more random and lower the value the more focused and deterministic.
-                 save_path: str = None, # Where to save the outputs
+                 batch_size: int = 3, 
+                 max_new_tokens: int = 5000,
+                 temperature: float = 0.2, 
+                 save_path: str = None, 
                  timeout: int = 4,
                  **kwargs
                  ):
@@ -38,6 +38,7 @@ class BaseModel:
             max_new_tokens (int): Maximum number of tokens
             temperature (float): Model temperature. 0 to 2. Higher the value the more random and lower the value the more focused and deterministic.
             save_path (str): Where to save the outputs
+            timeout (int): The number of times to rechech for JSON validation (currrently a placeholder)
             **kwargs (dict): extra parameters for other models
         """
         
@@ -50,22 +51,29 @@ class BaseModel:
         if not(os.path.isdir(self.save_path)):
             os.makedirs(self.save_path)
 
+        # Defining a temperory file to store extracted text
         self.TEMP_TEXT_FILE = os.path.join(self.save_path, self.TEMP_TEXT_FILE)
 
         self.timeout = timeout
+        
+        # Load the model, prompt, and the conversation
         self.model = get_model(self.model_name)(self.batch_size, self.max_new_tokens, self.temperature, **kwargs)
-
         self.prompt = PromptLoader(prompt)#prompt
         self.conversation = self.prompt.get_conversation() if conversation is None else conversation
 
-    def info(self):
+    def info(self) -> str:
+        """
+        Info on the the model pipeline and the paramters used
+
+        Returns:
+            message (str): brief information of parameters and model name
+        """
         message = f"Model: {self.model_name} | Batch Size: {self.batch_size}, Max Tokens: {self.max_new_tokens}, Temperature: {self.temperature}"
 
         print(message)
     
 
-    def setNewPrompt(self, prompt: str, conversation: list=None):
-
+    def setNewPrompt(self, prompt: str, conversation: list=None) -> None:
         """
         Load a new prompt
 
@@ -82,7 +90,7 @@ class BaseModel:
         else:
             raise ValueError("Received None for prompt and None for conversation")
 
-    def _save_to_file(self, file, text, mode="w"):
+    def _save_to_file(self, file, text, mode="w") -> None:
         """
         (Private function)
         Saves the extracted text to the file
@@ -93,7 +101,7 @@ class BaseModel:
             f.write(text)
     
 
-    def _load_from_file(self, file):
+    def _load_from_file(self, file) -> str:
         """
         (Private function)
         Load the extracted text from the file
@@ -111,26 +119,36 @@ class BaseModel:
         return text
 
 
-    def _get_save_file_name(self, save_file_name):
+    def _get_save_file_name(self, save_file_name) -> str:
+        """
+        (Private function)
+        Get the ideal name for the save file. This function checks for any duplicates and adds version numbers
+        to the end of given save file names to create unique save file names.
+        This ensures no overwriting
 
-        files = [file for file in os.listdir(self.save_path) if os.path.isfile(file)]
+        Parameters:
+            save_file_name (str): the input name for the save file as given by user.
 
+        Returns:
+            final_save_file_name (str): the finalised save file name
+        """
+
+        # Load all files under save path as a hashset
+        files = {file for file in os.listdir(self.save_path) if os.path.isfile(os.path.join(self.save_path, file))}
+        print(files)
         id = 0
+        final_save_file_name = save_file_name
 
-        while True:
+        # Do a conditional loop to find best name for save file
+        while f"{final_save_file_name}.json" in files:
 
-            if id == 0:
-                final_save_file_name = save_file_name
-            else:
-                final_save_file_name = save_file_name +  f"_{id}"
-
-            if not((final_save_file_name + ".json") in files):
-                return final_save_file_name
-            
+            final_save_file_name = f"{save_file_name}_{id}"
             id += 1
 
+        return final_save_file_name
 
-    def extract_text(self, images: list, debug: bool = False):
+
+    def extract_text(self, images: list, debug: bool = False) -> str:
         """
         Iterate through all images and extract the text from the image, saving at intervals.
         Combine all extracted text into one long text
@@ -169,7 +187,13 @@ class BaseModel:
 
         return joined_text
 
-    def __call__(self, images: list, text_file: str = None, save: bool = False, save_file_name: str = "sample", max_chunk_size: int = 3000, debug: bool = False) -> list:
+    def __call__(self,
+                 images: list,
+                 text_file: str = None,
+                 save: bool = False,
+                 save_file_name: str = "sample",
+                 max_chunk_size: int = 3000,
+                 debug: bool = False) -> dict:
         """
         The main pipeline that extracts text from the images, seperates them into text blocks and organises them into JSON objects
 
@@ -179,10 +203,15 @@ class BaseModel:
             save (bool): Boolean to determine whether to save the outputs or not
             save_file_name (str): the name of the save files
             debug (bool): used when debugging. Prints debugPrint() messages
+
+        Returns:
+            organised_blocks (dict): Extracted data organised in a JSON format
         """
 
         self.info()
+        print(save_file_name)
         save_file_name = self._get_save_file_name(save_file_name)
+        print(save_file_name)
         json_file_name = save_file_name + ".json"
         error_text_file = os.path.join(self.save_path, save_file_name + "_errors.txt")
         #===================================================

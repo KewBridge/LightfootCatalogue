@@ -1,9 +1,12 @@
+# Python Modules 
 from PIL import Image
 import torch
 from transformers import Qwen2VLForConditionalGeneration, AutoTokenizer, AutoProcessor
+from torch.amp import autocast
+
+# Custom Modules
 import lib.config as config
 from lib.utils.utils import debugPrint
-from torch.amp import autocast
 
 
 class QWEN_Model:
@@ -15,6 +18,17 @@ class QWEN_Model:
                  max_new_tokens: int = 5000, # Maximum number of tokens
                  temperature: float = 0.2, # Model temperature. 0 to 2. Higher the value the more random and lower the value the more focused and deterministic.
                 ):
+        """
+        QWEN model class
+
+        This class loads the necessary modules and performs inference given conversation and input
+
+        Parameters:
+            batch_size (int): batch size for inference
+            max_new_tokens (int): Maximum number of tokens
+            temperature (float): Model temperature. 0 to 2. Higher the value the more random and
+                                 lower the temperature the more focussed and deterministic.
+        """
 
         # Load parameters
         self.batch_size = batch_size
@@ -53,10 +67,15 @@ class QWEN_Model:
 
     def __call__(self, conversation: list, images:list=None, debug: bool=False) -> list:
         """
-        Performs inference on the given set of images.
+        Performs inference on the given set of images and/or text.
+
+        When images are provided, the text is extracted.
+        When text is provided, images is set to None and inference is determined by conversation
     
         Parameters:
+            conversation (list): The input prompt to the model
             images (list): A set of images to batch inference.
+            debug (bool): Used to print debug prompts
     
         Return:
             output_text (list): A set of model outputs for given set of images.

@@ -2,7 +2,7 @@ import os
 import re
 import json
 import pandas as pd
-
+from json_repair import repair_json
 
 def clean_json(text: str) -> str:
     """
@@ -22,6 +22,10 @@ def clean_json(text: str) -> str:
     cleaned_text = re.sub(r'(?<=\w)"\s+(\[[^\]]+\])', r' \1"', cleaned_text)
     # Remove duplicate quotation marks before : delimiter
     cleaned_text = re.sub(r'(?<=")":', r':', cleaned_text)
+    # Ensure property is enclosed in property marks
+    cleaned_text = re.sub(r"(\w+):.+?,", r'"\1":', cleaned_text)
+    # remove trailing commas
+    cleaned_text = re.sub(r',\s*([\]}])', r'\1', cleaned_text)
     # Normalise any spaces or indentation
     cleaned_text = re.sub(r'\s+', ' ', cleaned_text)
 
@@ -40,9 +44,12 @@ def verify_json(text: str, clean: bool = False, out: bool = False) -> bool:
 
     verified = False
     message = None
+
+    # Initiate a repair using json-repair
+    text = repair_json(text) if clean else text
     
     try:
-        text = clean_json(text) if clean else text
+        #text = clean_json(text) if clean else text
         json_loaded = json.loads(text)
         verified = True
         message = json_loaded
@@ -50,6 +57,10 @@ def verify_json(text: str, clean: bool = False, out: bool = False) -> bool:
         print(f">>> Non JSON format found in input text")
         print(f">>> Error: \n {e}")
         message = e
+
+    #print("="*5)
+    #print(text)
+    #print("="*5)
 
     if out:
         return verified, message
