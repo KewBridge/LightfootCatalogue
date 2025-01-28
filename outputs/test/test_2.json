@@ -1,0 +1,601 @@
+{
+    "Dicotyledones": [
+        {
+            "familyName": "ACERACEAE",
+            "species": [
+                {
+                    "speciesName": "Acer campestre L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Acer campestre [TA]"
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Acer pseudoplatanus L.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Acer Pseudo-Platanus [G]. i. \"Maple. Bulls: [Bulstrode] Park\" [JL]"
+                        },
+                        {
+                            "description": "Folder 2. Acer Pseudo-Platanus [TA]."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "AMARANTHACEAE",
+            "species": [
+                {
+                    "speciesName": "Amaranthus lividus L., Flora Europaea 1: 110 (1964)",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "1 folder. Amaranthus Blitum [TA]. i. Cites Ray's Syn. 1957. ii. \"Blite Amaranth. Aug.: It is often found on Dunghills in the neighbourhood of London. I gather'd this on a Dunghill at Fulham near London\" [JL]. iii. \"Amaranthus Blitum. Monoec: 5. and:\" [JL]"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "ARALIACEAE",
+            "species": [
+                {
+                    "speciesName": "Hedera helix L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Hedera Helix [TA]."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "ARISTOLOCHIACEAE",
+            "species": [
+                {
+                    "speciesName": "Asarum europaeum L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Asarum europaeum [TA]. i. \"Asarum europaeum Lin: Asara- bacca. Anglis. ex horto\" [JL]."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "BALSAMINACEAE",
+            "species": [
+                {
+                    "speciesName": "Impatiens noli-tangere L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Impatiens Noli me tangere [G]."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "BETULACEAE",
+            "species": [
+                {
+                    "speciesName": "Alnus glutinosa (L.) Gaertn.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Betula Alnus [TA]"
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Betula nana L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Betula nana [G]."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "CAMPANULACEAE",
+            "species": [
+                {
+                    "speciesName": "Campanula latifolia L.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Companula latifolia [TA]"
+                        },
+                        {
+                            "description": "Folder 2. Companula latifolia [G]"
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Campanula patula L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Campanula patula [TA]"
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Campanula rapunculus L.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Campanula rapunculus [TA]"
+                        },
+                        {
+                            "description": "Folder 2. Campanula rapunculus [G]"
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Campanula rotundifolia L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Campanula rotundifolia [TA]. i. \"Near Perth\" [JL]"
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Campanula trachelium L.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Campanula Trachelium [TA]"
+                        },
+                        {
+                            "description": "Folder 2. Campanula Trachelium [G]"
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Jasione montana L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Jasione montana [TA]"
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Legousia hybrida (L.) Delarb.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Legousia hybrida [TA]"
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Lobelia dortmanna L.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Lobelia Dortmanna [TA]. i. Cites Ray's Syn. 287. ii. \"Water Gladiole. July & August. In the Lakes of North Wales & Westmoreland\" [JL]. iii. \"Lobel: Dortmanna from Anglesey\" [JL]"
+                        },
+                        {
+                            "description": "Folder 2. Lobelia Dortmanna [G]. i. \"Lobel: Dortmanna from Anglesey\" [JL]"
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Lobelia urens L.",
+                    "folderNo": 4,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Lobelia urens [G]. i. Cites Ray's Hist. 746. ii. \"Caustic Lobelia. Habitat solum humidum & spongiosum Ericeti cujusdam Shute Common dicti Devoniae, inter paludem turfosam & viam publican quae ab Axminster ad Honiton ducit. Plures plantas primum invenit Dom: Newbury e Coll: Exon: Oxon: circiter finem Octo- bris, Anno 1768\" [JL]. iii. \"From Devonshire\" [JL]."
+                        },
+                        {
+                            "description": "Folder 2. Lobelia urens [TA]. i. \"Lobelia urens\" [JL]"
+                        },
+                        {
+                            "description": "Folders 3 and 4. Lobelia urens [G]"
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Phyteuma tenerum R.Schulz",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Phyteuma orbicularis [TA]"
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Wahlenbergia hederacea (L.) Reichb.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Campanula hederacea [TA]. i. \"Carmathenshire\" [JL]"
+                        },
+                        {
+                            "description": "Folder 2. Campanula hederacea [G]. i. \"Devon & Cornwall\" [JL]"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "CAPRIFOLIACEAE",
+            "species": [
+                {
+                    "speciesName": "Linnaea borealis L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Linnaea borealis [JL]. i. Cites Linn. Sp. Pl. 631; Bauh. Pin. 93. ii. \"This is a Native of Sweden, Sibiria, Switzerland, Russia, Canada, & c. This Specimen was gathered & communicated by Jos: Banks Esqr. who discover'd it in Abundance in the Woods in Newfoundland\" [JL]. iii. \"In Scotland\u2014See English Botany N.433\" [? G]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Lonicera periclymenum L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Lonicera periclymenum [TA]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Viburnum lantana L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Viburnum lantana [TA]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Viburnum opulus L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Viburnum opulus [TA]."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "CARYOPHYLLACEAE",
+            "species": [
+                {
+                    "speciesName": "Arenaria serpyllifolia L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Arenaria Serpyllifolia [TA]"
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Bufonia tenuifolia L., Flora Europaea 1: 133 (1964)",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Bufonia Tenuifolia [TA]"
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Cerastium alpinum L.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Cerastium latifolium [G]. i. Cites Ray's Syn. 349. ii. \"Cerastium alpinum. This was gathered upon Snowdon at the top of the highest Rock call'd Clogwyn y Garnedh. June\" [JL]. iii. \"Top of Snowdon\" [JL]. iv. \"Dr. Solander affirms this to be the true Cerastium alpinum. I had it from Snowdon. He found it at Terra del Fuego & named it C. hirtum with a mark of Dubitation, but now thinks them both one\" [JL]."
+                        },
+                        {
+                            "description": "Folder 2. Cerastium alpinum [TA]; Cerastium latifolium [G]. i. \"Clogwyn d\u00fb\" [JL]. ii. \"Cerast: alpin: Ben Lomond\" [JL]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Cerastium arcticum Lange",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Cerastium alpinum [G]. i. \"Anglesey. Cerastium alpinum. Q: an Var: aut nova species? Fig: Cerast: alp: non quadrat: Flor: Dan: The Fig: in the fl. Dan: of Cerast: alpinum agrees with this, only taller & more branched, bearing 6 flowers, capsulis oblongis. In the Fl. Lapponic: Lin: says this Plant commonly produced 1 or 2 flowers when wild\" [JL]. ii. \"Cerastium alpinum? Newfoundland. The Flor: Dan: agrees well with the tall one. I believe the others to be nothing but Varieties\" [JL]. [Only two specimens in folder; on left C. arcticum, probably the plant from Anglesey; on right C. arvense, maybe the specimen from Newfoundland collected by Joseph Banks.]"
+                        },
+                        {
+                            "description": "Folder 2. Cerastium uniflorum [TA]; Cerastium alpinum? [G]. i. \"Cerastium latifolium? This was gathered on Mount Snowdon by the Sides of the Rivulets to the North of Wyddfa by the Revd Mr Williams. June & July\" [JL]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Cerastium arvense L.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Cerastium arvense [TA]. i. \"Cerastium arvense. This must be right tho' the leaves are hoary\" [JL]. ii. \"Cerastium arvense. Very common in Norfolk. Why does Lin. put the word glabris in his Specific Description in opposition to truth & the Testimony of all Authors\" [B]."
+                        },
+                        {
+                            "description": "Folder 2. Cerastium arvense [G]. [See also under C. arcticum Folder 1.]"
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Cerastium fontanum Baumg., subsp. triviale (Link) Jalas, Flora Europaea 1: 142 (1964)",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Cerastium vulgaris [TA]; C. vulgatum Huds. and C. viscosum Linn. [G]. i. \"Pray inform mewhether this be Cerastium vulgaris or Cerast: viscosum, & wch of the Figures in Vaillant: Paris: agrees with it, for Linnaeus & Haller seem to contradict each other. In meadows, June. Mr Banks's vulgaris\" [JL]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Cucubalus baccifer L.",
+                    "folderNo": 3,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Cucubalus baccifer [G]. i. \"Bulstrode\" [JL]."
+                        },
+                        {
+                            "description": "Folder 2. Cucubalus baccifer [G]. i. \"Bulstrode\" [JL]."
+                        },
+                        {
+                            "description": "Sheet 1. Cucubalus baccifer [JL]. i. \"Cucubalus bacciferus calyicibus campanulatis, petalis distantibus, pericarpis coloratis, ramis divaricatis. Lin: Syst. Nat. Cucubalus Plinii. R. Syn: 267.\" ii. \"Berry-bearing Chickweed. July & Aug. This plant was found growing spontaneously in the Isle of Man, by Dr. Richardson\" [JL]. [On loose label in pencil:] \"I. of Dogs\" [Riddelsdell]."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "CARYOPHYLLACEAE",
+            "species": [
+                {
+                    "speciesName": "Dianthus armeria L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Dianthus armeria [TA]"
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Dianthus caryophyllus L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Dianthus caryophyllus [TA]. i. \"Dianthus caryophyllus Lin: Ray Syn: p. 336. no. 3. on Rochester Castle Walls & c.\" [JL]. ii. \"& single Clove mentioned in Ray on Rochester Walls\" [?]; \"?? is this not from a Garden\" [JL]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Dianthus deltoides L.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Dianthus glaucus? [TA]. i. \"Dianthus glaucus pro certo. Kew. respondet. fig: Dillen:\" [JL]. ii. \"This Aiton [William Aiton] says is the Dianthus glaucus. White flowers with a purple Circle. Kew. compare it with Dianth: deltoides\" [JL]."
+                        },
+                        {
+                            "description": "Folder 2. Dianthus deltoides [TA]. \"Dianthus Deltoides. Salt Hill\" [?]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Dianthus gratianopolitanus Vill.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Dianthus arenarius Hud. [TA]. i. \"Cheddar brought into a Garden\" [JL]. ii. \"Dianthus arenarius the true. Sent by Mr. Banks to Bulstrode from Cheddar.\" [JL]."
+                        },
+                        {
+                            "description": "Folder 2. Dianthus virginicus [TA]; Dianthus arenarius Huds. [G]. i. \"Dianth: arenar: Bulstrode. Q: an non idem Mr. Banks's\" [JL]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Herniaria ciliolata Meld.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Herniaria glabra [TA]. i. Herniaria glabra. Cites Lin: Sp. Pl: Herniaria; Ray's Syn: 160. ii. \"Smooth Rupture-wort. This specimen was gathered from the Lizard Point in Cornwall & communicated by Mr. Hudson\" [JL]."
+                        },
+                        {
+                            "description": "Folder 2. Herniaria glabra [G]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Herniaria hirsuta L.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Herniaria hirsuta [TA]. i. \"Hern: hirsuta according to Yalden\" [JL]. ii. \"Herniaria hirsuta. Gordon's Garden [?]; D. o. P: [possibly the Duchess of Portland] [JL]."
+                        },
+                        {
+                            "description": "Folder 2. Herniaria glabra [G]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Illecebrum verticillatum L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Illecebrum verticillatum [TA]. i. \"Illecebrum verticillatum floribus verticillatis nudis, caulibus procumbentibus. Lin: Sp: Pl: Corrigiola. Ray's Syn: 160. Verticillate Knot Grass. July. In Marshes & moist Places about Pensans in Cornwall\" [JL]. ii. \"The verticillate sample I rec'd from Mr. Banks collected at Pensans, wch I take to be the true Illecib: verticill: but the other seems to be rather Illecib: cymosum, & perhaps the Polygonum maritimum Ray: 161 near Weston. This from Mr. Hudson\" [JL]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Kohlruschia prolifera (L.) Kunth",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Dianthus Prolifer [TA]. i. \"Dianthus prolifer\" [JL]. ii. \"Dianthus prolifer of Eaton. Q: July Aug. Kew. In Selsey Island Sussex\" [JL].Sheet 1. Dianthus prolifer [G]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Lychnis coronaria (L.) Desr., Flora Europaea 1: 156 (1964)",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Agrostema coronaria [TA]. i. \u201c? not English\u201d [TA]. ii. \u201cTenbigh [Tenby in Dyfed (Pembrokeshire)]\u201d [JL]. [From southeastern Europe, cultivated, locally naturalized elsewhere.]"
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Lychnis viscaria L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Lychnis Viscaria [TA]. i. \u201cLychnis Viscaria Lin: On the Rocks in Edinburgh Park. Scotland\u201d [JL]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Minuartia hybrida (Vill.) Schischkin",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Arenaria tenuifolia [TA], Flora Scotica ed. 1, 1102 (1777). i. \u201cArenaria tenuifolia 10- and: 3-g\u201d [JL]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Minuartia sedoides (L.) Hiern, Flora Europaea 1: 132 (1964).",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Cherleria Sedoides [TA], Flora Scotica ed. 1, 232, 1124, 1139 (1777). i. \u201cCherleria Sedoides Lin: From the Isle of Rum, one of the Hebrides\u201d [JL]."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "CARYOPHYLLACEAE",
+            "species": [
+                {
+                    "speciesName": "Minuartia verna (L.) Hiern",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Arenaria verna [TA], Flora Scotica ed. 1, 231, 1140 (1777). i. Cites Lin: Syst: Nat: in Mantissa, page 72; Ger: Provinc: Tab: 15. f: 1.; R: Syn. 350. ii. \u201cMountain vernal Chickweed. May. Upon the Mountains in Scotland, & the North of England. This Plant is call\u2019d by Hudson Arenaria saxatilis, but I think his Characters of that Species will not agree with the Samples here exhibited, particularly as the Calyces are not obtuse. They are striated & acuminated, & the Figure of Gerard above-cited agrees perfectly well with these Samples\u201d [JL]."
+                        },
+                        {
+                            "description": "Folder 2. Arenaria laricifolia [TA and G]. i. \u201cScotland, Yalden\u201d [JL]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Moehringia trinervia (L.) Clairv.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Arenaria trinervia [TA]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Polycarpon tetraphyllum (L.) L.Arenaria laricifolia. Iver Heath",
+                    "JL].": "folderNo",
+                    "folders": [
+                        {
+                            "description": "Spergula [TA]; S. laricina Huds. [G]. i. \"Pool Heath. Dorsetshire\" [JL]."
+                        },
+                        {
+                            "description": "Folder 3. Spergula [TA]; S. laricina Huds. [G]. i. \"Pool Heath. Dorsetshire\" [JL]."
+                        },
+                        {
+                            "description": "Folder 4. Spergula laricina Huds. and S. saginoides Curtis [G]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Saponaria officinalis L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Saponaria officinalis [G]. i.",
+                            "Hetherset": "B]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Scleranthus annuus L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Scleranthus annuus? [TA]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Scleranthus perennis L.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Scleranthus perennis [TA]. i. Cites Ray's Syn. 160. ii.",
+                            "Aug.": "I gathered these Samples in the Corn Fields at Elden in Suffolk, on the South Side of the Village. Aug. 1768"
+                        },
+                        {
+                            "description": "Folder 2. Scleranthus perennis [G]. i. \"Scleranth. Perennis. certo. Kew\" [JL]."
+                        },
+                        {
+                            "description": "Sheet 1. Scleranthus perennis [?]. i. \"Property of S.W. Museum\" [?]. ii. \"G.S. Gibson Esqr.\" [?]. iii. \"Herb. Earl of Bute\" [?]. [Not one of the usual cut-up sheets from Saffron Walden Museum, and probably does not belong in Herb. Lightfoot.]"
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Silene acaulis (L.) Jacq.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Silene acaulis [G]. i. Cites Linn. Syst. Nat.; Ray's Syn. 341. ii.",
+                            "1767": "JL]."
+                        },
+                        {
+                            "description": "Folder 2. Silene acaulis [TA]. i. \"This from Ben-Lomond\" [?]. ii."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "CARYOPHYLLACEAE",
+            "species": [
+                {
+                    "speciesName": "Silene noctiflora L.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Silene noctiflora [G]. i. \"Silene noctiflora. 10- and: 3-g:\" [JL]. ii. \"Silene noctiflora cream colour'd flowers\" [JL]."
+                        },
+                        {
+                            "description": "Folder 2. Silene noctiflora [TA]. i. \"10- and: 3-g.\" [JL]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Silene nutans L.",
+                    "folderNo": 2,
+                    "folders": [
+                        {
+                            "description": "Folder 1. Silene nutans [G]. i. \"Silene nutans. 10- and: 3-g:\" [JL]. ii. \"Silene nutans cream colour'd flowers\" [JL]."
+                        },
+                        {
+                            "description": "Folder 2. Silene nutans [TA]. i. \"10- and: 3-g.\" [JL]."
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

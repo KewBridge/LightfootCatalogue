@@ -1,10 +1,15 @@
+# Python Modules
 from PIL import Image
 #import cv2
 from tesserocr import PyTessBaseAPI, PSM, RIL, PT
+import os
+
+# Custom Modules
 from lib.utils.utils import box_area, pil_to_cv2, cv2_to_pil
 import lib.pages.split_pages as spages
 import lib.config as config
-import os
+
+
 
 def identifyROI(path: str, remove_area_perc: float = 0.01) -> list:
     """
@@ -51,9 +56,24 @@ def identifyROI(path: str, remove_area_perc: float = 0.01) -> list:
     
         return [x,y,w,h]
 
+
 def cropAndResize(path: str, pad: float = 50.0, resize_factor: float = 0.4, 
               remove_area_perc: float = 0.01) -> object:
-    
+    """
+    Performs the following task in order:
+      1) Identifies the region of interest
+      2) Crops the background noise from the image (basically takes only the ROI from the image)
+      3) Resizes the image w.r.t aspect ratio
+
+    Paramaters:
+        path (str): path to image
+        pad (float): the value for padding post cropping
+        resize_factor (float): percentage of the resolution to resize to
+        remove_area_perc (float): defines the minimum resolutions of ROIs
+
+    Returns:
+        image (object): A PIL Image object that has been cropped and resized   
+    """
     # Identify the region of interest to crop 
     roi = identifyROI(path, remove_area_perc)
 
@@ -70,6 +90,7 @@ def cropAndResize(path: str, pad: float = 50.0, resize_factor: float = 0.4,
         image = image.resize((int(w * resize_factor), int(h * resize_factor)))
 
     return image
+
     
 def cropImage(path: str, pad: float = 50.0, resize_factor: float = 0.4, 
               remove_area_perc: float = 0.01, save_file_name: str = None) -> object:
@@ -119,6 +140,7 @@ def cropImage(path: str, pad: float = 50.0, resize_factor: float = 0.4,
             image_paths.append(i_save_name)
     
     return images, image_paths
+
 
 def cropAllImages(images: list, pad: float = 50.0, resize_factor: float = 0.4, 
               remove_area_perc: float = 0.01, save_file_name: str = None):

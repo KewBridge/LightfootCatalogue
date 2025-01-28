@@ -85,6 +85,20 @@ class PromptLoader:
             else:
                 print(indent + f"{key}: {value}\n")
 
+    def _unravel_prompt(self, prompt):
+
+        message = ""
+
+        if isinstance(prompt, dict):
+            for key, value in prompt.items():
+                message += f"{key.title()}: {str(value)}\n"
+        elif isinstance(prompt, list):
+            for item in prompt:
+                message += self._unravel_prompt(item)
+        else:
+            message += prompt
+        
+        return message
 
     def get_prompt(self, title, prompt, role="system"):
 
@@ -92,11 +106,7 @@ class PromptLoader:
         if title is not None and title != "setup" and role == "system":
             message += f"## {title.upper()} \n"
             
-        if isinstance(prompt, dict):
-            for key, value in prompt.items():
-                message += f"{key.title()}: {str(value)}\n"
-        else:
-            message += prompt
+        message += self._unravel_prompt(prompt)
 
         if role == "user":
             contents = (

@@ -8,4 +8,4 @@
 #SBATCH --export=all
 
 source activate lcat-step
-python run.py ~/scratch/private/LightfootCatalogue/images ~/scratch/private/LightfootCatalogue/prompts/default_v2_fromtext.yaml lightfootcat_full --save-path=~/scratch/private/LightfootCatalogue/outputs/lightfootcat/
+python run.py ~/scratch/private/LightfootCatalogue/images ~/scratch/private/LightfootCatalogue/prompts/ost_prompt.yaml lightfootcat_full --save-path ~/scratch/private/LightfootCatalogue/outputs/lightfootcat/

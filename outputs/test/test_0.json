@@ -1,0 +1,87 @@
+{
+    "Dicotyledones": [
+        {
+            "familyName": "ARALIACEAE",
+            "species": [
+                {
+                    "speciesName": "Hedera helix L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Hedera Helix [TA]."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "ARISTOLOCHIACEAE",
+            "species": [
+                {
+                    "speciesName": "Asarum europaeum L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Asarum europaeum [TA]. i. \"Asarum europaeum Lin: Asara- bacca. Anglis. ex horto\" [JL]."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "BALSAMINACEAE",
+            "species": [
+                {
+                    "speciesName": "Impatiens noli-tangere L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Impatiens Noli me tangere [G]."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "familyName": "CAPRIFOLIACEAE",
+            "species": [
+                {
+                    "speciesName": "Linnaea borealis L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Linnaea borealis [JL]. i. Cites Linn. Sp. Pl. 631; Bauh. Pin. 93. ii. \"This is a Native of Sweden, Sibiria, Switzerland, Russia, Canada, & c. This Specimen was gathered & communicated by Jos: Banks Esqr. who discover'd it in Abundance in the Woods in Newfoundland\" [JL]. iii. \"In ScotlandSee English Botany N.433\" [? G]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Lonicera periclymenum L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Lonicera periclymenum [TA]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Viburnum lantana L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Viburnum lantana [TA]."
+                        }
+                    ]
+                },
+                {
+                    "speciesName": "Viburnum opulus L.",
+                    "folderNo": 1,
+                    "folders": [
+                        {
+                            "description": "Viburnum opulus [TA]."
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

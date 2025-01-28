@@ -1,0 +1,30 @@
+Setting OS envrionmnet variables
+GPU Status: True
+>>> Starting...
+Namespace(images='images', prompt='prompts/default_v2_fromtext.yaml', savefilename='test', temp_text=None, max_tokens=100000, max_chunk_size=3000, save_path='./outputs/test/', batch=1, crop=True, debug='True')
+>>> Loading Images...
+>>> Loading Model...
+Model: qwen_model | Batch Size: 1, Max Tokens: 100000, Temperature: 1
+Extracting Text from Images
+Converting extracted text into Text Blocks
+Organising text into JSON blocks
+==========
+==========
+==========
+==========
+==========
+==========
+==========
+==========
+==========
+==========
+Dumping extracted text into ./outputs/test/test.json
+Dumping extracted text into ./outputs/test/test.csv
+>>> Non JSON format found in input text
+>>> Error: 
+ Expecting ',' delimiter: line 1 column 964 (char 963)
+==========
+==========
+Dumping extracted text into ./outputs/test/test.json
+Dumping extracted text into ./outputs/test/test.csv
+>>> Inference Finished
