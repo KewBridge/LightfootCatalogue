@@ -46,10 +46,10 @@ def verify_json(text: str, clean: bool = False, out: bool = False) -> bool:
     message = None
 
     # Initiate a repair using json-repair
-    text = repair_json(text) if clean else text
+    #message = repair_json(text, ensure_ascii=False, return_objects=True)
     
     try:
-        #text = clean_json(text) if clean else text
+        text = repair_json(text, ensure_ascii=False, return_objects=False) if clean else text
         json_loaded = json.loads(text)
         verified = True
         message = json_loaded

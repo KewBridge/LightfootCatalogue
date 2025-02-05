@@ -146,7 +146,7 @@ class PromptLoader:
                 
             
 
-    def getJsonPrompt(self, json_text, error):
+    def getJsonPrompt(self, json_text):
         """
         Define a system prompt including the errorneous json text and the json verificiation error to fix issue
 
@@ -156,15 +156,11 @@ class PromptLoader:
         """
 
         prompt = f"""
-            Fix the following JSON prompt given the error as defined below.
+            Fix the following JSON prompt.
 
             Json prompt:
 
             {json_text}
-
-            Error:
-
-            {error}
 
          """
 

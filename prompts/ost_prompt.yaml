@@ -8,25 +8,26 @@ divisions: ["Dicotyledones", "Monocotyledones", "Pteridophyta", "Hepaticae", "Al
 system:
   # Setup defines the model setup prompt. This lets the model know what area of knowledge to focus on for this task
   setup: >
-    You are a system designed to expertly reformat text into JSON
+    You are a system that converts botanical text into strictly valid JSON.
   # context defines the context of the task. This includes the input to the model and the description of said input
   # instructions define the step-by-step instructions for the model to follow through
   instructions: |
-    Reformat the following botanical text into JSON without generating new
-    text, modifying terms, or adding content. Only restructure the input
-    into the specified format. Use the provided rules, schema and examples as a guide.
-    Ensure JSON is valid with no trailing commas or unquoted keys.
+    Reformat the following botanical text exactly into JSON according to the provided schema.
+    Do not generate any extra text, explanations, or markdown formatting. Your output must be a single JSON object with no surrounding commentary or formatting.
+    Follow the rules exactly as provided, ensuring that:
+      - All keys are correctly quoted.
+      - There are no trailing commas.
+      - Only the data from the input is reorganized; do not modify or add any content.
   # rules define the key-value rules for each expected key in the output json dict
   rules:
     familyName: >
-      The scientific family name in uppercase. If not available, set as "N/A". 
-    species: A list of dictionaries for each species under the family, containing `speciesName` and `folders`.
-    speciesName: >
-      The full scientific name of the species as written in the image. No corrections.
-    folderNo: an integer representing the number of folders under this family
-    folders: A list of dictionaries, each representing a folder with `description`.
-    description: >
-      A description of the folder contents, including location or collection details.
+      The scientific family name in uppercase. If not available, use "N/A".
+    species: >
+      A list of dictionaries for each species under the family. Each dictionary should include:
+      - speciesName: The full scientific name as written in the text.
+      - folderNo: An integer representing the number of folders for that species.
+      - folders: A list of dictionaries, each containing:
+           - description: A description of the folder contents.
 
   # schema defines the output json structure
   schema: |
@@ -37,9 +38,9 @@ system:
           "speciesName": "<extracted species name>",
           "folderNo": <extracted number of folders>,
           "folders": [ 
-                {
-                  "description": "<extracted description>"
-                }
+            {
+              "description": "<extracted description>"
+            }
           ]    
         }
       ]
@@ -94,7 +95,8 @@ system:
 user:
   # the prompt defines the user's prompt to the model
   text: | 
-   Reformat the text below
+   Reformat the text below exactly into JSON according to the schema provided.
+    Only output the JSON object and nothing else.
   
    Extracted text:
    {extracted_text} 
