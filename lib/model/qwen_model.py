@@ -2,7 +2,7 @@
 from PIL import Image
 import torch
 from transformers import Qwen2VLForConditionalGeneration, AutoTokenizer, AutoProcessor
-from torch.amp import autocast
+from torch.cuda.amp import autocast
 
 # Custom Modules
 import lib.config as config
@@ -34,6 +34,9 @@ class QWEN_Model:
         self.batch_size = batch_size
         self.max_new_tokens = max_new_tokens
         self.temperature = temperature
+
+        # Precompute device: GPU is preferred if available.
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
         # Load model
         self.model = self._load_model()
@@ -102,14 +105,17 @@ class QWEN_Model:
             text=text_prompts, images=images_opened, padding=True, return_tensors="pt"
         )
 
+        print(f"Length of input conv:")
+        print(len(text_prompt))
         debugPrint("\tMoving inputs to gpu...", debug)
         # Move inputs to device (model automatically moves)
         inputs = inputs.to("cuda" if torch.cuda.is_available() else "cpu") # 
     
         # Inference
         debugPrint("\tPerforming inference...", debug)
-        with autocast("cuda"): # Enabling mixed precision to reduce computational load where possible
-            output_ids = self.model.generate(**inputs, max_new_tokens=self.max_new_tokens) 
+        with autocast(self.device.type == "cuda"): # Enabling mixed precision to reduce computational load where possible
+            output_ids = self.model.generate(**inputs, max_new_tokens=self.max_new_tokens)
+
         # Increasing the number of new tokens, increases the number of words recognised by the model with trade-off of speed
         # 1024 new tokens was capable of reading upto 70% of the input image (pg132_a.jpeg)
         debugPrint("\tInference Finished", debug)

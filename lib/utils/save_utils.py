@@ -31,10 +31,14 @@ def check_for_lists_and_dicts(dataframe: object):
     list_of_columns = []
 
     for col in dataframe.columns:
-        sample_item = dataframe[col][0]
+        try:
+            sample_item = dataframe[col][0]
 
-        if isinstance(sample_item, list) or isinstance(sample_item, dict):
-             list_of_columns.append(col)
+            if isinstance(sample_item, list) or isinstance(sample_item, dict):
+                 list_of_columns.append(col)
+        except:
+            print(f"{col} not found in datafrom")
+            print(dataframe.head(2))
 
     return len(list_of_columns) > 0, list_of_columns
 

@@ -160,10 +160,11 @@ class BaseModel:
         Returns:
             joined_text: a combined form of all the text extracted from the images.
         """
-        joined_text = "\n\n"
 
         debugPrint("Batching Images...", debug)
 
+
+        batch_texts = []
         # Create batches of images
         batched_images = [images[x:min(x + self.batch_size, len(images))] for x in range(0, len(images), self.batch_size)]
 
@@ -177,15 +178,15 @@ class BaseModel:
 
             debugPrint("\tJoining Outputs...", debug)
             # Join all the text and append it together with previous batches
-            joined_text += "\n\n".join(extracted_text)
+            batch_texts.append("\n\n".join(extracted_text))
 
             if (ind + 1) % self.SAVE_TEXT_INTERVAL == 0:
                 debugPrint("\tStoring at interval...", debug)
-                self._save_to_file(self.TEMP_TEXT_FILE, joined_text)
+                self._save_to_file(self.TEMP_TEXT_FILE, "\n\n".join(batch_texts))
 
             debugPrint("\tBatch Finished", debug)
 
-        return joined_text
+        return "\n\n".join(batch_texts)
 
     def __call__(self,
                  images: list,
@@ -209,9 +210,9 @@ class BaseModel:
         """
 
         self.info()
-        print(save_file_name)
+        # print(save_file_name)
         save_file_name = self._get_save_file_name(save_file_name)
-        print(save_file_name)
+        # print(save_file_name)
         json_file_name = save_file_name + ".json"
         error_text_file = os.path.join(self.save_path, save_file_name + "_errors.txt")
         #===================================================
@@ -262,13 +263,13 @@ class BaseModel:
                     # If not verified
                     # TODO: Rework the JSON error fixing code
                 if not(json_verified):
-                    # print("Error Noticed in JSON")
-                    # print("Fixing Error")
-                    # error_fix_prompt = self.prompt.getJsonPrompt(json_text[0], json_loaded)
+                    print("Error Noticed in JSON")
+                    print("Fixing Error")
+                    error_fix_prompt = self.prompt.getJsonPrompt(json_text[0])
                     # print(error_fix_prompt)
-                    # json_text = self.model(error_fix_prompt, None, debug)
+                    json_text = self.model(error_fix_prompt, None, debug)
                     # print(json_text)
-                    # json_verified, json_loaded = verify_json(json_text[0], clean=True, out=True)
+                    json_verified, json_loaded = verify_json(json_text[0], clean=True, out=True)
 
                     # storing all erroneous JSON format in error.txt
                     self._save_to_file(error_text_file, f"{family}\n", mode="a")
@@ -286,6 +287,7 @@ class BaseModel:
                 #time.sleep(1) # Adding a delay to not overwhelm the system
                 print("=" * 10)
                 save_counter += 1
+                print(organised_blocks)
                 # save to file after 10 iterations
                 if save and (save_counter == 10):
                     save_counter = 0
