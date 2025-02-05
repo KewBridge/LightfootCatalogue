@@ -89,59 +89,86 @@ divisions: ["Dicotyledones", "Monocotyledones", "Pteridophyta", "Hepaticae", "Al
 system:
   # Setup defines the model setup prompt. This lets the model know what area of knowledge to focus on for this task
   setup: >
-    You are an expert in organising text into JSON. You have extensive knowledge in taxonomy and about botancial collections. 
+    You are a system that converts botanical text into strictly valid JSON.
   # context defines the context of the task. This includes the input to the model and the description of said input
-  goal: >
-    Your task is to organise the given text and format it into a JSON object that follows the provided structure and specific formatting rules.
   # instructions define the step-by-step instructions for the model to follow through
   instructions: |
-    
-    1) **Identify Family Names**:
-       - Each family name is written in uppercase (e.g., "ACERACEAE").
-       - Store it as `familyName` in the JSON structure.
-
-    2) **Identify Species**:
-       - Species names appear in italics and are typically followed by an author abbreviation (e.g., "Acer campestre L.").
-       - Store each as `speciesName` under its respective `familyName`.
-
-    3) **Capture Folder Details**:
-       - Each species may have one or more folders labeled as "Folder X" with a following description.
-       - Extract the folder number and description. 
-
-    4) **Validation**:
-       - Leave fields empty or set to "N/A" if information is not available.
-       - Do not perform grammar checks or corrections.
-    
-    5) Ensure JSON is valid with no trailing commas or unquoted keys.
-    6) Avoid duplicate keys and ensure all keys are in camelCase.
-
+    Reformat the following botanical text exactly into JSON according to the provided schema.
+    Do not generate any extra text, explanations, or markdown formatting. Your output must be a single JSON object with no surrounding commentary or formatting.
+    Follow the rules exactly as provided, ensuring that:
+      - All keys are correctly quoted.
+      - There are no trailing commas.
+      - Only the data from the input is reorganized; do not modify or add any content.
   # rules define the key-value rules for each expected key in the output json dict
   rules:
     familyName: >
-      The scientific family name in uppercase. If not available, set as "N/A". 
-    species: A list of dictionaries for each species under the family, containing `speciesName` and `folders`.
-    speciesName: >
-      The full scientific name of the species as written in the image. No corrections.
-    folders: A list of dictionaries, each representing a folder with `description`.
-    description: >
-      A description of the folder contents, including location or collection details.
+      The scientific family name in uppercase. If not available, use "N/A".
+    species: >
+      A list of dictionaries for each species under the family. Each dictionary should include:
+      - speciesName: The full scientific name as written in the text.
+      - folderNo: An integer representing the number of folders for that species.
+      - folders: A list of dictionaries, each containing:
+           - description: A description of the folder contents.
 
-  # template defines the output json structure
-  template: |
+  # schema defines the output json structure
+  schema: |
     {
-      "familyName": "", 
+      "familyName": "<extracted family name>", 
       "species": [ 
+        {
+          "speciesName": "<extracted species name>",
+          "folderNo": <extracted number of folders>,
+          "folders": [ 
             {
-                "speciesName": "",
-                "folders": [ 
-                      {
-                        "description": "",
-                      }
-                ],
-                
+              "description": "<extracted description>"
             }
-                ]
+          ]    
+        }
+      ]
     }
+
+  examples: 
+    - input: |
+        ACERACEAE
+
+        Acer campestre L.
+
+        1 folder. Acer campestre [TA]
+
+        Acer pseudoplatanus L.
+
+        2 folders.
+
+        Folder 1. Acer Pseudo-Platanus [G]. i. "Maple. Bulls: [Bulstrode] Park" [JL]
+
+        Folder 2. Acer Pseudo-Platanus [TA].
+    - output: |
+        {
+        "familyName": "ACERACEAE", 
+        "species": [ 
+            {
+              "speciesName": "Acer campestre L.",
+              "folderNo": 1,
+              "folders": [ 
+                    {
+                      "description": "Acer campestre [TA]"
+                    }
+              ]    
+            },
+            {
+              "speciesName": "Acer pseudoplatanus L.",
+              "folderNo": 2,
+              "folders": [
+                    {
+                      "description": "Folder 1. Acer Pseudo-Platanus [G]. i. \"Maple. Bulls: [Bulstrode] Park\" [JL]"
+                    },
+                    {
+                      "description": "Folder 2. Acer Pseudo-Platanus [TA]."
+                    },
+              ]
+            }
+          ]
+        }
 ```
 
 **user** defines the user prompt/input, this can be as simple as a simple sentence. Must use place holder {extracted_text} when defining to pass extracted to the prompt. RECOMMENDED to follow below structure for optimised performace.
@@ -151,7 +178,12 @@ system:
 # Different prompts will be passed to the model as individual inputs
 user:
   # the prompt defines the user's prompt to the model
-  text: Given the {extracted_text}, organise it into a JSON object as outlined by the rules and instructions. 
+  text: | 
+   Reformat the text below exactly into JSON according to the schema provided.
+    Only output the JSON object and nothing else.
+  
+   Extracted text:
+   {extracted_text} 
 ``` 
 
 
