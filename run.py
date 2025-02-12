@@ -77,7 +77,7 @@ def main():
     
     # Load model
     print(">>> Loading Model...")
-    model = BaseModel("qwen_model", prompt=args.prompt, max_new_tokens = max_tokens, batch_size=batch, temperature=1, save_path=args.save_path)
+    model = BaseModel("qwen_model", prompt=args.prompt, max_new_tokens = max_tokens, batch_size=batch, temperature=0.6, save_path=args.save_path)
     #qwen_model = model.QWEN_model(prompt= args.prompt, batch_size = batch, max_new_tokens = max_tokens, save_path=args.save_path)
     
     # Perform inference and save the jsons

@@ -1,15 +1,17 @@
 # Python Modules
 import os
 from tqdm import tqdm
+import logging
+from typing import Optional
 
 # Import Custom Modules
 from lib.model import get_model
 from lib.utils.promptLoader import PromptLoader
-from lib.utils.utils import debugPrint
 from lib.utils.json_utils import verify_json
 from lib.utils.save_utils import save_json, save_csv_from_json
 from lib.utils.text_utils import convertToTextBlocks
 
+logger = logging.getLogger(__name__)
 
 class BaseModel:
 
@@ -18,12 +20,11 @@ class BaseModel:
 
     def __init__(self, 
                  model_name: str,
-                 prompt: str = None,
-                 conversation: list = None,
+                 prompt: Optional[str] = None,
                  batch_size: int = 3, 
                  max_new_tokens: int = 5000,
                  temperature: float = 0.2, 
-                 save_path: str = None, 
+                 save_path: Optional[str]= None, 
                  timeout: int = 4,
                  **kwargs
                  ):
@@ -33,7 +34,6 @@ class BaseModel:
         Parameters:
             model_name (str): the name of the model
             prompt (str): The name of the prompt file or the path to it
-            conversation (list): Input conversation into the model
             batch_size (int): Batch size for inference
             max_new_tokens (int): Maximum number of tokens
             temperature (float): Model temperature. 0 to 2. Higher the value the more random and lower the value the more focused and deterministic.
@@ -59,7 +59,6 @@ class BaseModel:
         # Load the model, prompt, and the conversation
         self.model = get_model(self.model_name)(self.batch_size, self.max_new_tokens, self.temperature, **kwargs)
         self.prompt = PromptLoader(prompt)#prompt
-        self.conversation = self.prompt.get_conversation() if conversation is None else conversation
 
     def info(self) -> str:
         """
@@ -73,35 +72,17 @@ class BaseModel:
         print(message)
     
 
-    def setNewPrompt(self, prompt: str, conversation: list=None) -> None:
-        """
-        Load a new prompt
-
-        Parameters:
-            prompt (str): The name of the prompt file or the path to it
-            conversation (list): Input conversation into the model
-        """
-
-        if not(prompt is None) and conversation is None:
-            self.prompt = PromptLoader(prompt)
-            self.conversation = self.prompt.get_conversation()
-        elif prompt is None and not(conversation is None):
-            self.conversation = conversation
-        else:
-            raise ValueError("Received None for prompt and None for conversation")
-
-    def _save_to_file(self, file, text, mode="w") -> None:
+    def _save_to_file(self, file: str, text: str, mode: str="w") -> None:
         """
         (Private function)
         Saves the extracted text to the file
-
         """
 
         with open(file, mode) as f:
             f.write(text)
     
 
-    def _load_from_file(self, file) -> str:
+    def _load_from_file(self, file: str) -> str:
         """
         (Private function)
         Load the extracted text from the file
@@ -119,7 +100,7 @@ class BaseModel:
         return text
 
 
-    def _get_save_file_name(self, save_file_name) -> str:
+    def _get_save_file_name(self, save_file_name: str) -> str:
         """
         (Private function)
         Get the ideal name for the save file. This function checks for any duplicates and adds version numbers
@@ -135,7 +116,7 @@ class BaseModel:
 
         # Load all files under save path as a hashset
         files = {file for file in os.listdir(self.save_path) if os.path.isfile(os.path.join(self.save_path, file))}
-        print(files)
+        
         id = 0
         final_save_file_name = save_file_name
 
@@ -148,20 +129,20 @@ class BaseModel:
         return final_save_file_name
 
 
-    def extract_text(self, images: list, debug: bool = False) -> str:
+    def extract_text(self, images: list[str], debug: bool = False) -> str:
         """
         Iterate through all images and extract the text from the image, saving at intervals.
         Combine all extracted text into one long text
 
         Parameters:
-            images: a list of all images to extract from
-            debug: used when debugging. Prints debugPrint() messages
+            images (list): a list of all images to extract from
+            debug (bool): used when debugging. logs debug messages
         
         Returns:
-            joined_text: a combined form of all the text extracted from the images.
+            joined_text (str): a combined form of all the text extracted from the images.
         """
-
-        debugPrint("Batching Images...", debug)
+        if debug:
+            logger.debug("Batching Images...")
 
 
         batch_texts = []
@@ -172,74 +153,64 @@ class BaseModel:
         for ind, batch in enumerate(tqdm(batched_images, desc="Processing Batches", unit="batch")):
             #print(f">>> Batch {ind + 1} starting...")
 
-            debugPrint("Extracting text from image", debug)
+            if debug:
+                logger.debug("Extracting text from image")
             image_conversation = self.prompt.getImagePrompt()
             extracted_text = self.model(image_conversation, batch, debug)
-
-            debugPrint("\tJoining Outputs...", debug)
+            
+            if debug:
+                logger.debug("\tJoining Outputs...")
             # Join all the text and append it together with previous batches
             batch_texts.append("\n\n".join(extracted_text))
 
             if (ind + 1) % self.SAVE_TEXT_INTERVAL == 0:
-                debugPrint("\tStoring at interval...", debug)
+                if debug:
+                    logger.debug("\tStoring at interval...")
                 self._save_to_file(self.TEMP_TEXT_FILE, "\n\n".join(batch_texts))
 
-            debugPrint("\tBatch Finished", debug)
+            if debug:
+                logger.debug("\tBatch Finished")
 
         return "\n\n".join(batch_texts)
+    
 
-    def __call__(self,
-                 images: list,
-                 text_file: str = None,
-                 save: bool = False,
-                 save_file_name: str = "sample",
-                 max_chunk_size: int = 3000,
-                 debug: bool = False) -> dict:
+    def get_extracted_text(self, images: list[str], text_file: Optional[str] = None, debug: bool = False) -> str:
         """
-        The main pipeline that extracts text from the images, seperates them into text blocks and organises them into JSON objects
+        Extracting text from image or loading a temp file
 
         Paramaters:
             images (list): a list of images to extract text from
             text_file (str): the path to the text file containing the pre-extracted text to use
-            save (bool): Boolean to determine whether to save the outputs or not
-            save_file_name (str): the name of the save files
-            debug (bool): used when debugging. Prints debugPrint() messages
+            debug (bool): used when debugging. logs debug messages
 
         Returns:
-            organised_blocks (dict): Extracted data organised in a JSON format
+            extracted_text (str): Extracted text as a long string
         """
-
-        self.info()
-        # print(save_file_name)
-        save_file_name = self._get_save_file_name(save_file_name)
-        # print(save_file_name)
-        json_file_name = save_file_name + ".json"
-        error_text_file = os.path.join(self.save_path, save_file_name + "_errors.txt")
-        #===================================================
-        # Extracting text from image or loading a temp file
-        #===================================================
+        
         if text_file is None:
-            print("Extracting Text from Images")
+            logger.info("Extracting Text from Images")
             extracted_text = self.extract_text(images, debug)
         else:
-            print("Skipping extraction...")
-            print("Loading text from provided extracted text file")
+            logger.info("Skipping extraction...")
+            logger.info(f"Loading text from provided extracted text file `{text_file}`")
             with open(text_file, "r") as file_:
                 extracted_text = file_.read()
+        
+        return extracted_text
 
-        #===================================================
-        # Converting the extracted text into text blocks defined by divisions and families
-        #===================================================
-        print("Converting extracted text into Text Blocks")
-        text_blocks = convertToTextBlocks(extracted_text, divisions=self.prompt.get_divisions(), max_chunk_size=max_chunk_size)
+    def inference(self, 
+                  text_blocks: dict, 
+                  save_file_name: str, 
+                  json_file_name: Optional[str] = None, 
+                  save: bool = False, 
+                  debug: bool = False) -> dict:
 
-
-        #===================================================
-        # Performing inference on the text blocks to generate JSON files
-        #===================================================
+        
+        json_file_name = save_file_name + ".json" if json_file_name is None else json_file_name
+        error_text_file = os.path.join(self.save_path, save_file_name + "_errors.txt")
         organised_blocks = {}
 
-        print("Organising text into JSON blocks")
+        logging.info("Organising text into JSON blocks")
         # Add tqdm for the outer loop over divisions
         for division, families in text_blocks.items():
             save_counter = 0
@@ -256,15 +227,10 @@ class BaseModel:
                 # Json verified is boolean to check if the integrity of the JSON output is valid
                 # Json loaded is the post-processed form of the text into dict (removing and cleaning done)
                 json_verified, json_loaded = verify_json(json_text[0], clean=True, out=True)
-                # Start a while loop for a count of timeout
-                #count = 0
-                #while count < self.timeout:
-                    #print("="*10)
-                    # If not verified
-                    # TODO: Rework the JSON error fixing code
+                
                 if not(json_verified):
-                    print("Error Noticed in JSON")
-                    print("Fixing Error")
+                    logging.info("Error Noticed in JSON")
+                    logging.info("Fixing Error")
                     error_fix_prompt = self.prompt.getJsonPrompt(json_text[0])
                     # print(error_fix_prompt)
                     json_text = self.model(error_fix_prompt, None, debug)
@@ -281,25 +247,59 @@ class BaseModel:
                         organised_blocks[division].append(json_loaded)
                     else:
                         organised_blocks[division] = [json_loaded]
-                    #break
                                         
-                #count += 1
-                #time.sleep(1) # Adding a delay to not overwhelm the system
-                print("=" * 10)
                 save_counter += 1
-                print(organised_blocks)
                 # save to file after 10 iterations
                 if save and (save_counter == 10):
                     save_counter = 0
                     save_json(organised_blocks, json_file_name, self.save_path)
                     save_csv_from_json(os.path.join(self.save_path, json_file_name), save_file_name, self.save_path)
+        
+        return organised_blocks
 
-        #===================================================
-        # Saving the outputs if prompted
-        #===================================================        
+    def __call__(self,
+                 images: list[str],
+                 text_file: Optional[str] = None,
+                 save: bool = False,
+                 save_file_name: str = "sample",
+                 max_chunk_size: int = 3000,
+                 debug: bool = False) -> dict:
+        """
+        The main pipeline that extracts text from the images, seperates them into text blocks and organises them into JSON objects
+
+        Paramaters:
+            images (list): a list of images to extract text from
+            text_file (str): the path to the text file containing the pre-extracted text to use
+            save (bool): Boolean to determine whether to save the outputs or not
+            save_file_name (str): the name of the save files
+            debug (bool): used when debugging. logs debug messages
+
+        Returns:
+            organised_blocks (dict): Extracted data organised in a JSON format
+        """
+
+        self.info()
+        save_file_name = self._get_save_file_name(save_file_name)
+        json_file_name = save_file_name + ".json"
+        
+        logging.info(f"""Saving data into following files at {self.save_path}: \n
+                     \t==> JSON file: {save_file_name}.json\n
+                     \t==> CSV file: {save_file_name}.csv
+                     \t==> Errors: {save_file_name}_errors.txt
+                     """)
+        # Get the extracted text whether from file or from images
+        extracted_text = self.get_extracted_text(images, text_file, debug)
+        
+        # Converting the extracted text into text blocks defined by divisions and families
+        logging.info("Converting extracted text into Text Blocks")
+        text_blocks = convertToTextBlocks(extracted_text, divisions=self.prompt.get_divisions(), max_chunk_size=max_chunk_size)
+
+        # Performing inference on the text blocks to generate JSON files
+        organised_blocks = self.inference(text_blocks, save_file_name, json_file_name, save, debug)
+        
+        # Saving the outputs if prompted       
         if save:
             save_json(organised_blocks, json_file_name, self.save_path)
             save_csv_from_json(os.path.join(self.save_path, json_file_name), save_file_name, self.save_path)
         
         return organised_blocks
-

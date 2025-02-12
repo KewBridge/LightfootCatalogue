@@ -1,10 +1,13 @@
 # Python Modules
-
+import logging
 import os
 import time
 
 # Custom Modules
 import lib.config as config
+
+# Logging
+logger = logging.getLogger(__name__)
 
 class DataReader:
 

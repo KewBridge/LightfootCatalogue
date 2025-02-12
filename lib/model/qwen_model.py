@@ -1,13 +1,16 @@
-# Python Modules 
+# Python Modules
+from typing import Optional, Union
+import logging
 from PIL import Image
 import torch
-from transformers import Qwen2VLForConditionalGeneration, AutoTokenizer, AutoProcessor
-from torch.cuda.amp import autocast
+from transformers import Qwen2VLForConditionalGeneration, AutoProcessor
+from torch.amp import autocast
 
 # Custom Modules
 import lib.config as config
-from lib.utils.utils import debugPrint
 
+
+logger = logging.getLogger(__name__)
 
 class QWEN_Model:
 
@@ -43,6 +46,7 @@ class QWEN_Model:
         # Load processor
         self.processor = self._load_processor()
 
+
     def _load_model(self) -> object:
         """
         Load the Qwen2-VL-7B pretrained model, automatically setting to available device (GPU is given priority if it exists).
@@ -67,8 +71,9 @@ class QWEN_Model:
         processor = AutoProcessor.from_pretrained(self.MODEL_NAME)
     
         return processor
+    
 
-    def __call__(self, conversation: list, images:list=None, debug: bool=False) -> list:
+    def __call__(self, conversation: list, images:list[str]=None, debug: bool=False) -> list:
         """
         Performs inference on the given set of images and/or text.
 
@@ -85,7 +90,8 @@ class QWEN_Model:
         """
 
         # Process the input conversation
-        debugPrint("\tProcessing text prompts...", debug)
+        if debug:
+            logger.debug("\tProcessing text prompts...")
         text_prompt = self.processor.apply_chat_template(conversation, add_generation_prompt=True)
         
         if images is None:
@@ -95,40 +101,47 @@ class QWEN_Model:
             # Get N text_prompts for equal number of images
             text_prompts = [text_prompt] * self.batch_size
 
-            debugPrint("\tReading Images (If available)...", debug)
+            if debug:
+                logger.debug("\tReading Images (If available)...")
             # Open the images from the paths if available
             images_opened = [Image.open(image) for image in images]
 
         # Preprocess the inputs
-        debugPrint("\tProcessing inputs...", debug)
+        if debug:
+            logger.debug("\tProcessing inputs...")
         inputs = self.processor(
             text=text_prompts, images=images_opened, padding=True, return_tensors="pt"
         )
 
-        print(f"Length of input conv:")
-        print(len(text_prompt))
-        debugPrint("\tMoving inputs to gpu...", debug)
+
+        if debug:
+            logger.debug("\tMoving inputs to gpu...")
         # Move inputs to device (model automatically moves)
-        inputs = inputs.to("cuda" if torch.cuda.is_available() else "cpu") # 
+        inputs = inputs.to(self.device.type) # 
     
         # Inference
-        debugPrint("\tPerforming inference...", debug)
-        with autocast(self.device.type == "cuda"): # Enabling mixed precision to reduce computational load where possible
+        if debug:
+            logger.debug("\tPerforming inference...")
+        
+        with autocast("cuda", enabled=self.device.type == "cuda"): # Enabling mixed precision to reduce computational load where possible
             output_ids = self.model.generate(**inputs, max_new_tokens=self.max_new_tokens)
 
         # Increasing the number of new tokens, increases the number of words recognised by the model with trade-off of speed
         # 1024 new tokens was capable of reading upto 70% of the input image (pg132_a.jpeg)
-        debugPrint("\tInference Finished", debug)
+        if debug:
+            logger.debug("\tInference Finished")
         output_ids = output_ids.cpu()
 
-        debugPrint("\tSeperating Ids...", debug)
+        if debug:
+            logger.debug("\tSeperating Ids...")
         generated_ids = [
             output_ids[len(input_ids) :]
             for input_ids, output_ids in zip(inputs.input_ids, output_ids)
         ]
 
         # Using the preprocessor to decode the numerical values into tokens (words)
-        debugPrint("\tDecoding Ids...", debug)
+        if debug:
+            logger.debug("\tDecoding Ids...")
         output_text = self.processor.batch_decode(
             generated_ids, skip_special_tokens=True, clean_up_tokenization_spaces=True
         )

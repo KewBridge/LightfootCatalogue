@@ -1,0 +1,212 @@
+Activated Environment
+/mnt/apps/users/ikarunak/conda/envs/lcat-step/lib/python3.11/site-packages/transformers/generation/configuration_utils.py:628: UserWarning: `do_sample` is set to `False`. However, `temperature` is set to `0.6` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `temperature`. This was detected when initializing the generation config instance, which means the corresponding file may hold incorrect parameterization and should be fixed.
+  warnings.warn(
+/mnt/apps/users/ikarunak/conda/envs/lcat-step/lib/python3.11/site-packages/transformers/generation/configuration_utils.py:628: UserWarning: `do_sample` is set to `False`. However, `temperature` is set to `0.6` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `temperature`.
+  warnings.warn(
+`Qwen2VLRotaryEmbedding` can now be fully parameterized by passing the model config through the `config` argument. All other arguments will be removed in v4.46
+Setting OS envrionmnet variables
+GPU Status: True
+>>> Starting...
+Namespace(images='./images/lightfootcat', prompt='./prompts/ost_prompt.yaml', savefilename='lightfootcat', temp_text=None, max_tokens=100000, max_chunk_size=3000, save_path='./outputs/lightfootcat_with_extract/', batch=1, crop=True, debug=False)
+>>> Loading Images...
+>>> Loading Model...
+Loading checkpoint shards:   0%|          | 0/5 [00:00<?, ?it/s]Loading checkpoint shards:  20%|██        | 1/5 [00:05<00:20,  5.22s/it]Loading checkpoint shards:  40%|████      | 2/5 [00:08<00:11,  3.81s/it]Loading checkpoint shards:  60%|██████    | 3/5 [00:10<00:05,  2.97s/it]Loading checkpoint shards:  80%|████████  | 4/5 [00:11<00:02,  2.47s/it]Loading checkpoint shards: 100%|██████████| 5/5 [00:12<00:00,  1.79s/it]Loading checkpoint shards: 100%|██████████| 5/5 [00:12<00:00,  2.46s/it]
+Model: qwen_model | Batch Size: 1, Max Tokens: 100000, Temperature: 0.6
+set()
+Extracting Text from Images
+Processing Batches:   0%|          | 0/86 [00:00<?, ?batch/s]/mnt/shared/scratch/ikarunak/private/LightfootCatalogue/lib/model/qwen_model.py:116: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with autocast(self.device.type == "cuda"): # Enabling mixed precision to reduce computational load where possible
+Processing Batches:   1%|          | 1/86 [00:57<1:21:16, 57.37s/batch]Processing Batches:   2%|▏         | 2/86 [01:59<1:24:21, 60.25s/batch]Processing Batches:   3%|▎         | 3/86 [03:05<1:27:08, 62.99s/batch]Processing Batches:   5%|▍         | 4/86 [03:46<1:14:06, 54.22s/batch]Processing Batches:   6%|▌         | 5/86 [04:50<1:18:03, 57.82s/batch]Processing Batches:   7%|▋         | 6/86 [06:06<1:24:57, 63.71s/batch]Processing Batches:   8%|▊         | 7/86 [07:13<1:25:26, 64.90s/batch]Processing Batches:   9%|▉         | 8/86 [07:55<1:14:58, 57.67s/batch]Processing Batches:  10%|█         | 9/86 [09:01<1:17:07, 60.10s/batch]Processing Batches:  12%|█▏        | 10/86 [10:06<1:18:08, 61.69s/batch]Processing Batches:  13%|█▎        | 11/86 [11:09<1:17:52, 62.30s/batch]Processing Batches:  14%|█▍        | 12/86 [12:15<1:17:57, 63.21s/batch]Processing Batches:  15%|█▌        | 13/86 [13:19<1:17:11, 63.45s/batch]Processing Batches:  16%|█▋        | 14/86 [14:23<1:16:29, 63.74s/batch]Processing Batches:  17%|█▋        | 15/86 [15:30<1:16:29, 64.64s/batch]Processing Batches:  19%|█▊        | 16/86 [16:41<1:17:37, 66.54s/batch]Processing Batches:  20%|█▉        | 17/86 [17:45<1:15:35, 65.74s/batch]Processing Batches:  21%|██        | 18/86 [18:50<1:14:24, 65.66s/batch]Processing Batches:  22%|██▏       | 19/86 [19:56<1:13:14, 65.59s/batch]Processing Batches:  23%|██▎       | 20/86 [21:05<1:13:22, 66.71s/batch]Processing Batches:  24%|██▍       | 21/86 [22:05<1:10:13, 64.82s/batch]Processing Batches:  26%|██▌       | 22/86 [23:18<1:11:32, 67.07s/batch]Processing Batches:  27%|██▋       | 23/86 [24:26<1:10:53, 67.52s/batch]Processing Batches:  28%|██▊       | 24/86 [25:30<1:08:35, 66.38s/batch]Processing Batches:  29%|██▉       | 25/86 [26:28<1:05:05, 64.02s/batch]Processing Batches:  30%|███       | 26/86 [27:40<1:06:20, 66.35s/batch]Processing Batches:  31%|███▏      | 27/86 [28:43<1:04:02, 65.13s/batch]Processing Batches:  33%|███▎      | 28/86 [29:51<1:03:50, 66.04s/batch]Processing Batches:  34%|███▎      | 29/86 [30:28<54:36, 57.49s/batch]  Processing Batches:  35%|███▍      | 30/86 [31:09<48:57, 52.45s/batch]Processing Batches:  36%|███▌      | 31/86 [32:16<52:13, 56.97s/batch]Processing Batches:  37%|███▋      | 32/86 [33:29<55:24, 61.56s/batch]Processing Batches:  38%|███▊      | 33/86 [34:37<56:07, 63.53s/batch]Processing Batches:  40%|███▉      | 34/86 [35:46<56:36, 65.32s/batch]Processing Batches:  41%|████      | 35/86 [36:47<54:24, 64.00s/batch]Processing Batches:  42%|████▏     | 36/86 [37:51<53:09, 63.79s/batch]Processing Batches:  43%|████▎     | 37/86 [38:56<52:34, 64.37s/batch]Processing Batches:  44%|████▍     | 38/86 [39:58<50:49, 63.53s/batch]Processing Batches:  45%|████▌     | 39/86 [41:05<50:41, 64.72s/batch]Processing Batches:  47%|████▋     | 40/86 [42:16<51:03, 66.61s/batch]Processing Batches:  48%|████▊     | 41/86 [43:14<48:03, 64.07s/batch]Processing Batches:  49%|████▉     | 42/86 [44:27<48:47, 66.53s/batch]Processing Batches:  50%|█████     | 43/86 [45:41<49:15, 68.74s/batch]Processing Batches:  51%|█████     | 44/86 [46:52<48:37, 69.47s/batch]Processing Batches:  52%|█████▏    | 45/86 [47:55<46:15, 67.69s/batch]Processing Batches:  53%|█████▎    | 46/86 [49:02<44:52, 67.32s/batch]Processing Batches:  55%|█████▍    | 47/86 [49:43<38:42, 59.54s/batch]Processing Batches:  56%|█████▌    | 48/86 [50:56<40:19, 63.66s/batch]Processing Batches:  57%|█████▋    | 49/86 [51:58<38:54, 63.10s/batch]Processing Batches:  58%|█████▊    | 50/86 [53:05<38:27, 64.09s/batch]Processing Batches:  59%|█████▉    | 51/86 [53:59<35:43, 61.24s/batch]Processing Batches:  60%|██████    | 52/86 [55:13<36:52, 65.08s/batch]Processing Batches:  62%|██████▏   | 53/86 [56:16<35:20, 64.24s/batch]Processing Batches:  63%|██████▎   | 54/86 [57:23<34:47, 65.24s/batch]Processing Batches:  64%|██████▍   | 55/86 [58:33<34:25, 66.64s/batch]Processing Batches:  65%|██████▌   | 56/86 [59:21<30:30, 61.02s/batch]Processing Batches:  66%|██████▋   | 57/86 [1:00:35<31:26, 65.05s/batch]Processing Batches:  67%|██████▋   | 58/86 [1:01:43<30:46, 65.93s/batch]Processing Batches:  69%|██████▊   | 59/86 [1:02:56<30:31, 67.84s/batch]Processing Batches:  70%|██████▉   | 60/86 [1:04:09<30:05, 69.44s/batch]Processing Batches:  71%|███████   | 61/86 [1:05:25<29:45, 71.41s/batch]Processing Batches:  72%|███████▏  | 62/86 [1:06:37<28:39, 71.66s/batch]Processing Batches:  73%|███████▎  | 63/86 [1:07:54<28:07, 73.36s/batch]Processing Batches:  74%|███████▍  | 64/86 [1:09:07<26:45, 72.97s/batch]Processing Batches:  76%|███████▌  | 65/86 [1:10:16<25:09, 71.87s/batch]Processing Batches:  77%|███████▋  | 66/86 [1:11:33<24:31, 73.59s/batch]Processing Batches:  78%|███████▊  | 67/86 [1:12:46<23:10, 73.18s/batch]Processing Batches:  79%|███████▉  | 68/86 [1:13:47<20:53, 69.64s/batch]Processing Batches:  80%|████████  | 69/86 [1:15:01<20:07, 71.04s/batch]Processing Batches:  81%|████████▏ | 70/86 [1:16:10<18:43, 70.20s/batch]Processing Batches:  83%|████████▎ | 71/86 [1:17:06<16:30, 66.01s/batch]Processing Batches:  84%|████████▎ | 72/86 [1:18:22<16:06, 69.01s/batch]Processing Batches:  85%|████████▍ | 73/86 [1:19:31<14:57, 69.01s/batch]Processing Batches:  86%|████████▌ | 74/86 [1:20:43<13:58, 69.85s/batch]Processing Batches:  87%|████████▋ | 75/86 [1:21:52<12:46, 69.66s/batch]Processing Batches:  88%|████████▊ | 76/86 [1:23:03<11:41, 70.16s/batch]Processing Batches:  90%|████████▉ | 77/86 [1:24:07<10:14, 68.30s/batch]Processing Batches:  91%|█████████ | 78/86 [1:24:49<08:03, 60.45s/batch]Processing Batches:  92%|█████████▏| 79/86 [1:25:59<07:21, 63.11s/batch]Processing Batches:  93%|█████████▎| 80/86 [1:27:13<06:39, 66.53s/batch]Processing Batches:  94%|█████████▍| 81/86 [1:28:21<05:35, 67.05s/batch]Processing Batches:  95%|█████████▌| 82/86 [1:29:22<04:19, 65.00s/batch]Processing Batches:  97%|█████████▋| 83/86 [1:29:52<02:43, 54.60s/batch]Processing Batches:  98%|█████████▊| 84/86 [1:30:59<01:56, 58.46s/batch]Processing Batches:  99%|█████████▉| 85/86 [1:31:48<00:55, 55.37s/batch]This is a friendly reminder - the current text generation call will exceed the model's predefined maximum length (32768). Depending on the model, you may observe exceptions, performance degradation, or nothing at all.
+Processing Batches: 100%|██████████| 86/86 [2:13:52<00:00, 796.21s/batch]Processing Batches: 100%|██████████| 86/86 [2:13:52<00:00, 93.41s/batch] 
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Length of input conv:
+287
+Converting extracted text into Text Blocks
+Traceback (most recent call last):
+  File "/mnt/shared/scratch/ikarunak/private/LightfootCatalogue/run.py", line 89, in <module>
+    main()
+  File "/mnt/shared/scratch/ikarunak/private/LightfootCatalogue/run.py", line 84, in main
+    _ = model(images, args.temp_text, save=True, save_file_name=args.savefilename)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/shared/scratch/ikarunak/private/LightfootCatalogue/lib/model/base_model.py", line 234, in __call__
+    text_blocks = convertToTextBlocks(extracted_text, divisions=self.prompt.get_divisions(), max_chunk_size=max_chunk_size)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/shared/scratch/ikarunak/private/LightfootCatalogue/lib/utils/text_utils.py", line 141, in convertToTextBlocks
+    splits[division] = split_family(division_text, max_chunk_size)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/shared/scratch/ikarunak/private/LightfootCatalogue/lib/utils/text_utils.py", line 51, in split_family
+    small_chunks = split_into_smaller_chunks(family, max_chunk_size)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/shared/scratch/ikarunak/private/LightfootCatalogue/lib/utils/text_utils.py", line 61, in split_into_smaller_chunks
+    family_name, text_block = list(
+    ^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: not enough values to unpack (expected 2, got 1)
