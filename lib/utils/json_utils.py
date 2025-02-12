@@ -168,33 +168,3 @@ def save_jsons(image_json_pairs: list, save_path: str = None):
         
         save_json(image, text, save_path)
 
-
-def json_to_csv(json_file: dict) -> pd.DataFrame:
-    
-    tabular = pd.DataFrame(columns=["family", "species", "folder", "contents"])
-
-    try:
-        for family, f_val in json_file.items():
-            try:
-                for species, s_val in f_val.items():
-                    try:
-                        for folder_name in s_val['folder_contents']:
-                            if isinstance(folder_name, str):
-                                tabular.loc[len(tabular)] = [family, species, folder_name, None]
-                            else:
-                                if "contents" in folder_name:
-                                    for content in folder_name['contents']:
-                                        tabular.loc[len(tabular)] = [family, species, folder_name['folder'], content]
-                                else:
-                                    tabular.loc[len(tabular)] = [family, species, folder_name['folder'], None]
-                
-                            if "contents" in s_val and tabular.loc[len(tabular)-1]["contents"] is None:
-                                tabular.loc[len(tabular)-1, "contents"] = s_val["contents"][0]
-                    except:
-                        tabular.loc[len(tabular)] = [family, species, None, None]
-            except:
-                tabular.loc[len(tabular)] = [family, None, None, None]
-    except:
-        tabular.loc[len(tabular)] = [None, None, None, None]
-
-    return tabular
