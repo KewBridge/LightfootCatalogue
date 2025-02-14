@@ -1,5 +1,4 @@
 # Python Modules
-from typing import Optional, Union
 import logging
 from PIL import Image
 import torch

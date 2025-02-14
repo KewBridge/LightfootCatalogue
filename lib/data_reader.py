@@ -2,17 +2,18 @@
 import logging
 import os
 import time
+from typing import Optional
 
 # Custom Modules
 import lib.config as config
-
+from lib.pages.image_processor import ImageProcessor
 # Logging
 logger = logging.getLogger(__name__)
 
 class DataReader:
 
     CROPPED_DIR_NAME="cropped"
-    ALLOWED_EXT=["jpeg", "png", "jpg", "pdf"]
+    ALLOWED_EXT=["jpeg", "png", "jpg", ]#"pdf"]
 
     def __init__(self,
                  data_path: str,
@@ -20,10 +21,10 @@ class DataReader:
                  crop: bool=False,
                  pad: float=100.0,
                  resize_factor: float=0.4,
-                 remove_area_perc: float=0.01
-                 save_file_name: str=None
-             ):
-
+                 remove_area_perc: float=0.01,
+                 middle_margin_perc: float=0.20,
+                 save_file_name: Optional[str]=None
+                 ):
         """
           Data reader class used to read and extract text from any source of input (image or pdfs)
 
@@ -41,16 +42,14 @@ class DataReader:
         """
         self.data_path = data_path
         self.crop = crop
-        self.pad = pad
-        self.resize_factor = resize_factor
-        self.remove_area_perc = remove_area_perc
         self.save_file_name = save_file_name
 
-
+        self.image_processor = ImageProcessor(pad,resize_factor, remove_area_perc, middle_margin_perc)
+        self.extraction_model = extraction_model
         # Loading all files under directory
-        self.data_files = self.get_data()        
+        self.data_files = self.load_files()        
 
-    def load_files(self, path: str=None) -> list:
+    def load_files(self, path: Optional[str]=None) -> list[str]:
         """
         Load (Unravel) files (image or pdfs) given a path to a directory or single image
 
@@ -88,20 +87,19 @@ class DataReader:
         return all_files
 
     
-    def get_data(self):
+    def get_data(self) -> list[str]:
 
-        
+        logger.info("Gathering input data")
         cropped_dir = os.path.join(self.data_path, self.CROPPED_DIR_NAME)
     
         if self.crop and not(os.path.isdir(cropped_dir)):
             images = sorted(self.load_files())
-            print(">>> Cropping Images...")
-            images = roi.cropAllImages(images, self.pad, self.resize_factor, 
-                  self.remove_area_perc, self.save_file_name)
+            logger.info("Cropping Images...")
+            images = self.image_processor(images)
         elif os.path.isdir(cropped_dir):
             images = self.load_files(cropped_dir)
         else:
-            images = self.load_files(image_path)
+            images = self.load_files()
 
         # return the images sorted wrt to filename
         return sorted(images)
