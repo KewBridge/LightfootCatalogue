@@ -127,7 +127,7 @@ class ImageProcessor:
 
         return cropped
 
-    def crop_image(self, path: str, save_file_name: Optional[str] = None) -> Tuple[List[np.ndarray], List[str]]:
+    def crop_image(self, path: str, save_file_name: Optional[str] = None) -> tuple[list[np.ndarray], list[str]]:
         """
         Crop the image, pad it and save the resized image
         
@@ -170,7 +170,7 @@ class ImageProcessor:
 
         return split_imgs, saved_paths
 
-    def crop_all_images(self, images: List[str], save_file_name: Optional[str] = None) -> List[str]:
+    def __call__(self, images: list[str], save_file_name: Optional[str] = None) -> list[str]:
         """
         Crop the image, pad it and save the resized image
 
@@ -245,7 +245,7 @@ class ImageProcessor:
 
         return middle_lines
 
-    def split_image(self, image: Union[str, np.ndarray], name: str = None) -> Tuple[Optional[np.ndarray], Optional[np.ndarray]]:
+    def split_image(self, image: Union[str, np.ndarray], name: str = None) -> tuple[Optional[np.ndarray], Optional[np.ndarray]]:
         """
         Split the image down the presumed page break using detected vertical lines.
         
@@ -284,7 +284,7 @@ class ImageProcessor:
             print("\tFalling back to threshold-based splitting.")
             return self.split_image_with_thresholding(image, name)
 
-    def split_image_with_thresholding(self, image: Union[str, np.ndarray], name: str = None) -> Tuple[Optional[np.ndarray], Optional[np.ndarray]]:
+    def split_image_with_thresholding(self, image: Union[str, np.ndarray], name: str = None) -> tuple[Optional[np.ndarray], Optional[np.ndarray]]:
         """
         Split the image using thresholding and vertical projection if Hough-based detection fails.
         

@@ -1,19 +1,18 @@
 import os
+import logging
 
+logger = logging.getLogger(__name__)
 # OS setting for Pytorch dynamic GPU memory allocation
-print("Setting OS envrionmnet variables")
+logger.info("Setting OS envrionmnet variables")
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 os.environ["TORCH_USE_CUDA_DSA"] = "1"
 
 import argparse
-import time
-from lib.config import CROPPED_DIR_NAME
-import lib.utils.utils as utils
-import lib.pages.roi as roi
+from lib.data_reader import DataReader
 from lib.model.base_model import BaseModel
 from torch.cuda import is_available
 
-print(f"GPU Status: {is_available()}")
+logger.info(f"GPU Status: {is_available()}")
 
 def parse_args():
     """
@@ -39,50 +38,38 @@ def parse_args():
 
     return args
 
-def get_images(image_path: str, crop: bool = True, pad: float = 100.0, resize_factor: float = 0.4, remove_area_perc: float = 0.01, save_file_name: str = None):
-    print(">>> Loading Images...")
-    
-
-    cropped_dir = os.path.join(image_path, CROPPED_DIR_NAME)
-    
-    if crop and not(os.path.isdir(cropped_dir)):
-        images = sorted(utils.load_images(image_path))
-        print(">>> Cropping Images...")
-        images = roi.cropAllImages(images, pad, resize_factor, 
-              remove_area_perc, save_file_name)
-    elif os.path.isdir(cropped_dir):
-        images = utils.load_images(cropped_dir)
-    else:
-        images = utils.load_images(image_path)
-
-    # return the images sorted wrt to filename
-    return sorted(images)
-
 def main():
     """
     Main function to perform the operations
     """
-    print(">>> Starting...")
+    logger.info(">>> Starting...")
     
     args = parse_args()
-    print(args)
+    logger.info(f"Input arguments: {args}")
+
+    # Load model
+    logger.info(">>> Loading Model...")
+
+    batch = int(args.batch) if (args.batch is not None) else None
+    max_tokens = int(args.max_tokens) if (args.max_tokens is not None) else None
+
+    model = BaseModel("qwen_model", prompt=args.prompt, max_new_tokens = max_tokens, 
+                      batch_size=batch, temperature=0.6, save_path=args.save_path)
+    
+    # Intialise DataReader
+    data_reader = DataReader(args.images,model,args.crop,
+                             pad = 100.0, resize_factor = 0.4, remove_area_perc = 0.01, save_file_name = None)
     # Load a list of all image paths (with their absolute path)
-    images = get_images(args.images, args.crop)
+    images = data_reader.get_data()
 
     if args.debug:
         images = images[:5]
     
-    batch = int(args.batch) if (args.batch is not None) else None
-    max_tokens = int(args.max_tokens) if (args.max_tokens is not None) else None
-    
-    # Load model
-    print(">>> Loading Model...")
-    model = BaseModel("qwen_model", prompt=args.prompt, max_new_tokens = max_tokens, batch_size=batch, temperature=0.6, save_path=args.save_path)
     #qwen_model = model.QWEN_model(prompt= args.prompt, batch_size = batch, max_new_tokens = max_tokens, save_path=args.save_path)
     
     # Perform inference and save the jsons
     _ = model(images, args.temp_text, save=True, save_file_name=args.savefilename)
-    print(">>> Inference Finished")
+    logger.info(">>> Inference Finished")
     
 
 if __name__ == "__main__":

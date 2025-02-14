@@ -8,5 +8,5 @@
 #SBATCH --export=all
 
 source activate lcat-step
-echo "Activated Environment"
+echo ">>> Activated Environment <<<"
 python run.py ./images/lightfootcat ./prompts/ost_prompt.yaml lightfootcat  --save-path ./outputs/lightfootcat_with_extract/

@@ -1,6 +1,32 @@
 import re
 
 
+FAMILY_REGEX = re.compile(r"""
+                          (?=(?<!\S)              # Assert position is at start-of-string or preceded by whitespace
+                          [\*"]*                # Optional leading asterisks or quotes
+                          (?:
+                            [A-Z]+ACEAE        # All-uppercase families ending with ACEAE (any number of letters before ACEAE)
+                            |
+                            [A-Z][a-z]+aceae    # Normal mixed-case families ending with 'aceae' (e.g. Celastraceae)
+                            |
+                            (?=[A-Za-z]*[A-Z])   # Ensure at least one uppercase letter exists in the following synonym
+                              (?:
+                                [Cc][Oo][Mm][Pp][Oo][Ss][Ii][Tt][Aa][Ee]       |   # Compositae
+                                [Cc][Rr][Uu][Cc][Ii][Ff][Ee][Rr][Aa][Ee]       |   # Cruciferae
+                                [Gg][Rr][Aa][Mm][Ii][Nn][Ee][Aa][Ee]           |   # Gramineae
+                                [Gg][Uu][Tt][Tt][Ii][Ff][Ee][Rr][Aa][Ee]       |   # Guttiferae
+                                [Ll][Aa][Bb][Ii][Aa][Tt][Ee][Ee]               |   # Labiatae
+                                [Ll][Ee][Gg][Uu][Mm][Ii][Nn][Oo][Ss][Aa][Ee]   |   # Leguminosae
+                                [Pp][Aa][Ll][Mm][Aa][Ee]                       |   # Palmae
+                                [Uu][Mm][Bb][Ee][Ll][Ll][Ii][Ff][Ee][Rr][Aa][Ee] |   # Umbelliferae
+                                [Pp][Aa][Pp][Ii][Ll][Ii][Oo][Nn][Aa][Cc][Ee][Ee]    # Papilionaceae
+                              )
+                          )
+                          [\*"]*                # Optional trailing asterisks or quotes
+                          (?!\S)                # Assert that the match is followed by whitespace or end-of-string
+                        )
+                        """, re.VERBOSE)
+
 def clean_text(text):
 
     result = re.sub(r"\*\*(.+?)\*\*", r"\1", text, flags=re.MULTILINE) # Remove any markdown (bold) on strings
@@ -28,16 +54,20 @@ def split_division(text, divisions=["Dicotyledones", "Monocotyledones", "Pterido
     return list(zip(result[::2], result[1::2]))
 
 def find_family(text):
-    regex = re.compile("\n\n(?=[A-Z ]+\n|.+?[aA][cC][eE][aA][eE])")
+    # regex = re.compile("\n+(?=[A-Z ]+\n|.+?[aA][cC][eE][aA][eE])")
 
+    regex = FAMILY_REGEX
+    
     result = re.findall(regex, text)
 
     return list(filter(None,result))
 
 def split_family(text, max_chunk_size=3000):
 
-    regex = re.compile("\n\n(?=[A-Z ]+\n|.+?[aA][cC][eE][aA][eE])")
+    # regex = re.compile("\n+(?=[A-Z ]+\n|.+?[aA][cC][eE][aA][eE])")
 
+    regex = FAMILY_REGEX
+    
     result = re.split(regex, text)
     
     final_list = []
@@ -58,11 +88,19 @@ def split_family(text, max_chunk_size=3000):
 def split_into_smaller_chunks(large_block, max_chunk_size=3000):
 
     # Split the large block into family name at the start and the rest
-    family_name, text_block = list(
-                                filter(None, 
-                                       re.split(r"^([A-Z]+)", large_block)
-                                       )
-                                )
+    try:
+        family_name, text_block = list(
+                                    filter(None, 
+                                           re.split(r"^([A-Z]+)", large_block)
+                                           )
+                                    )
+        print("="*10)
+        print(large_block)
+        print("="*10)
+    except:
+        print(">"*10)
+        print(repr(large_block))
+        print(">"*10)
     #print(f"====={family_name}=====")
 
     #if len(family_name) < 5:
