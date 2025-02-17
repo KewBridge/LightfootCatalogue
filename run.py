@@ -8,7 +8,7 @@ os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 os.environ["TORCH_USE_CUDA_DSA"] = "1"
 
 import argparse
-from lib.data_reader import DataReader
+from lib.data_processing.data_reader import DataReader
 from lib.model.base_model import BaseModel
 from torch.cuda import is_available
 
