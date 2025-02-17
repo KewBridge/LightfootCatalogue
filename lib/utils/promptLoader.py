@@ -1,6 +1,6 @@
 import os
 import yaml
-
+from typing import Optional, Union
 
 class PromptLoader:
     
@@ -22,10 +22,27 @@ class PromptLoader:
         
         self.yaml_prompt = self.load()
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: str) -> Union[int, str, list]:
+        """
+            Get value at key
+
+        Args:
+            key (str): Key in prompt
+
+        Returns:
+            Union[int, str, list]: Value at key
+        """
         return self.yaml_prompt[key]
-        
-    def update_missing(self, custom, default):
+    
+
+    def update_missing(self, custom: dict, default: dict) -> None:
+        """
+        Update any missing keys in custom from default
+
+        Args:
+            custom (dict): custom prompt
+            default (dict): default prompt
+        """
         
         for key, value in default.items():
 
@@ -34,7 +51,14 @@ class PromptLoader:
             elif key not in custom:
                 custom[key] = value
 
-    def load(self):
+
+    def load(self) -> dict:
+        """
+        Load the prompt
+
+        Returns:
+            custom_file (dict): loaded prompt
+        """
             
 
         default_file = self.load_yaml(self.default)
@@ -52,15 +76,15 @@ class PromptLoader:
         return custom_file
 
 
-    def load_yaml(self, filename):
+    def load_yaml(self, filename: str) -> dict:
         """
         Load a yaml file given the filename / path to the yaml file
 
         Parameters:
-            filename: the name of the yaml file or the path to the yaml file
+            filename (str): the name of the yaml file or the path to the yaml file
 
         Returns:
-            yaml file: returns the read yaml dict
+            yaml file (dict): returns the read yaml dict
         """
 
         if filename is None:
@@ -68,11 +92,26 @@ class PromptLoader:
         
         with open(filename, "r") as f:
             return yaml.safe_load(f)
+    
+
+    def get_divisions(self) -> Union[list, str]:
+        """
+        Return the divisions
+
+        Returns:
+            Union[list, str]: Either a list of all division names, or a single division
+        """
         
-    def get_divisions(self):
         return self.yaml_prompt["divisions"]
 
-    def print_prompt(self, prompt=None, indent=""):
+    def print_prompt(self, prompt: dict=None, indent: str="") -> None:
+        """
+        Print the prompt
+
+        Args:
+            prompt (dict, optional): Prompt to print. Defaults to None.
+            indent (str, optional): intendation for values. Defaults to "".
+        """
 
         if prompt is None:
             prompt = self.yaml_prompt
@@ -85,8 +124,16 @@ class PromptLoader:
             else:
                 print(indent + f"{key}: {value}\n")
 
-    def _unravel_prompt(self, prompt):
+    def _unravel_prompt(self, prompt: Union[dict, list]) -> str:
+        """
+        Unravel the prompt from dict or list into prompt message
 
+        Args:
+            prompt (Union[dict, list]): Input prompt
+
+        Returns:
+            str: prompt message
+        """
         message = ""
 
         if isinstance(prompt, dict):
@@ -100,7 +147,18 @@ class PromptLoader:
         
         return message
 
-    def get_prompt(self, title, prompt, role="system"):
+    def get_prompt(self, title: str, prompt: dict, role="system") -> dict:
+        """
+        Generate the prompt to the model
+
+        Args:
+            title (str): title of the prompt. Key in prompt file
+            prompt (dict): Input prompt dict
+            role (str, optional): The role to add prompt under. Defaults to "system".
+
+        Returns:
+            dict: Return prompt dict to model
+        """
 
         message = ""
         if title is not None and title != "setup" and role == "system":
@@ -119,8 +177,16 @@ class PromptLoader:
         return dict(role=role, content=message)
             
     
-    def get_conversation(self, extracted_text: str = None):
+    def get_conversation(self, extracted_text: str = None) -> list:
+        """
+        The input conversation the model
 
+        Args:
+            extracted_text (str, optional): Extracted text to be inputted into user prompt. Defaults to None.
+
+        Returns:
+            list: Input conversation to model
+        """
         conversation = []
 
         if "system" in self.yaml_prompt:
@@ -136,9 +202,19 @@ class PromptLoader:
 
         return conversation
     
-    def getImagePrompt(self):
+    def getImagePrompt(self) -> list:
+        """
+        Get image prompt to model
 
-        image_prompt = "Extract the text from both columns in the image, preserving the structure and formatting, ensure no grammatical correction is performed."
+        Returns:
+            list: Image prompt to model
+        """
+
+        image_prompt = """
+                    Extract the text from both columns in the image, preserving the structure and formatting, 
+                    ensure no grammatical correction is performed. 
+                    Ensure the footers and headers are not extracted.
+                    """
 
         return [dict(role="user", content=[dict(type="image"), 
                 dict(type="text", 
@@ -146,13 +222,15 @@ class PromptLoader:
                 
             
 
-    def getJsonPrompt(self, json_text):
+    def getJsonPrompt(self, json_text: str) -> list:
         """
         Define a system prompt including the errorneous json text and the json verificiation error to fix issue
 
         Parameters:
-            json_text: Errorneous json object in string form
-            error: the error exception as denoted by verify json function  
+            json_text (str): Errorneous json object in string form
+        
+        Returns:
+            list: system prompt to fix json error
         """
 
         prompt = f"""

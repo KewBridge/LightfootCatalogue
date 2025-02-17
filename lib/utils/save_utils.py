@@ -1,13 +1,57 @@
 import pandas as pd
 import os
 import json
-from lib.utils.utils import debugPrint
+import logging
+from typing import Union
+
+from json_repair import repair_json
+
+logger = logging.getLogger(__name__)
 
 #==================================
 # Saving JSON
 #==================================
+def verify_json(text: str, clean: bool = False, out: bool = False) -> bool:
+    """
+    Verifies if the input text is of JSON format
 
-def save_json(json_file: dict, file_name: str = "sample", save_path: str = "./outputs/", debug: bool = True):
+    Parameters:
+        text (str) : Initial input text to be verified for JSON format
+    Return:
+        Verification : True or False depending on if the input text is json format or not
+    """
+
+    verified = False
+    message = None
+
+    # Initiate a repair using json-repair
+    #message = repair_json(text, ensure_ascii=False, return_objects=True)
+    
+    try:
+        text = repair_json(text, ensure_ascii=False, return_objects=False) if clean else text
+        json_loaded = json.loads(text)
+        verified = True
+        message = json_loaded
+    except Exception as e:
+        logger.debug(f">>> Non JSON format found in input text")
+        logger.debug(f">>> Error: \n {e}")
+        message = e
+
+    if out:
+        return verified, message
+    return verified
+
+
+def save_json(json_file: dict, file_name: str = "sample", save_path: str = "./outputs/") -> None:
+    """
+
+    Save JSON file
+
+    Args:
+        json_file (dict): JSON object to be dumped into json file
+        file_name (str, optional): Name of file . Defaults to "sample".
+        save_path (str, optional): save path of file. Defaults to "./outputs/".
+    """
     
     # Check if file name is valid
     if not(file_name.endswith(".json")):
@@ -16,7 +60,7 @@ def save_json(json_file: dict, file_name: str = "sample", save_path: str = "./ou
     # Load file path (path in which the json is saved)
     file_path = os.path.join(save_path, file_name)
 
-    debugPrint(f"Dumping extracted text into {file_path}", debug)
+    logger.debug(f"Dumping extracted text into {file_path}")
     with open(file_path, "w", encoding="utf-8") as save_file:
             json.dump(json_file, save_file, indent=4)
 
@@ -26,7 +70,18 @@ def save_json(json_file: dict, file_name: str = "sample", save_path: str = "./ou
 # Saving CSV
 #==================================
 
-def check_for_lists_and_dicts(dataframe: object):
+def check_for_lists_and_dicts(dataframe: pd.DataFrame) -> tuple[bool, list[str]]:
+    """
+    Check if there are any lists and dicts in the Dataframe
+
+    Args:
+        dataframe (pd.DataFrame): Pandas Dataframe
+
+    Returns:
+        tuple[bool, list[str]]: 
+            1) If there are any lists or not. Boolean answer
+            2) List of all columns with lists and dicts
+    """
      
     list_of_columns = []
 
@@ -37,12 +92,23 @@ def check_for_lists_and_dicts(dataframe: object):
             if isinstance(sample_item, list) or isinstance(sample_item, dict):
                  list_of_columns.append(col)
         except:
-            print(f"{col} not found in datafrom")
-            print(dataframe.head(2))
+            logger.debug(f"{col} not found in datafrom")
+            logger.debug(dataframe.head(2))
 
     return len(list_of_columns) > 0, list_of_columns
 
-def save_csv_from_json(json_file: str | dict, file_name: str = "sample", save_path: str = "./outputs", debug: bool = True):
+
+def save_csv_from_json(json_file: Union[str, dict], 
+                       file_name: str = "sample", 
+                       save_path: str = "./outputs") -> None:
+    """
+    unwrap the JSON file into a CSV file and save the CSV file.
+
+    Args:
+        json_file (Union[str, dict]): Either a json object or path to a JSON file
+        file_name (str, optional): File name to save the CSV file under. Defaults to "sample".
+        save_path (str, optional): Save path for csv file. Defaults to "./outputs".
+    """
 
     # Load the json data from either file or provided dictionary
     if isinstance(json_file, str):
@@ -92,9 +158,15 @@ def save_csv_from_json(json_file: str | dict, file_name: str = "sample", save_pa
     save_csv(normalised_df, file_name, save_path, debug)
 
 
+def save_csv(csv_file: pd.DataFrame, file_name: str = "sample", save_path: str = "./outputs") -> None:
+    """
+    Save csv file
 
-
-def save_csv(csv_file: object, file_name: str = "sample", save_path: str = "./outputs", debug: bool = True):
+    Args:
+        csv_file (object): Pandas Dataframe to be save as csv file
+        file_name (str, optional): File name to save the CSV file under. Defaults to "sample".
+        save_path (str, optional): Save path for csv file. Defaults to "./outputs".
+    """
     # Check if file name is valid
     if not(file_name.endswith(".csv")):
         file_name += ".csv"
@@ -103,5 +175,5 @@ def save_csv(csv_file: object, file_name: str = "sample", save_path: str = "./ou
     file_path = os.path.join(save_path, file_name)
 
     # Save to CSV
-    debugPrint(f"Dumping extracted text into {file_path}", debug)
+    logger.debug(f"Dumping extracted text into {file_path}")
     csv_file.to_csv(file_path, encoding="utf-8", index=False)

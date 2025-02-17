@@ -6,7 +6,7 @@ from typing import Optional
 
 # Custom Modules
 import lib.config as config
-from lib.pages.image_processor import ImageProcessor
+from lib.data_processing.image_processor import ImageProcessor
 # Logging
 logger = logging.getLogger(__name__)
 
@@ -86,8 +86,14 @@ class DataReader:
         
         return all_files
 
-    
+        
     def get_data(self) -> list[str]:
+        """
+        Load the images, process them and return a sorted list
+
+        Returns:
+            list[str]: sorted list of post-processed image filenames
+        """
 
         logger.info("Gathering input data")
         cropped_dir = os.path.join(self.data_path, self.CROPPED_DIR_NAME)
