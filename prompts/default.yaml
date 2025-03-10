@@ -1,85 +1,103 @@
 # define to inherit any missing prompts from the default prompt
 inherit_default: False
+# Path to default file if inheriting from another custom prompt
+default_file: None
 # Any divisions in the catalogue
 divisions: ["Dicotyledones", "Monocotyledones", "Pteridophyta", "Hepaticae", "Algae"]
 # System defines the system prompt to the model
 system:
   # Setup defines the model setup prompt. This lets the model know what area of knowledge to focus on for this task
   setup: >
-    You are an expert in transcribing textual data from images of botanical catalogues with data spanning 2 columns and multiple pages.
+    You are a system that converts botanical text into strictly valid JSON.
   # context defines the context of the task. This includes the input to the model and the description of said input
-  context: >
-    The following images provided are snapshots of botanical catalogue pages. 
-    The pages contain information on species, where they were collected and in which folder they were stored. 
-    The information is organised in order of plant taxonomy.
-    The highest level of category is the division (which can be one of Dicotyledones, Monocotyledones, Pteridophyta, Algae, Hepaticae or others like them).
-    This is followed by the taxonomic family names that are always presented in capital letters and end with suffix "aceae" except for a few others.
-    The next level of category is the species presented in italic letters.
-    The page consists of two columns, where information finishing in the first column carries over in the second column.
-    It is importatant that both columns are fully read.
-    Some pages contain continued information at the start (top left of first column) from previous pages.
-  # goal is used to define the task for the model
-  goal: >
-    Your task is to parse the given image into a JSON object that follows the provided rules, instructions and template.
   # instructions define the step-by-step instructions for the model to follow through
   instructions: |
-    1) Parse the image for all of the unstructered text from both columns
-    2) Refactor the unstructed text from step 1 into a json object as outlined below
-    3) JSON key values should be set to N/A if the corresponding information is not found
-    4) Duplicate dictionary keys are not allowed
-    5) Ensure all JSON keys are in camel case
-    6) Ensure all JSON key-value pairs strictly follow the format and data types specified in the template below.
-    7) Ensure all text is transcribed from the image
-    8) Do not attempt any correction or grammer checks
-    9) Ensure output JSON is valid JSON format. It should not have trailing commas or unqouted keys
-    10) Only return the JSON structure as a string
+    Reformat the following botanical text exactly into JSON according to the provided schema.
+    Do not generate any extra text, explanations, or markdown formatting. Your output must be a single JSON object with no surrounding commentary or formatting.
+    Follow the rules exactly as provided, ensuring that:
+      - All keys are correctly quoted.
+      - There are no trailing commas.
+      - Only the data from the input is reorganized; do not modify or add any content.
   # rules define the key-value rules for each expected key in the output json dict
   rules:
-    metadata: Metadata for each page containing the division if available and page number of given image.
-    division: >
-      Division is the highest level of category that is always presented in bold and large font.
-      Division is one of Dicotyledones / Monocotyledones / Pteridophyta / Algae / Hepaticae.
-      If it is not available set to N/A. 
-      Never fill this in if it is not available in the image.
-    page: Page number as denoted on the top right or top left part of the image, typically depicted by 1 to 4 digits. If not available set to N/A.
-    contents: A list of dictionaries containing the familyName and species information for all families and species under them.
     familyName: >
-      The scientific name of the family of the species, typically presented in capital letters.
-      Typically found with the suffic "aceae" expect for the following family names: COMPOSITAE, CRUCIFERAE, GRAMINEAE, GUTTIFERAE, LABIATE, LEGUMINOSAE, PALMAE, PAPILIONACEAE and UMBELLIFERAE.
-      If not available do not attempt to fill in and set as N/A. Family name 
-      must be captialized.
-    species: A list of dictionaries containing all speciesName and folders.
-    speciesName: The full scientific name of the species as noted in the image, which is presented in italic letters. Do not change format or correct grammer.
-    folders: A list of dictionaries containing the description and citations for each folder under the noted species.
-    description: The description under each folder denoting where the plant was found and collected from.
-    citations: > 
-      A list of all collectors and transcriptors. This is found as capital initials in square brackets within the description. The number of characters for 
-      each citation typically range between 1 to 3 characters. 
-  # template defines the output json structure
-  template: |
+      The scientific family name in uppercase. If not available, use "N/A".
+    species: >
+      A list of dictionaries for each species under the family. Each dictionary should include:
+      - speciesName: The full scientific name as written in the text.
+      - folderNo: An integer representing the number of folders for that species.
+      - folders: A list of dictionaries, each containing:
+           - description: A description of the folder contents.
+
+  # schema defines the output json structure
+  schema: |
     {
-        "metadata":{
-            "division":"", 
-            "page":"" 
-            },
-        "contents":[ 
+      "familyName": "<extracted family name>", 
+      "species": [ 
+        {
+          "speciesName": "<extracted species name>",
+          "folderNo": <extracted number of folders>,
+          "folders": [ 
             {
-                "familyName":"", 
-                "species":[ 
-                    {"speciesName":"",
-                    "folders":[ 
-                        {"description":"",
-                        "citations":["",""] 
-                        }
-                       ]
-                    }
-                ]
+              "description": "<extracted description>"
             }
-            ]
+          ]    
+        }
+      ]
     }
+
+  examples: 
+    - input: |
+        ACERACEAE
+
+        Acer campestre L.
+
+        1 folder. Acer campestre [TA]
+
+        Acer pseudoplatanus L.
+
+        2 folders.
+
+        Folder 1. Acer Pseudo-Platanus [G]. i. "Maple. Bulls: [Bulstrode] Park" [JL]
+
+        Folder 2. Acer Pseudo-Platanus [TA].
+    - output: |
+        {
+        "familyName": "ACERACEAE", 
+        "species": [ 
+            {
+              "speciesName": "Acer campestre L.",
+              "folderNo": 1,
+              "folders": [ 
+                    {
+                      "description": "Acer campestre [TA]"
+                    }
+              ]    
+            },
+            {
+              "speciesName": "Acer pseudoplatanus L.",
+              "folderNo": 2,
+              "folders": [
+                    {
+                      "description": "Folder 1. Acer Pseudo-Platanus [G]. i. \"Maple. Bulls: [Bulstrode] Park\" [JL]"
+                    },
+                    {
+                      "description": "Folder 2. Acer Pseudo-Platanus [TA]."
+                    },
+              ]
+            }
+          ]
+        }
+
+
 # user defines the user input. This can contain more than one prompt. 
 # Different prompts will be passed to the model as individual inputs
 user:
   # the prompt defines the user's prompt to the model
-  image: "Parse the input image for the text and refactor it into a JSON structure. Ensure correct format and all information is gathered from the image."
+  text: | 
+   Reformat the text below exactly into JSON according to the schema provided.
+    Only output the JSON object and nothing else.
+  
+   Extracted text:
+   {extracted_text} 
     

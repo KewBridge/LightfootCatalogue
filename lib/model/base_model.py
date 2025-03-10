@@ -9,7 +9,7 @@ from lib.model import get_model
 from lib.utils.promptLoader import PromptLoader
 from lib.utils.save_utils import save_json, save_csv_from_json, verify_json
 from lib.utils.text_utils import convertToTextBlocks
-
+from lib.utils.text_processing import TextProcessor
 logger = logging.getLogger(__name__)
 
 class BaseModel:
@@ -58,6 +58,7 @@ class BaseModel:
         # Load the model, prompt, and the conversation
         self.model = get_model(self.model_name)(self.batch_size, self.max_new_tokens, self.temperature, **kwargs)
         self.prompt = PromptLoader(prompt)#prompt
+        self.text_processor = TextProcessor()
 
     def info(self) -> str:
         """
@@ -128,13 +129,14 @@ class BaseModel:
         return final_save_file_name
 
 
-    def extract_text(self, images: list[str], debug: bool = False) -> str:
+    def extract_text(self, images: list[str], save_file: str = None, debug: bool = False) -> str:
         """
         Iterate through all images and extract the text from the image, saving at intervals.
         Combine all extracted text into one long text
 
         Parameters:
             images (list): a list of all images to extract from
+            save_file (str): Path to save file
             debug (bool): used when debugging. logs debug messages
         
         Returns:
@@ -165,7 +167,7 @@ class BaseModel:
             if (ind + 1) % self.SAVE_TEXT_INTERVAL == 0:
                 if debug:
                     logger.debug("\tStoring at interval...")
-                self._save_to_file(self.TEMP_TEXT_FILE, "\n\n".join(batch_texts))
+                self._save_to_file(self.TEMP_TEXT_FILE if save_file is None else save_file, "\n\n".join(batch_texts))
 
             if debug:
                 logger.debug("\tBatch Finished")
@@ -173,13 +175,14 @@ class BaseModel:
         return "\n\n".join(batch_texts)
     
 
-    def get_extracted_text(self, images: list[str], text_file: Optional[str] = None, debug: bool = False) -> str:
+    def get_extracted_text(self, images: list[str], text_file: Optional[str] = None, save_file: str = None, debug: bool = False) -> str:
         """
         Extracting text from image or loading a temp file
 
         Paramaters:
             images (list): a list of images to extract text from
             text_file (str): the path to the text file containing the pre-extracted text to use
+            save_file (str): Path to save file
             debug (bool): used when debugging. logs debug messages
 
         Returns:
@@ -188,7 +191,7 @@ class BaseModel:
         
         if text_file is None:
             logger.info("Extracting Text from Images")
-            extracted_text = self.extract_text(images, debug)
+            extracted_text = self.extract_text(images, save_file, debug)
         else:
             logger.info("Skipping extraction...")
             logger.info(f"Loading text from provided extracted text file `{text_file}`")
@@ -210,55 +213,57 @@ class BaseModel:
         organised_blocks = {}
 
         logging.info("Organising text into JSON blocks")
-        # Add tqdm for the outer loop over divisions
-        for division, families in text_blocks.items():
-            save_counter = 0
+        # Add tqdm for the outer loop over division
+        save_counter = 0
+        for item in tqdm(text_blocks, desc="Processing text blocks", leave=True):
+            division = item["division"]
+            family = item["family"] if "family" in item.keys() else division
+            content = item["content"]
             # Add tqdm for the inner loop over families
             self._save_to_file(error_text_file, f"{division}\n", mode="a")
-            for family in tqdm(families, desc=f"Processing Families in {division}", unit="family", leave=True):
-                # Load the system conversation with text blocks added to the prompt
-                json_conversation = self.prompt.get_conversation(family)
+            # Load the system conversation with text blocks added to the prompt
+            json_conversation = self.prompt.get_conversation(family+"\n"+content)
 
-                # Perform inference on text
-                json_text = self.model(json_conversation, None, debug)
-                
-                # Check the integrity of the JSON output. 
-                # Json verified is boolean to check if the integrity of the JSON output is valid
-                # Json loaded is the post-processed form of the text into dict (removing and cleaning done)
+            # Perform inference on text
+            json_text = self.model(json_conversation, None, debug)
+            
+            # Check the integrity of the JSON output. 
+            # Json verified is boolean to check if the integrity of the JSON output is valid
+            # Json loaded is the post-processed form of the text into dict (removing and cleaning done)
+            json_verified, json_loaded = verify_json(json_text[0], clean=True, out=True)
+            
+            if not(json_verified):
+                logging.info("Error Noticed in JSON")
+                logging.info("Fixing Error")
+                error_fix_prompt = self.prompt.getJsonPrompt(json_text[0])
+                # print(error_fix_prompt)
+                json_text = self.model(error_fix_prompt, None, debug)
+                # print(json_text)
                 json_verified, json_loaded = verify_json(json_text[0], clean=True, out=True)
-                
-                if not(json_verified):
-                    logging.info("Error Noticed in JSON")
-                    logging.info("Fixing Error")
-                    error_fix_prompt = self.prompt.getJsonPrompt(json_text[0])
-                    # print(error_fix_prompt)
-                    json_text = self.model(error_fix_prompt, None, debug)
-                    # print(json_text)
-                    json_verified, json_loaded = verify_json(json_text[0], clean=True, out=True)
 
-                    # storing all erroneous JSON format in error.txt
-                    self._save_to_file(error_text_file, f"{family}\n", mode="a")
-                        
+                # storing all erroneous JSON format in error.txt
+                self._save_to_file(error_text_file, f"{family}\n", mode="a")
                     
-                # If verified, add to organised block and break
-                if json_verified:
-                    if division in organised_blocks:
-                        organised_blocks[division].append(json_loaded)
-                    else:
-                        organised_blocks[division] = [json_loaded]
-                                        
-                save_counter += 1
-                # save to file after 10 iterations
-                if save and (save_counter == 10):
-                    save_counter = 0
-                    save_json(organised_blocks, json_file_name, self.save_path)
-                    save_csv_from_json(os.path.join(self.save_path, json_file_name), save_file_name, self.save_path)
-        
+                
+            # If verified, add to organised block and break
+            if json_verified:
+                if division in organised_blocks:
+                    organised_blocks[division].append(json_loaded)
+                else:
+                    organised_blocks[division] = [json_loaded]
+                                    
+            save_counter += 1
+            # save to file after 10 iterations
+            if save and (save_counter == 10):
+                save_counter = 0
+                save_json(organised_blocks, json_file_name, self.save_path)
+                save_csv_from_json(os.path.join(self.save_path, json_file_name), save_file_name, self.save_path)
+    
         return organised_blocks
 
     def __call__(self,
-                 images: list[str],
-                 text_file: Optional[str] = None,
+                 extracted_text: Optional[str] = None,
+                 images: Optional[list[str]] = None,
                  save: bool = False,
                  save_file_name: str = "sample",
                  max_chunk_size: int = 3000,
@@ -267,8 +272,8 @@ class BaseModel:
         The main pipeline that extracts text from the images, seperates them into text blocks and organises them into JSON objects
 
         Paramaters:
+            extracted_text (str): The extracted text from the images
             images (list): a list of images to extract text from
-            text_file (str): the path to the text file containing the pre-extracted text to use
             save (bool): Boolean to determine whether to save the outputs or not
             save_file_name (str): the name of the save files
             debug (bool): used when debugging. logs debug messages
@@ -287,11 +292,13 @@ class BaseModel:
                      \t==> Errors: {save_file_name}_errors.txt
                      """)
         # Get the extracted text whether from file or from images
-        extracted_text = self.get_extracted_text(images, text_file, debug)
+        if extracted_text is None or extracted_text == "":
+            extracted_text = self.get_extracted_text(images, None, debug)
+        
         
         # Converting the extracted text into text blocks defined by divisions and families
         logging.info("Converting extracted text into Text Blocks")
-        text_blocks = convertToTextBlocks(extracted_text, divisions=self.prompt.get_divisions(), max_chunk_size=max_chunk_size)
+        text_blocks = self.text_processor(extracted_text, divisions=self.prompt.get_divisions(), max_chunk_size=max_chunk_size)
 
         # Performing inference on the text blocks to generate JSON files
         organised_blocks = self.inference(text_blocks, save_file_name, json_file_name, save, debug)

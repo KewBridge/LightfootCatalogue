@@ -264,7 +264,7 @@ class ImageProcessor:
             name = image if name is None else name
 
         # Get all lines that correspond with the edges
-        lines = self.getLines(image)
+        lines = self.get_lines(image)
         line_length = len(lines) if lines is not None else 0
         # Find height and width of the image
         height, width = image.shape[:2]
@@ -280,7 +280,7 @@ class ImageProcessor:
             print(f">>>> Splitting successful: {name} | Middle lines found: {len(middle_lines)} | Total lines: {line_length}")
             return image_left, image_right
         else:
-            print(f">>>> Splitting unsuccessful: {name} | Middle lines found: 0 | Total lines: {total_lines}")
+            print(f">>>> Splitting unsuccessful: {name} | Middle lines found: 0 | Total lines: {line_length}")
             print("\tFalling back to threshold-based splitting.")
             return self.split_image_with_thresholding(image, name)
 

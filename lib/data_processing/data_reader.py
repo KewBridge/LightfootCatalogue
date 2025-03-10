@@ -3,6 +3,8 @@ import logging
 import os
 import time
 from typing import Optional
+from pdf2image import convert_from_path
+from natsort import natsorted
 
 # Custom Modules
 import lib.config as config
@@ -12,8 +14,9 @@ logger = logging.getLogger(__name__)
 
 class DataReader:
 
+    EXTRACTED_TEXT="extracted_text.txt"
     CROPPED_DIR_NAME="cropped"
-    ALLOWED_EXT=["jpeg", "png", "jpg", ]#"pdf"]
+    ALLOWED_EXT=["jpeg", "png", "jpg", "pdf"]
 
     def __init__(self,
                  data_path: str,
@@ -80,11 +83,46 @@ class DataReader:
 
             # Check if it is an image or pdf
             if not(os.path.isdir(file_path)):
-                if (file.split(".")[-1] in self.ALLOWED_EXT):
-                
-                    all_files.append(file_path)
+                extension = file.split(".")[-1]
+                if (extension in self.ALLOWED_EXT):
+                    
+                    if extension == "pdf":
+                        logger.info("Detected PDF! Converting to images ...")
+                        image_paths = self.pdf_to_images(path, file_path)
+
+                        all_files.extend(image_paths)
+                    else:
+                        all_files.append(file_path)
         
         return all_files
+
+    def pdf_to_images(self, main_path: str, pdf_path: str) -> list[str]:
+        """
+        Convert the input pdf into a set of images stored in a folder
+
+        Parameters:
+            main_path (str): folder in which the pdf was found
+            pdf_path (str): path to pdf
+        
+        Returns:
+            list[str] -> A list of all path to the new images
+        """
+        output_dir = os.path.join(main_path, "extracted_images")
+
+        if not(os.path.isdir(output_dir)):
+            os.makedirs(output_dir)
+
+        pdf_name = pdf_path.split(os.sep)[-1].split(".")[0]
+
+        images = convert_from_path(pdf_path)
+        image_paths = []
+        for i, page in enumerate(images):
+            image_filename = os.path.join(output_dir, f"{pdf_name}_{i+1}.png")
+            page.save(image_filename, "PNG")
+            image_paths.append(image_filename)
+        
+
+        return image_paths
 
         
     def get_data(self) -> list[str]:
@@ -97,20 +135,40 @@ class DataReader:
 
         logger.info("Gathering input data")
         cropped_dir = os.path.join(self.data_path, self.CROPPED_DIR_NAME)
-    
-        if self.crop and not(os.path.isdir(cropped_dir)):
+        pdf_cropped_dir = os.path.join(self.data_path, "extracted_images", self.CROPPED_DIR_NAME)
+        if self.crop and not(os.path.isdir(cropped_dir) or os.path.isdir(pdf_cropped_dir)):
             images = sorted(self.load_files())
             logger.info("Cropping Images...")
             images = self.image_processor(images)
         elif os.path.isdir(cropped_dir):
             images = self.load_files(cropped_dir)
+        elif os.path.isdir(pdf_cropped_dir):
+            images = self.load_files(pdf_cropped_dir)
         else:
             images = self.load_files()
 
         # return the images sorted wrt to filename
-        return sorted(images)
+        return natsorted(images)
 
             
     
-    def __call__(self):
-        pass
+    def __call__(self, temp_text: Optional[str] = None) -> str:
+        """
+        Checks if the images have already been extracted and if the provided temporary text file exists
+
+        Args:
+            temp_text (str, optional): temporary text file path. Defaults to None.
+
+        Returns:
+            str: The extracted text
+        """
+        
+        temp_text_file = os.path.join(self.data_path, temp_text) if not(temp_text is None) else os.path.join(self.data_path, self.EXTRACTED_TEXT)
+        if not(temp_text_file is None) and os.path.isfile(temp_text_file):
+            return self.extraction_model.get_extracted_text([], temp_text_file)
+
+        images = self.get_data()
+
+        extracted_text = self.extraction_model.get_extracted_text(images, None, temp_text_file)
+
+        return extracted_text
