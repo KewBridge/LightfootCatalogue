@@ -1,247 +1,0 @@
->>> Activated Environment <<<
-/mnt/shared/scratch/ikarunak/private/LightfootCatalogue/lib/utils/text_utils.py:77: SyntaxWarning: "is" with a literal. Did you mean "=="?
-  if family is None or family is '':
-/mnt/apps/users/ikarunak/conda/envs/lcat-step/lib/python3.11/site-packages/transformers/generation/configuration_utils.py:628: UserWarning: `do_sample` is set to `False`. However, `temperature` is set to `0.6` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `temperature`. This was detected when initializing the generation config instance, which means the corresponding file may hold incorrect parameterization and should be fixed.
-  warnings.warn(
-/mnt/apps/users/ikarunak/conda/envs/lcat-step/lib/python3.11/site-packages/transformers/generation/configuration_utils.py:628: UserWarning: `do_sample` is set to `False`. However, `temperature` is set to `0.6` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `temperature`.
-  warnings.warn(
-`Qwen2VLRotaryEmbedding` can now be fully parameterized by passing the model config through the `config` argument. All other arguments will be removed in v4.46
-Loading checkpoint shards:   0%|          | 0/5 [00:00<?, ?it/s]Loading checkpoint shards:  20%|██        | 1/5 [00:05<00:23,  5.95s/it]Loading checkpoint shards:  40%|████      | 2/5 [00:12<00:18,  6.02s/it]Loading checkpoint shards:  60%|██████    | 3/5 [00:17<00:11,  5.63s/it]Loading checkpoint shards:  80%|████████  | 4/5 [00:22<00:05,  5.40s/it]Loading checkpoint shards: 100%|██████████| 5/5 [00:23<00:00,  3.98s/it]Loading checkpoint shards: 100%|██████████| 5/5 [00:23<00:00,  4.74s/it]
-Model: qwen_model | Batch Size: 1, Max Tokens: 100000, Temperature: 0.6
-Processing Batches:   0%|          | 0/84 [00:00<?, ?batch/s]Processing Batches:   1%|          | 1/84 [00:57<1:19:15, 57.29s/batch]Processing Batches:   2%|▏         | 2/84 [01:59<1:22:02, 60.03s/batch]Processing Batches:   4%|▎         | 3/84 [03:04<1:24:30, 62.60s/batch]Processing Batches:   5%|▍         | 4/84 [03:45<1:11:50, 53.88s/batch]Processing Batches:   6%|▌         | 5/84 [04:49<1:15:43, 57.52s/batch]Processing Batches:   7%|▋         | 6/84 [06:04<1:22:24, 63.39s/batch]Processing Batches:   8%|▊         | 7/84 [07:11<1:22:56, 64.63s/batch]Processing Batches:  10%|▉         | 8/84 [07:53<1:12:46, 57.45s/batch]Processing Batches:  11%|█         | 9/84 [08:58<1:14:50, 59.87s/batch]Processing Batches:  12%|█▏        | 10/84 [10:03<1:15:47, 61.46s/batch]Processing Batches:  13%|█▎        | 11/84 [11:07<1:15:29, 62.05s/batch]Processing Batches:  14%|█▍        | 12/84 [12:12<1:15:34, 62.98s/batch]Processing Batches:  15%|█▌        | 13/84 [13:15<1:14:44, 63.16s/batch]Processing Batches:  17%|█▋        | 14/84 [14:19<1:14:03, 63.48s/batch]Processing Batches:  18%|█▊        | 15/84 [15:26<1:14:01, 64.37s/batch]Processing Batches:  19%|█▉        | 16/84 [16:37<1:15:07, 66.28s/batch]Processing Batches:  20%|██        | 17/84 [17:40<1:13:07, 65.49s/batch]Processing Batches:  21%|██▏       | 18/84 [18:45<1:11:57, 65.42s/batch]Processing Batches:  23%|██▎       | 19/84 [19:51<1:10:47, 65.34s/batch]Processing Batches:  24%|██▍       | 20/84 [20:59<1:10:48, 66.38s/batch]Processing Batches:  25%|██▌       | 21/84 [22:00<1:07:43, 64.50s/batch]Processing Batches:  26%|██▌       | 22/84 [23:11<1:08:57, 66.73s/batch]Processing Batches:  27%|██▋       | 23/84 [24:20<1:08:20, 67.22s/batch]Processing Batches:  29%|██▊       | 24/84 [25:23<1:06:04, 66.07s/batch]Processing Batches:  30%|██▉       | 25/84 [26:22<1:02:42, 63.77s/batch]Processing Batches:  31%|███       | 26/84 [27:33<1:03:50, 66.05s/batch]Processing Batches:  32%|███▏      | 27/84 [28:35<1:01:34, 64.82s/batch]Processing Batches:  33%|███▎      | 28/84 [29:43<1:01:18, 65.69s/batch]Processing Batches:  35%|███▍      | 29/84 [30:20<52:26, 57.20s/batch]  Processing Batches:  36%|███▌      | 30/84 [31:00<46:54, 52.12s/batch]Processing Batches:  37%|███▋      | 31/84 [32:08<50:02, 56.65s/batch]Processing Batches:  38%|███▊      | 32/84 [33:19<53:03, 61.22s/batch]Processing Batches:  39%|███▉      | 33/84 [34:27<53:42, 63.19s/batch]Processing Batches:  40%|████      | 34/84 [35:36<54:07, 64.95s/batch]Processing Batches:  42%|████▏     | 35/84 [36:37<51:58, 63.65s/batch]Processing Batches:  43%|████▎     | 36/84 [37:40<50:44, 63.42s/batch]Processing Batches:  44%|████▍     | 37/84 [38:45<50:07, 63.99s/batch]Processing Batches:  45%|████▌     | 38/84 [39:47<48:29, 63.24s/batch]Processing Batches:  46%|████▋     | 39/84 [40:54<48:19, 64.43s/batch]Processing Batches:  48%|████▊     | 40/84 [42:05<48:37, 66.32s/batch]Processing Batches:  49%|████▉     | 41/84 [43:03<45:44, 63.83s/batch]Processing Batches:  50%|█████     | 42/84 [44:15<46:24, 66.30s/batch]Processing Batches:  51%|█████     | 43/84 [45:28<46:48, 68.51s/batch]Processing Batches:  52%|█████▏    | 44/84 [46:39<46:10, 69.25s/batch]Processing Batches:  54%|█████▎    | 45/84 [47:43<43:52, 67.49s/batch]Processing Batches:  55%|█████▍    | 46/84 [48:49<42:27, 67.05s/batch]Processing Batches:  56%|█████▌    | 47/84 [49:30<36:35, 59.35s/batch]Processing Batches:  57%|█████▋    | 48/84 [50:43<38:02, 63.42s/batch]Processing Batches:  58%|█████▊    | 49/84 [51:45<36:40, 62.88s/batch]Processing Batches:  60%|█████▉    | 50/84 [52:51<36:10, 63.82s/batch]Processing Batches:  61%|██████    | 51/84 [53:45<33:31, 60.96s/batch]Processing Batches:  62%|██████▏   | 52/84 [54:59<34:35, 64.86s/batch]Processing Batches:  63%|██████▎   | 53/84 [56:01<33:04, 64.02s/batch]Processing Batches:  64%|██████▍   | 54/84 [57:08<32:30, 65.03s/batch]Processing Batches:  65%|██████▌   | 55/84 [58:18<32:07, 66.46s/batch]Processing Batches:  67%|██████▋   | 56/84 [59:06<28:23, 60.84s/batch]Processing Batches:  68%|██████▊   | 57/84 [1:00:20<29:10, 64.83s/batch]Processing Batches:  69%|██████▉   | 58/84 [1:01:28<28:29, 65.74s/batch]Processing Batches:  70%|███████   | 59/84 [1:02:40<28:12, 67.68s/batch]Processing Batches:  71%|███████▏  | 60/84 [1:03:53<27:42, 69.26s/batch]Processing Batches:  73%|███████▎  | 61/84 [1:05:09<27:18, 71.24s/batch]Processing Batches:  74%|███████▍  | 62/84 [1:06:21<26:12, 71.50s/batch]Processing Batches:  75%|███████▌  | 63/84 [1:07:38<25:36, 73.19s/batch]Processing Batches:  76%|███████▌  | 64/84 [1:08:50<24:16, 72.81s/batch]Processing Batches:  77%|███████▋  | 65/84 [1:09:59<22:42, 71.72s/batch]Processing Batches:  79%|███████▊  | 66/84 [1:11:16<22:00, 73.38s/batch]Processing Batches:  80%|███████▉  | 67/84 [1:12:29<20:41, 73.02s/batch]Processing Batches:  81%|████████  | 68/84 [1:13:30<18:31, 69.46s/batch]Processing Batches:  82%|████████▏ | 69/84 [1:14:44<17:42, 70.86s/batch]Processing Batches:  83%|████████▎ | 70/84 [1:15:52<16:20, 70.02s/batch]Processing Batches:  85%|████████▍ | 71/84 [1:16:48<14:15, 65.82s/batch]Processing Batches:  86%|████████▌ | 72/84 [1:18:04<13:46, 68.86s/batch]Processing Batches:  87%|████████▋ | 73/84 [1:19:13<12:37, 68.86s/batch]Processing Batches:  88%|████████▊ | 74/84 [1:20:24<11:37, 69.72s/batch]Processing Batches:  89%|████████▉ | 75/84 [1:21:33<10:25, 69.49s/batch]Processing Batches:  90%|█████████ | 76/84 [1:22:45<09:19, 69.99s/batch]Processing Batches:  92%|█████████▏| 77/84 [1:23:48<07:57, 68.15s/batch]Processing Batches:  93%|█████████▎| 78/84 [1:24:30<06:01, 60.29s/batch]Processing Batches:  94%|█████████▍| 79/84 [1:25:40<05:14, 62.93s/batch]Processing Batches:  95%|█████████▌| 80/84 [1:26:54<04:25, 66.31s/batch]Processing Batches:  96%|█████████▋| 81/84 [1:28:02<03:20, 66.86s/batch]Processing Batches:  98%|█████████▊| 82/84 [1:29:02<02:09, 64.80s/batch]Processing Batches:  99%|█████████▉| 83/84 [1:29:32<00:54, 54.43s/batch]Processing Batches: 100%|██████████| 84/84 [1:30:39<00:00, 58.25s/batch]Processing Batches: 100%|██████████| 84/84 [1:30:39<00:00, 64.76s/batch]
-Processing Families in Dicotyledones:   0%|          | 0/90 [00:00<?, ?family/s]Processing Families in Dicotyledones:   1%|          | 1/90 [00:08<13:06,  8.84s/family]Processing Families in Dicotyledones:   2%|▏         | 2/90 [00:17<13:10,  8.98s/family]Processing Families in Dicotyledones:   3%|▎         | 3/90 [00:27<13:19,  9.18s/family]Processing Families in Dicotyledones:   4%|▍         | 4/90 [00:31<10:09,  7.08s/family]Processing Families in Dicotyledones:   6%|▌         | 5/90 [00:36<09:20,  6.59s/family]Processing Families in Dicotyledones:   7%|▋         | 6/90 [00:41<08:06,  5.79s/family]Processing Families in Dicotyledones:   8%|▊         | 7/90 [00:47<08:23,  6.07s/family]Processing Families in Dicotyledones:   9%|▉         | 8/90 [01:37<27:25, 20.07s/family]Processing Families in Dicotyledones:  10%|█         | 9/90 [01:56<26:19, 19.50s/family]Processing Families in Dicotyledones:  11%|█         | 10/90 [03:08<47:52, 35.90s/family]Processing Families in Dicotyledones:  12%|█▏        | 11/90 [04:35<1:07:52, 51.55s/family]Processing Families in Dicotyledones:  13%|█▎        | 12/90 [05:31<1:08:44, 52.88s/family]Processing Families in Dicotyledones:  14%|█▍        | 13/90 [06:27<1:08:56, 53.72s/family]Processing Families in Dicotyledones:  16%|█▌        | 14/90 [06:31<49:03, 38.73s/family]  Processing Families in Dicotyledones:  17%|█▋        | 15/90 [06:41<37:33, 30.05s/family]Processing Families in Dicotyledones:  18%|█▊        | 16/90 [08:16<1:01:13, 49.64s/family]Processing Families in Dicotyledones:  19%|█▉        | 17/90 [09:27<1:08:18, 56.14s/family]Processing Families in Dicotyledones:  20%|██        | 18/90 [09:47<54:24, 45.34s/family]  Processing Families in Dicotyledones:  21%|██        | 19/90 [11:33<1:15:04, 63.45s/family]Processing Families in Dicotyledones:  22%|██▏       | 20/90 [13:10<1:25:35, 73.37s/family]Processing Families in Dicotyledones:  23%|██▎       | 21/90 [14:35<1:28:40, 77.11s/family]Processing Families in Dicotyledones:  24%|██▍       | 22/90 [16:12<1:34:01, 82.97s/family]Processing Families in Dicotyledones:  26%|██▌       | 23/90 [17:49<1:37:27, 87.27s/family]Processing Families in Dicotyledones:  27%|██▋       | 24/90 [18:06<1:12:50, 66.23s/family]Processing Families in Dicotyledones:  28%|██▊       | 25/90 [18:16<53:12, 49.12s/family]  Processing Families in Dicotyledones:  29%|██▉       | 26/90 [19:14<55:21, 51.91s/family]Processing Families in Dicotyledones:  30%|███       | 27/90 [20:52<1:09:02, 65.75s/family]Processing Families in Dicotyledones:  31%|███       | 28/90 [22:06<1:10:22, 68.10s/family]Processing Families in Dicotyledones:  32%|███▏      | 29/90 [23:41<1:17:32, 76.28s/family]Processing Families in Dicotyledones:  33%|███▎      | 30/90 [25:10<1:19:58, 79.97s/family]Processing Families in Dicotyledones:  34%|███▍      | 31/90 [25:30<1:01:10, 62.21s/family]Processing Families in Dicotyledones:  36%|███▌      | 32/90 [25:35<43:16, 44.77s/family]  Processing Families in Dicotyledones:  37%|███▋      | 33/90 [25:45<32:49, 34.55s/family]Processing Families in Dicotyledones:  38%|███▊      | 34/90 [25:56<25:40, 27.50s/family]Processing Families in Dicotyledones:  39%|███▉      | 35/90 [26:02<19:20, 21.11s/family]Processing Families in Dicotyledones:  40%|████      | 36/90 [26:09<14:58, 16.65s/family]Processing Families in Dicotyledones:  41%|████      | 37/90 [26:50<21:13, 24.02s/family]Processing Families in Dicotyledones:  42%|████▏     | 38/90 [28:50<45:51, 52.91s/family]Processing Families in Dicotyledones:  43%|████▎     | 39/90 [29:35<42:59, 50.57s/family]Processing Families in Dicotyledones:  44%|████▍     | 40/90 [29:59<35:31, 42.64s/family]Processing Families in Dicotyledones:  46%|████▌     | 41/90 [30:50<36:43, 44.97s/family]Processing Families in Dicotyledones:  47%|████▋     | 42/90 [32:01<42:16, 52.85s/family]Processing Families in Dicotyledones:  48%|████▊     | 43/90 [32:05<29:59, 38.30s/family]Processing Families in Dicotyledones:  49%|████▉     | 44/90 [32:11<21:51, 28.52s/family]Processing Families in Dicotyledones:  50%|█████     | 45/90 [32:18<16:33, 22.07s/family]Processing Families in Dicotyledones:  51%|█████     | 46/90 [32:41<16:23, 22.35s/family]Processing Families in Dicotyledones:  52%|█████▏    | 47/90 [34:16<31:41, 44.23s/family]Processing Families in Dicotyledones:  53%|█████▎    | 48/90 [34:51<28:54, 41.29s/family]Processing Families in Dicotyledones:  54%|█████▍    | 49/90 [36:27<39:30, 57.82s/family]Processing Families in Dicotyledones:  56%|█████▌    | 50/90 [38:27<50:51, 76.29s/family]Processing Families in Dicotyledones:  57%|█████▋    | 51/90 [40:05<53:58, 83.04s/family]Processing Families in Dicotyledones:  58%|█████▊    | 52/90 [40:26<40:40, 64.23s/family]Processing Families in Dicotyledones:  59%|█████▉    | 53/90 [41:14<36:39, 59.46s/family]Processing Families in Dicotyledones:  60%|██████    | 54/90 [41:25<26:55, 44.89s/family]Processing Families in Dicotyledones:  61%|██████    | 55/90 [41:43<21:26, 36.76s/family]Processing Families in Dicotyledones:  62%|██████▏   | 56/90 [41:46<15:12, 26.83s/family]Processing Families in Dicotyledones:  63%|██████▎   | 57/90 [41:51<11:00, 20.00s/family]Processing Families in Dicotyledones:  64%|██████▍   | 58/90 [42:57<18:01, 33.79s/family]Processing Families in Dicotyledones:  66%|██████▌   | 59/90 [43:00<12:50, 24.85s/family]Processing Families in Dicotyledones:  67%|██████▋   | 60/90 [43:46<15:27, 30.92s/family]Processing Families in Dicotyledones:  68%|██████▊   | 61/90 [43:50<11:10, 23.10s/family]Processing Families in Dicotyledones:  69%|██████▉   | 62/90 [44:41<14:41, 31.48s/family]Processing Families in Dicotyledones:  70%|███████   | 63/90 [45:05<13:03, 29.02s/family]Processing Families in Dicotyledones:  71%|███████   | 64/90 [45:11<09:37, 22.20s/family]Processing Families in Dicotyledones:  72%|███████▏  | 65/90 [46:28<16:03, 38.52s/family]Processing Families in Dicotyledones:  73%|███████▎  | 66/90 [46:57<14:16, 35.69s/family]Processing Families in Dicotyledones:  74%|███████▍  | 67/90 [47:36<14:08, 36.91s/family]Processing Families in Dicotyledones:  76%|███████▌  | 68/90 [49:25<21:24, 58.37s/family]Processing Families in Dicotyledones:  77%|███████▋  | 69/90 [49:38<15:37, 44.63s/family]Processing Families in Dicotyledones:  78%|███████▊  | 70/90 [51:06<19:12, 57.65s/family]Processing Families in Dicotyledones:  79%|███████▉  | 71/90 [52:29<20:40, 65.31s/family]Processing Families in Dicotyledones:  80%|████████  | 72/90 [52:46<15:15, 50.84s/family]Processing Families in Dicotyledones:  81%|████████  | 73/90 [54:08<17:02, 60.15s/family]Processing Families in Dicotyledones:  82%|████████▏ | 74/90 [55:21<17:06, 64.15s/family]Processing Families in Dicotyledones:  83%|████████▎ | 75/90 [55:43<12:49, 51.32s/family]Processing Families in Dicotyledones:  84%|████████▍ | 76/90 [56:39<12:20, 52.92s/family]Processing Families in Dicotyledones:  86%|████████▌ | 77/90 [56:45<08:22, 38.65s/family]Processing Families in Dicotyledones:  87%|████████▋ | 78/90 [58:00<09:57, 49.76s/family]Processing Families in Dicotyledones:  88%|████████▊ | 79/90 [58:11<06:58, 38.03s/family]Processing Families in Dicotyledones:  89%|████████▉ | 80/90 [59:37<08:45, 52.58s/family]Processing Families in Dicotyledones:  90%|█████████ | 81/90 [1:00:33<08:00, 53.44s/family]Processing Families in Dicotyledones:  91%|█████████ | 82/90 [1:01:07<06:20, 47.61s/family]Processing Families in Dicotyledones:  92%|█████████▏| 83/90 [1:01:12<04:04, 34.94s/family]Processing Families in Dicotyledones:  93%|█████████▎| 84/90 [1:01:16<02:34, 25.68s/family]Processing Families in Dicotyledones:  94%|█████████▍| 85/90 [1:01:26<01:43, 20.78s/family]Processing Families in Dicotyledones:  96%|█████████▌| 86/90 [1:03:13<03:07, 46.80s/family]Processing Families in Dicotyledones:  97%|█████████▋| 87/90 [1:03:26<01:50, 36.74s/family]Processing Families in Dicotyledones:  98%|█████████▊| 88/90 [1:03:38<00:58, 29.14s/family]Processing Families in Dicotyledones:  99%|█████████▉| 89/90 [1:03:42<00:21, 21.61s/family]Processing Families in Dicotyledones: 100%|██████████| 90/90 [1:04:08<00:00, 23.10s/family]Processing Families in Dicotyledones: 100%|██████████| 90/90 [1:04:08<00:00, 42.77s/family]
-Dumping extracted text into ./outputs/lightfootcat_with_extract/lightfootcat.json
-speciesName not found in datafrom
-        division familyName  ... folderNo  folders
-0  Dicotyledones        N/A  ...      NaN      NaN
-1  Dicotyledones        N/A  ...      NaN      NaN
-
-[2 rows x 8 columns]
-folderNo not found in datafrom
-        division familyName  ... folderNo  folders
-0  Dicotyledones        N/A  ...      NaN      NaN
-1  Dicotyledones        N/A  ...      NaN      NaN
-
-[2 rows x 8 columns]
-speciesName not found in datafrom
-        division familyName  ... folderNo  folders
-0  Dicotyledones        N/A  ...      NaN      NaN
-1  Dicotyledones        N/A  ...      NaN      NaN
-
-[2 rows x 8 columns]
-folderNo not found in datafrom
-        division familyName  ... folderNo  folders
-0  Dicotyledones        N/A  ...      NaN      NaN
-1  Dicotyledones        N/A  ...      NaN      NaN
-
-[2 rows x 8 columns]
-Dumping extracted text into ./outputs/lightfootcat_with_extract/lightfootcat.csv
-Dumping extracted text into ./outputs/lightfootcat_with_extract/lightfootcat.json
-speciesName not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-folderNo not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-speciesName not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-folderNo not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-Dumping extracted text into ./outputs/lightfootcat_with_extract/lightfootcat.csv
-Dumping extracted text into ./outputs/lightfootcat_with_extract/lightfootcat.json
-speciesName not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-folderNo not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-speciesName not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-folderNo not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-Dumping extracted text into ./outputs/lightfootcat_with_extract/lightfootcat.csv
-Dumping extracted text into ./outputs/lightfootcat_with_extract/lightfootcat.json
-speciesName not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-folderNo not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-speciesName not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-folderNo not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-Dumping extracted text into ./outputs/lightfootcat_with_extract/lightfootcat.csv
-Dumping extracted text into ./outputs/lightfootcat_with_extract/lightfootcat.json
-speciesName not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-folderNo not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-speciesName not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-folderNo not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-Dumping extracted text into ./outputs/lightfootcat_with_extract/lightfootcat.csv
-Dumping extracted text into ./outputs/lightfootcat_with_extract/lightfootcat.json
-speciesName not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-folderNo not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-speciesName not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-folderNo not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-Dumping extracted text into ./outputs/lightfootcat_with_extract/lightfootcat.csv
-Dumping extracted text into ./outputs/lightfootcat_with_extract/lightfootcat.json
-speciesName not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-folderNo not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-speciesName not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-folderNo not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-Dumping extracted text into ./outputs/lightfootcat_with_extract/lightfootcat.csv
-Dumping extracted text into ./outputs/lightfootcat_with_extract/lightfootcat.json
-speciesName not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-folderNo not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-speciesName not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-folderNo not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-Dumping extracted text into ./outputs/lightfootcat_with_extract/lightfootcat.csv
-Dumping extracted text into ./outputs/lightfootcat_with_extract/lightfootcat.json
-speciesName not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-folderNo not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-speciesName not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-folderNo not found in datafrom
-        division familyName  ... folders  This from Ben-Lomond" [?
-0  Dicotyledones        N/A  ...     NaN                       NaN
-1  Dicotyledones        N/A  ...     NaN                       NaN
-
-[2 rows x 9 columns]
-Dumping extracted text into ./outputs/lightfootcat_with_extract/lightfootcat.csv
-Processing Families in MONOCOTYLEDONES:   0%|          | 0/42 [00:00<?, ?family/s]Processing Families in MONOCOTYLEDONES:   2%|▏         | 1/42 [00:08<06:02,  8.84s/family]Processing Families in MONOCOTYLEDONES:   5%|▍         | 2/42 [00:25<09:02, 13.56s/family]Processing Families in MONOCOTYLEDONES:   7%|▋         | 3/42 [00:36<07:52, 12.12s/family]Processing Families in MONOCOTYLEDONES:  10%|▉         | 4/42 [00:40<05:38,  8.90s/family]This is a friendly reminder - the current text generation call will exceed the model's predefined maximum length (32768). Depending on the model, you may observe exceptions, performance degradation, or nothing at all.

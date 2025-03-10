@@ -15,8 +15,6 @@ system:
     Reformat the following botanical text exactly into JSON according to the provided schema.
     Do not generate any extra text, explanations, or markdown formatting. Your output must be a single JSON object with no surrounding commentary or formatting.
     Follow the rules exactly as provided, ensuring that:
-      - All keys are correctly quoted.
-      - There are no trailing commas.
       - Only the data from the input is reorganized; do not modify or add any content.
   # rules define the key-value rules for each expected key in the output json dict
   rules:

@@ -28,7 +28,7 @@ def verify_json(text: str, clean: bool = False, out: bool = False) -> bool:
     #message = repair_json(text, ensure_ascii=False, return_objects=True)
     
     try:
-        text = repair_json(text, ensure_ascii=False, return_objects=False) if clean else text
+        text = repair_json(text, ensure_ascii=True, return_objects=False) if clean else text
         json_loaded = json.loads(text)
         verified = True
         message = json_loaded
@@ -87,10 +87,10 @@ def check_for_lists_and_dicts(dataframe: pd.DataFrame) -> tuple[bool, list[str]]
 
     for col in dataframe.columns:
         try:
-            sample_item = dataframe[col][0]
+            non_null_values = dataframe[col].dropna()
 
-            if isinstance(sample_item, list) or isinstance(sample_item, dict):
-                 list_of_columns.append(col)
+            if non_null_values.apply(lambda x: isinstance(x, (list,dict))).any():
+                list_of_columns.append(col)
         except:
             logger.debug(f"{col} not found in datafrom")
             logger.debug(dataframe.head(2))
@@ -123,17 +123,19 @@ def save_csv_from_json(json_file: Union[str, dict],
         raise ValueError(f"{json_file} is not a valid JSON file path or object")
 
     # Collate the data into a pandas normalisable format
+    collapse_dict_lists = lambda x: x[0] if isinstance(x, list) else x
     unnormalised = dict(
             data = [
                 dict(division=div_name, items=div_value) for div_name, div_value in json_data.items()
             ]
-        )          
+        )      
     
     # Normalise with pandas
     normalised_df = pd.json_normalize(unnormalised)
     
+    max_iter = 10
     # Define an infinite loop
-    while True:
+    while max_iter > 0:
 
         # Check for any dicts or lists in each column         
         has_lists_and_dicts, list_of_columns = check_for_lists_and_dicts(normalised_df)
@@ -145,17 +147,22 @@ def save_csv_from_json(json_file: Union[str, dict],
         # Iterate through each column
         for col in list_of_columns:
             
+            sample_value = normalised_df[col].dropna().iloc[0]
             # If it is a list then use pandas explode function to seperate them into multiple fields
-            if isinstance(normalised_df[col][0], list):
+            if isinstance(sample_value, list):
                 normalised_df = normalised_df.explode(col, ignore_index=True)
             #If not and it is a dict, then perform json_normalisation provided by pandas
-            else:
-                dict_df = pd.json_normalize(normalised_df[col])
+            elif isinstance(sample_value, dict):
+                # To ensure no lists are misplaced in this column
+                mask = normalised_df[col].apply(lambda x: isinstance(x, list))
+                normalised_df.loc[mask, col] = normalised_df.loc[mask, col].explode(ignore_index=True)
+                dict_df = pd.json_normalize(normalised_df[col]).add_prefix(f"{col}-")
                 normalised_df = normalised_df.drop(columns=[col]).reset_index(drop=True)
                 normalised_df = pd.concat([normalised_df, dict_df], axis=1)
-    
+        
+        max_iter -= 1
     # Save as csv
-    save_csv(normalised_df, file_name, save_path, debug)
+    save_csv(normalised_df, file_name, save_path)
 
 
 def save_csv(csv_file: pd.DataFrame, file_name: str = "sample", save_path: str = "./outputs") -> None:

@@ -211,9 +211,12 @@ class PromptLoader:
         """
 
         image_prompt = """
-                    Extract the text from both columns in the image, preserving the structure and formatting, 
-                    ensure no grammatical correction is performed. 
-                    Ensure the footers and headers are not extracted.
+                    Extract only the main body text from the image, preserving the original structure and formatting. 
+                    Do not perform any grammatical corrections.  
+                    Ignore any text found in the top or bottom margins of the image, including headers, footers, page numbers, and page titles. 
+                    Only process text located within the central column regions.
+                    Text in the top 5\% and bottom 5\% should be ignored.
+                    Do not add, invent, or repeat text on your own. If a line appears once in the image, it must appear once in the output. If the same line appears multiple times in the image, reproduce it exactly as many times as it actually appears.
                     """
 
         return [dict(role="user", content=[dict(type="image"), 
