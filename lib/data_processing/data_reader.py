@@ -165,6 +165,7 @@ class DataReader:
         
         temp_text_file = os.path.join(self.data_path, temp_text) if not(temp_text is None) else os.path.join(self.data_path, self.EXTRACTED_TEXT)
         if not(temp_text_file is None) and os.path.isfile(temp_text_file):
+            logger.info("Temperory text file found")
             return self.extraction_model.get_extracted_text([], temp_text_file)
 
         images = self.get_data()

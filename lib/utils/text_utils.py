@@ -3,25 +3,19 @@ import re
 #(?<!\S)              # Assert position is at start-of-string or preceded by whitespace
 #(?!\S)                # Assert that the match is followed by whitespace or end-of-string
 FAMILY_REGEX_PATTERN = """
-                          [\*"\.\n]*                # Optional leading asterisks or quotes
+                          [\*"\.\n\d+]*                # Optional leading asterisks or quotes
                           (?:
                             (?i:TRIBE|SERIES)   # Match either "Tribe" or "Series"
                             \s+                # Ensure at least one space
                             [IVXLCDM\.]+         # Match Roman numerals (I, V, X, L, C, D, M)
                             \s+                # Ensure at least one space before the family name
-                            \w+?
+                            [A-Z]+((AC|OR)EAE|Æ|(AC|OR)E\.E\.|AE|(ac|or)eae|ORAE|orae|(OR|or)\.(E|e))\.?
                             |
-                            [A-Z]+ACEAE\.?        # All-uppercase families ending with ACEAE (any number of letters before ACEAE)
+                            [A-Z]+((AC|OR)EAE|Æ|(AC|OR)E\.E\.|AE|(ac|or)eae|ORAE|orae|(OR|or)\.(E|e))\.? # All-uppercase families ending with ACEAE (any number of letters before ACEAE)
                             |
-                            [A-Za-z]+Æ\.?
+                            [A-Za-z]+((AC|OR)EAE|Æ|(AC|OR)E\.E\.|AE|(ac|or)eae|ORAE|orae|(OR|or)\.(E|e))\.?
                             |
-                            [A-Z]+ACE\.E\.?
-                            |
-                            [A-Za-z]+ACE\.E\.?
-                            |
-                            [A-Z]+AE\.?
-                            |
-                            [A-Z][a-z]+aceae\.?    # Normal mixed-case families ending with 'aceae' (e.g. Celastraceae)
+                            [A-Z][a-z]+(ac|or)eae\.?    # Normal mixed-case families ending with 'aceae' (e.g. Celastraceae)
                             |
                             (?=[A-Za-z]*[A-Z])   # Ensure at least one uppercase letter exists in the following synonym
                               (?:

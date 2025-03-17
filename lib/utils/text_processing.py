@@ -1,4 +1,6 @@
 import re
+from typing import Optional
+
 from lib.utils.block_builder import create_text_blocks
 #(?<!\S)              # Assert position is at start-of-string or preceded by whitespace
 #(?!\S)                # Assert that the match is followed by whitespace or end-of-string
@@ -9,7 +11,7 @@ FAMILY_REGEX_PATTERN = """
                             \s+                # Ensure at least one space
                             [IVXLCDM\.]+         # Match Roman numerals (I, V, X, L, C, D, M)
                             \s+                # Ensure at least one space before the family name
-                            \w+?
+                            \w+
                             |
                             [A-Z]+ACEAE\.?        # All-uppercase families ending with ACEAE (any number of letters before ACEAE)
                             |
@@ -46,7 +48,7 @@ FAMILY_REGEX = re.compile(rf"({FAMILY_REGEX_PATTERN})", re.VERBOSE)
 
 
 class TextProcessor:
-    def __init__(self, family_regex=None, ):
+    def __init__(self, family_regex=None):
         """Initialize the TextProcessing class."""
         self.family_regex = family_regex or FAMILY_REGEX
     
@@ -55,27 +57,30 @@ class TextProcessor:
         # Preprocess text
         text = self._preprocess_text(text, divisions[0])
         
-        # Split the text with respect to paragraphs
-        split_text = text.split("\n\n")
+        # Split by division and get a structure
+        div_struct = self._split_by_divisions(text, divisions)
+        
         
         # Initialize structure and patterns
         struct = {}
-        div_regex = self._create_division_regex(divisions)
-        
-        # Process each paragraph
-        current_div = None
-        current_family = None
-        
-        for line in split_text:
-            line = line.strip()
-            if not line:
-                continue
-                
-            # Process the line based on its content type
-            current_div, current_family = self._process_line(
-                line, struct, div_regex, 
-                current_div, current_family
-            )
+
+        #return div_struct
+        for current_div, content in div_struct.items():
+            current_div = current_div.strip()
+            # Split the text with respect to paragraphs
+            split_content = content.split("\n\n")
+            current_family = None
+            struct[current_div] = {"details":[], "families": {}}
+            for line in split_content:
+                line = line.strip()
+                if not line:
+                    continue
+
+                # Process the line based on its content type
+                current_family = self._process_line(
+                    line, struct, 
+                    current_div, current_family
+                )
         
         if return_blocks:
             return create_text_blocks(struct, max_chunk_size)
@@ -95,25 +100,47 @@ class TextProcessor:
         
         return blocks
     
-    # Private methods for hierarchical structuring
-    def _preprocess_text(self, text, first_division):
-        """Remove any text before the first division."""
-        return re.sub(rf"^.*?({re.escape(first_division)})", r"\1", text, flags=re.S | re.I)
+
+    def _preprocess_text(self, text: str, first_division: str) -> str:
+        """
+        Preprocess the text for splitting into text blocks
+
+        Args:
+            text (str): Extracted text
+            first_division (str): The first division in text
+
+        Returns:
+            str: Cleaned text
+        """
+        text = re.sub(rf"^.*?({re.escape(first_division)})", r"\1", text, flags=re.S | re.I)
+        text = re.sub(r"\*\*(.+?)\*\*", r"\1", text, flags=re.MULTILINE) # Remove any markdown (bold) on string
+        text = re.sub(r"\*", "", text, flags=re.MULTILINE)
+        text = re.sub(r"```", "", text, flags=re.MULTILINE) # Remove any markdown
+        text = re.sub(r"^(Catalogue|catalogue)$", "", text, flags=re.MULTILINE) # Remove Catalogue/catalogue
+
+        return text
     
-    def _create_division_regex(self, divisions):
-        """Create regex pattern for divisions."""
+    def _create_division_regex(self, divisions: Optional[list]=None) -> re.Pattern:
+        """
+        Generated the division regex
+
+        Args:
+            divisions (Optional[list], optional): List of divisions. Defaults to None.
+
+        Returns:
+            re.Pattern: Pattern for division regex
+        """
+        if not(divisions):
+            return re.compile(f"(?:\d+\.?\s+)?([A-Z][a-z]+|[A-Z]+)\.?")
+        
         division_str = "|".join(map(re.escape, divisions))
         return re.compile(f"(?:\d+\.?\s+)?({division_str})\.?", re.IGNORECASE)
     
-    def _process_line(self, line, struct, div_regex, current_div, current_family):
+    def _process_line(self, line, struct, current_div, current_family):
         """Process a single line and update the structure accordingly."""
-        # Check if line contains a division
-        if re.match(div_regex, line):
-            current_div, current_family = self._process_division_line(
-                line, struct, div_regex
-            )
         # Check for family match
-        elif re.match(self.family_regex, line) and current_div is not None:
+        
+        if re.match(self.family_regex, line) and current_div is not None:
             current_family = self._process_family_line(
                 line, struct, current_div
             )
@@ -122,48 +149,67 @@ class TextProcessor:
             self._add_content_to_structure(
                 line, struct, current_div, current_family
             )
-        
-        return current_div, current_family
+
+        return current_family
     
-    def _process_division_line(self, line, struct, div_regex):
-        """Process a line that contains a division."""
-        context = list(filter(None, re.split(div_regex, line)))
-        division_name = context[0].strip()
-        
-        # Initialize division if it doesn't exist
-        if division_name not in struct:
-            struct[division_name] = {"details": [], "families": {}}
-        
-        current_family = None
-        
-        # Process remaining context to check for families
-        if len(context) > 1:
-            for item in context[1:]:
-                item = item.strip()
-                if re.match(self.family_regex, item):
-                    current_family = self._process_family_in_division(
-                        item, struct, division_name
-                    )
+    def _split_by_divisions(self, text: str, divisions: list) -> dict:
+        """
+        Split the text by division and clean the output to get a structured hierarchy of divisions
+
+        Args:
+            text (str): extracted text
+            divisions (list): List of divisions to split by
+
+        Returns:
+            dict: a structured hierarchy of divisions and their contents
+        """
+
+        # Generate div regexes
+        # To split divisions
+        div_regex = self._create_division_regex(divisions)
+        # To check if a division
+        div_check_regex = self._create_division_regex()
+
+        # Intialise structure
+        struct = {}
+
+        #Split by divisions and clean
+        div_split = re.split(div_regex, text)
+        remove_newline = lambda x: not(re.match(re.compile(r"^(\n)+$"), x))
+        div_split = list(filter(None,div_split))
+        div_split = list(filter(remove_newline, div_split))
+
+        # Pack into splits
+        splits = list(zip(div_split[::2], div_split[1::2]))
+
+        # Iterate through all divisions and Check if they match a divison, if not add it to previous divisions
+        prev_div = None
+        for div, content in splits:
+            if re.match(div_check_regex, div):
+                if div not in struct.keys():
+                    struct[div] = content
                 else:
-                    # Add as division details
-                    struct[division_name]["details"].append(item)
-        
-        return division_name, current_family
+                    struct[div] += content
+                prev_div = div
+            else:
+                struct[prev_div] += div + content
+
+        return struct
     
-    def _process_family_in_division(self, item, struct, division_name):
-        """Process a family that appears in the same line as a division."""
-        family_matches = list(filter(None, re.split(self.family_regex, item)))
-        family_name = family_matches[0].strip()
+    # def _process_family_in_division(self, item, struct, division_name):
+    #     """Process a family that appears in the same line as a division."""
+    #     family_matches = list(filter(None, re.split(self.family_regex, item)))
+    #     family_name = family_matches[0].strip()
         
-        if family_name not in struct[division_name]["families"]:
-            struct[division_name]["families"][family_name] = {
-                "details": family_matches[1:], 
-                "species": []
-            }
-        else:
-            struct[division_name]["families"][family_name]["details"].extend(family_matches[1:])
+    #     if family_name not in struct[division_name]["families"]:
+    #         struct[division_name]["families"][family_name] = {
+    #             "details": family_matches[1:], 
+    #             "species": []
+    #         }
+    #     else:
+    #         struct[division_name]["families"][family_name]["details"].extend(family_matches[1:])
         
-        return family_name
+    #     return family_name
     
     def _process_family_line(self, line, struct, current_div):
         """Process a line that contains a family."""
@@ -172,11 +218,10 @@ class TextProcessor:
         
         if family_name not in struct[current_div]["families"]:
             struct[current_div]["families"][family_name] = {
-                "details": family_matches[1:], 
-                "species": []
+                "species": family_matches[1:]
             }
         else:
-            struct[current_div]["families"][family_name]["details"].extend(family_matches[1:])
+            struct[current_div]["families"][family_name]["species"].extend(family_matches[1:])
         
         return family_name
     
@@ -210,15 +255,15 @@ class TextProcessor:
         """Process families within a division."""
         for family_name, family_data in division_data["families"].items():
             # Process family details
-            if family_data["details"]:
-                family_details = "\n".join(family_data["details"])
-                self._create_content_blocks(
-                    blocks, 
-                    "family_details", 
-                    family_details, 
-                    max_block_size,
-                    {"division": division_name, "family": family_name}
-                )
+            # if family_data["details"]:
+            #     family_details = "\n".join(family_data["details"])
+            #     self._create_content_blocks(
+            #         blocks, 
+            #         "family_details", 
+            #         family_details, 
+            #         max_block_size,
+            #         {"division": division_name, "family": family_name}
+            #     )
             
             # Process species
             self._process_species(blocks, division_name, family_name, family_data, max_block_size)

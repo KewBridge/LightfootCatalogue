@@ -31,15 +31,15 @@ def process_families(blocks, division_name, division_data, max_block_size):
     """Process families within a division."""
     for family_name, family_data in division_data["families"].items():
         # Process family details
-        if family_data["details"]:
-            family_details = "\n".join(family_data["details"])
-            create_content_blocks(
-                blocks, 
-                "family_details", 
-                family_details, 
-                max_block_size,
-                {"division": division_name, "family": family_name}
-            )
+        # if family_data["details"]:
+        #     family_details = "\n".join(family_data["details"])
+        #     create_content_blocks(
+        #         blocks, 
+        #         "family_details", 
+        #         family_details, 
+        #         max_block_size,
+        #         {"division": division_name, "family": family_name}
+        #     )
         
         # Process species
         process_species(blocks, division_name, family_name, family_data, max_block_size)

@@ -167,6 +167,9 @@ class PromptLoader:
         message += self._unravel_prompt(prompt)
 
         if role == "user":
+
+            if not("\{extracted_text\}" in message):
+                message += "\{extracted_text\}"
             contents = (
                 [dict(type="text", text=message)] 
                 if not("image" in title.lower()) else 
