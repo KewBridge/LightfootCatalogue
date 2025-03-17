@@ -1,7 +1,6 @@
 import re
-from typing import Optional
-
-from lib.utils.block_builder import create_text_blocks
+from typing import Optional, Iterator, Match
+from pygbif import species
 #(?<!\S)              # Assert position is at start-of-string or preceded by whitespace
 #(?!\S)                # Assert that the match is followed by whitespace or end-of-string
 FAMILY_REGEX_PATTERN = """
@@ -46,62 +45,222 @@ FAMILY_REGEX_WITH_LOOKAHEAD = re.compile(rf"(?={FAMILY_REGEX_PATTERN})", re.VERB
 FAMILY_REGEX = re.compile(rf"({FAMILY_REGEX_PATTERN})", re.VERBOSE)
 
 
-
 class TextProcessor:
-    def __init__(self, family_regex=None):
-        """Initialize the TextProcessing class."""
-        self.family_regex = family_regex or FAMILY_REGEX
-    
-    def __call__(self, text, divisions, max_chunk_size=3000, return_blocks=True):
-        """Parse text into a hierarchical structure based on divisions and families."""
-        # Preprocess text
-        text = self._preprocess_text(text, divisions[0])
-        
-        # Split by division and get a structure
-        div_struct = self._split_by_divisions(text, divisions)
-        
-        
-        # Initialize structure and patterns
-        struct = {}
 
-        #return div_struct
-        for current_div, content in div_struct.items():
+    def __init__(self):
+        
+        # Family Regex
+        self.family_regex = re.compile(rf"""(?P<PAGENOSTART>^\d+)?\s*
+                                       (?P<INDEX>[IVXLCDM\.]+)?(\s+|-)?
+                                       (?P<FAMILY>{FAMILY_REGEX_PATTERN})\s*
+                                       (?P<PAGENOEND>\d+$)?""", flags=re.VERBOSE)
+        # Species Regex
+        self.species_regex_pattern = "(?:\d+\.\s)?[A-Z][a-z]+(?:\s[a-z]+)?(?:\s(var\.|subsp\.|f\.)\s[a-z]+)?(?:\s[A-Z][a-z]+)?(?:\s\([\w\s]+\))?"
+        self.species_regex = re.compile(rf"(?P<SPECIES>{self.species_regex_pattern})")
+
+        # Known non-species words
+        self.not_species_text = set()
+
+
+    
+    def __call__(self, text: str, divisions: list, max_chunk_size: int = 3000):
+        
+        # Pre-process input text to clean it
+        text = self.preprocess_text(text, divisions[0])
+
+        # split the structure by divisions
+        div_struct = self.split_by_divisions(text, divisions)
+
+        # Define a new structure
+        struct = dict()
+
+        for current_div, div_content in div_struct.items():
             current_div = current_div.strip()
-            # Split the text with respect to paragraphs
-            split_content = content.split("\n\n")
+            #print(f"==> Processing {current_div}")
+            
+            # Split the text into paragraphs
+            split_content = div_content.split("\n\n")
+
             current_family = None
-            struct[current_div] = {"details":[], "families": {}}
+
+            # Start a dict for the division
+            struct[current_div] = dict(details=[], families = {})
+
             for line in split_content:
                 line = line.strip()
                 if not line:
                     continue
 
-                # Process the line based on its content type
-                current_family = self._process_line(
-                    line, struct, 
-                    current_div, current_family
-                )
-        
-        if return_blocks:
-            return create_text_blocks(struct, max_chunk_size)
+                family_matches = self._check_family(line)
+                if family_matches:
+                    add_to_family_name = False
+                    for family, family_content in family_matches.items():
+                        if family:
+                            current_family = family if not(add_to_family_name) else current_family + " " + family
+                            add_to_family_name = False
+                        
+                        contents = list(filter(None, family_content["content"]))
+                        species = list(filter(None, family_content["species"]))
 
+                        if not(contents) and not(species):
+                            add_to_family_name = True
+                            continue
+
+                        if current_family in struct[current_div]["families"]:
+                            struct[current_div]["families"][current_family]["content"].extend(contents)
+                            struct[current_div]["families"][current_family]["species"].extend(species)
+                        else:
+                            struct[current_div]["families"][current_family] = dict(content=contents, species=species)
+                        
+                else:
+                    #print(self._find_all_species(line, current_family))
+                    if current_family in struct[current_div]["families"]:
+                        struct[current_div]["families"][current_family]["content"].append(line)
+                    else:
+                        struct[current_div]["families"][current_family] = dict(content=[line], species=[])
+
+
+        
+        for div, div_content in struct.items():
+            for family, fam_content in div_content["families"].items():
+                contents = fam_content["content"]
+                species_list = self._clean_species_content(contents, family, max_chunk_size)
+                fam_content["species"].extend(species_list)
+                fam_content["content"] = []
+        
+        
         return struct
-    
-    def create_text_blocks(self, struct, max_block_size):
-        """Create text blocks from hierarchical structure with size limitation."""
-        blocks = []
-        
-        for division_name, division_data in struct.items():
-            # Process division details
-            self._process_division_details(blocks, division_name, division_data, max_block_size)
-            
-            # Process families
-            self._process_families(blocks, division_name, division_data, max_block_size)
-        
-        return blocks
-    
 
-    def _preprocess_text(self, text: str, first_division: str) -> str:
+    def _check_family(self, line: str) -> dict:
+        """
+        Check for all families in a line and organize their contents.
+        
+        Args:
+            line (str): The line to check for families
+        
+        Returns:
+            dict: A dictionary with family names as keys and their contents as values
+        """
+        if not line:
+            return {}
+        
+        # Find all family matches
+        family_matches = list(re.finditer(self.family_regex, line))
+        
+        # If no families found, return empty dict
+        if not family_matches:
+            return {}
+        
+        # Dictionary to store family information
+        family_data = {}
+        
+        def clean_family_name (fname: str) -> str:
+            fname = re.sub(r".*?([A-Za-z\s]+).*?", r"\1", fname)
+            fname = fname.upper()
+            return fname
+        
+        prev_family_name = None
+        # Process each family match
+        for idx, match in enumerate(family_matches):
+            page_match = match.group("PAGENOSTART") or match.group("PAGENOEND")
+            family_name = match.group('FAMILY').strip()
+            family_name = clean_family_name(family_name)
+            # Skip if this family was already processed (take the earliest match)
+            if family_name in family_data:
+                continue
+            
+            if page_match:
+                family_name = prev_family_name
+            # Determine the text segment for this family (until next family or end of line)
+            start_pos = match.end()
+            
+            # Find the next family match position, or end of line if this is the last family
+            end_pos = len(line)
+            for next_match in family_matches[idx+1:]:
+                next_family_name = next_match.group('FAMILY').strip()
+                next_family_name = clean_family_name(next_family_name)
+                # Only consider this a boundary if it's a different family
+                if next_family_name != family_name:
+                    end_pos = next_match.start()
+                    break
+            
+            # Extract the content belonging to this family
+            family_content = line[start_pos:end_pos].strip()
+            
+            # Store the family data
+            if family_name in family_data:
+                family_data[family_name]["content"].append(family_content)
+            else:
+                family_data[family_name] = {
+                    #'match': match,
+                    'content': [family_content],
+                    'species': []  # To be filled if needed
+                }
+            
+            prev_family_name = family_name
+
+        return family_data
+    def _find_all_species(self, line: str, family: Optional[str]=None) -> object:
+        
+        species_matches = re.finditer(self.species_regex, line)
+
+        # filter out any matches that are 5 characters and above and have atleast 2 words in it
+        species_matches = filter(lambda x: (len(x.group(0)) > 5 and len(x.group(0).split(" ")) >= 2), species_matches)
+
+        regex_check = lambda x: True if re.match(r"\d+?\.?\s*\w{3,}\s\w{2}\.*", x.group(0)) else False
+        species_matches = filter(regex_check, species_matches)
+        
+        species_matches = filter(lambda x: x.group(0) not in self.not_species_text, species_matches)
+
+        check_against_gbif = lambda x: self._check_against_gbif(x, family)
+        species_matches = filter(check_against_gbif, species_matches)
+
+        return list(species_matches)
+
+    def _check_against_gbif(self, species_match, family: str=None) -> bool:
+
+        species_name = re.sub(r"^(\d+\.\s*)?", "", species_match.group(0))
+        species_name = species_name.strip()
+        
+        if family:
+            gbif_search = species.name_backbone(name=species_name, family=family, kingdom="plants", strict=False, verbose=True, limit=1)
+        else:
+            gbif_search = species.name_backbone(name=species_name, kingdom="plants", strict=False, verbose=True, limit=1)
+        
+
+        def check_gbif_dict(gbif_dict: dict) -> bool:
+            
+            if gbif_dict["matchType"] == "NONE":
+                return False
+
+            if (
+                (gbif_dict["rank"].lower() in ["genus", "species"]) 
+                and
+                (gbif_dict["confidence"] >= 50)
+                and
+                (gbif_dict["status"].lower() == "ACCEPTED".lower())
+                ):
+                return True
+            
+            return False
+        
+        check_first_line = check_gbif_dict(gbif_search)
+
+        if check_first_line:
+            return True
+        elif "alternatives" in gbif_search and len(gbif_search["alternatives"]) >= 1:
+            # Only checking the first alternative
+            check_alternative = check_gbif_dict(gbif_search["alternatives"][0])
+            
+            if check_alternative:
+                return True
+        
+        self.not_species_text.add(species_match.group(0))
+        return False
+            
+
+
+    def preprocess_text(self, text: str, first_division: str) -> str:
         """
         Preprocess the text for splitting into text blocks
 
@@ -113,11 +272,19 @@ class TextProcessor:
             str: Cleaned text
         """
         text = re.sub(rf"^.*?({re.escape(first_division)})", r"\1", text, flags=re.S | re.I)
+         
         text = re.sub(r"\*\*(.+?)\*\*", r"\1", text, flags=re.MULTILINE) # Remove any markdown (bold) on string
         text = re.sub(r"\*", "", text, flags=re.MULTILINE)
         text = re.sub(r"```", "", text, flags=re.MULTILINE) # Remove any markdown
         text = re.sub(r"^(Catalogue|catalogue)$", "", text, flags=re.MULTILINE) # Remove Catalogue/catalogue
-
+        text = re.sub(f"^\d+\.?$", "", text, flags=re.MULTILINE)
+        # Clean family ending
+        text = re.sub(r"Æ", "AE", text, flags=re.MULTILINE)
+        text = re.sub(r"œ", "ae", text, flags=re.MULTILINE)
+        text = re.sub(r"ACE\.E\.?", "ACEAE", text, flags= re.MULTILINE) # This changes for all family level ones
+        text = re.sub(r"ace\.e\.?", "aceae", text, flags= re.MULTILINE | re.I) # This changes for all others
+        text = re.sub(r"OR\.E", "ORAE", text, flags= re.MULTILINE) # This changes for all family level ones
+        text = re.sub(r"or\.e", "orae", text, flags= re.MULTILINE | re.I) # This changes for all others
         return text
     
     def _create_division_regex(self, divisions: Optional[list]=None) -> re.Pattern:
@@ -136,23 +303,7 @@ class TextProcessor:
         division_str = "|".join(map(re.escape, divisions))
         return re.compile(f"(?:\d+\.?\s+)?({division_str})\.?", re.IGNORECASE)
     
-    def _process_line(self, line, struct, current_div, current_family):
-        """Process a single line and update the structure accordingly."""
-        # Check for family match
-        
-        if re.match(self.family_regex, line) and current_div is not None:
-            current_family = self._process_family_line(
-                line, struct, current_div
-            )
-        # If not a division or family, it's a species or description
-        elif current_div is not None:
-            self._add_content_to_structure(
-                line, struct, current_div, current_family
-            )
-
-        return current_family
-    
-    def _split_by_divisions(self, text: str, divisions: list) -> dict:
+    def split_by_divisions(self, text: str, divisions: list) -> dict:
         """
         Split the text by division and clean the output to get a structured hierarchy of divisions
 
@@ -195,162 +346,169 @@ class TextProcessor:
                 struct[prev_div] += div + content
 
         return struct
-    
-    # def _process_family_in_division(self, item, struct, division_name):
-    #     """Process a family that appears in the same line as a division."""
-    #     family_matches = list(filter(None, re.split(self.family_regex, item)))
-    #     family_name = family_matches[0].strip()
+
+    def _clean_species_content(self, contents, family, max_chunk_size=3000):
+        """
+        Clean and chunk species content based on matches and size constraints.
+        Ensures matched species text is preserved at the beginning of each chunk when splitting.
         
-    #     if family_name not in struct[division_name]["families"]:
-    #         struct[division_name]["families"][family_name] = {
-    #             "details": family_matches[1:], 
-    #             "species": []
-    #         }
-    #     else:
-    #         struct[division_name]["families"][family_name]["details"].extend(family_matches[1:])
-        
-    #     return family_name
-    
-    def _process_family_line(self, line, struct, current_div):
-        """Process a line that contains a family."""
-        family_matches = list(filter(None, re.split(self.family_regex, line)))
-        family_name = family_matches[0].strip()
-        
-        if family_name not in struct[current_div]["families"]:
-            struct[current_div]["families"][family_name] = {
-                "species": family_matches[1:]
-            }
-        else:
-            struct[current_div]["families"][family_name]["species"].extend(family_matches[1:])
-        
-        return family_name
-    
-    def _add_content_to_structure(self, line, struct, current_div, current_family):
-        """Add content to the appropriate part of the structure."""
-        if current_family is not None:
-            # Add to current family as a species
-            struct[current_div]["families"][current_family]["species"].append(line)
-        else:
-            # Add to division details
-            if "details" not in struct[current_div]:
-                struct[current_div]["details"] = []
-            struct[current_div]["details"].append(line)
-    
-    # Private methods for text block creation
-    def _process_division_details(self, blocks, division_name, division_data, max_block_size):
-        """Process and split division details into blocks."""
-        if not division_data["details"]:
-            return
+        Args:
+            contents: List of content lines
+            family: Family to search for species
+            max_chunk_size: Maximum size of each content chunk
             
-        division_details = "\n".join(division_data["details"])
-        self._create_content_blocks(
-            blocks, 
-            "division_details", 
-            division_details, 
-            max_block_size,
-            {"division": division_name}
-        )
-    
-    def _process_families(self, blocks, division_name, division_data, max_block_size):
-        """Process families within a division."""
-        for family_name, family_data in division_data["families"].items():
-            # Process family details
-            # if family_data["details"]:
-            #     family_details = "\n".join(family_data["details"])
-            #     self._create_content_blocks(
-            #         blocks, 
-            #         "family_details", 
-            #         family_details, 
-            #         max_block_size,
-            #         {"division": division_name, "family": family_name}
-            #     )
-            
-            # Process species
-            self._process_species(blocks, division_name, family_name, family_data, max_block_size)
-    
-    def _process_species(self, blocks, division_name, family_name, family_data, max_block_size):
-        """Process species within a family."""
-        if not family_data["species"]:
-            return
-            
-        species_list = family_data["species"]
-        context = {"division": division_name, "family": family_name}
+        Returns:
+            List of chunked species content without duplicates
+        """
+        if not contents:
+            return []
         
-        # Simple case: all species fit in one block
-        species_text = "\n".join(species_list)
-        if len(species_text) <= max_block_size:
-            blocks.append({
-                "type": "species",
-                **context,
-                "content": species_text
-            })
-            return
+        species_list = []
+        current_chunk = ""
+        current_species_match = None  # Track the current species match text
         
-        # Complex case: need to split species across multiple blocks
-        self._create_species_blocks(blocks, species_list, max_block_size, context)
-    
-    def _create_species_blocks(self, blocks, species_list, max_block_size, context):
-        """Create blocks from species list with intelligent splitting."""
-        current_text = ""
-        
-        for species in species_list:
-            # Check if adding this species would exceed the block size
-            potential_text = current_text + ("\n" + species if current_text else species)
+        for idx, line in enumerate(contents):
+            matches = self._find_all_species(line, family=family)
             
-            if len(potential_text) > max_block_size and current_text:
-                # Current block is full, add it to blocks
-                blocks.append({
-                    "type": "species",
-                    **context,
-                    "content": current_text
-                })
-                current_text = species
+            # Case 1: No species matches in this line
+            if not matches:
+                if current_chunk:
+                    # If adding this line would exceed max_chunk_size, split the chunk
+                    if len(current_chunk + "\n" + line) > max_chunk_size:
+                        # Only split if we know the current species match
+                        if current_species_match:
+                            species_list.append(current_chunk)
+                            current_chunk = f"{current_species_match}\n{line}"
+                        else:
+                            species_list.append(current_chunk)
+                            current_chunk = line
+                    else:
+                        current_chunk += "\n" + line
+                else:
+                    current_chunk = line
+            
+            # Case 2: Exactly one species match
+            elif len(matches) == 1:
+                match = matches[0]
+                start_pos = match.start()
+                species_match = match.group()  # Get the entire matched string
+                
+                # Species starts at beginning of line
+                if start_pos == 0:
+                    
+                    current_species_match = species_match
+
+                    if current_chunk: # and len(last_block+ "\n" + current_chunk) > max_chunk_size:
+                        if species_list and len(species_list[-1] + "\n" + current_chunk) < max_chunk_size:
+                                species_list[-1] += "\n" + current_chunk
+                        else:
+                            species_list.append(current_chunk)
+                        
+                        
+                    current_chunk = line
+                
+                # Species appears later in the line
+                else:
+                    line_prefix = line[:start_pos]
+                    line_species = line[start_pos:]
+                    
+                    # Handle the content before the species
+                    if current_chunk:
+                        if len(current_chunk + "\n" + line_prefix) > max_chunk_size:
+                            # Split with current species if possible
+                            if current_species_match:
+                                species_list.append(current_chunk)
+                                current_chunk = f"{current_species_match}\n{line_prefix}"
+                            else:
+                                species_list.append(current_chunk)
+                                current_chunk = line_prefix
+                        else:
+                            current_chunk += "\n" + line_prefix
+                            species_list.append(current_chunk)
+                    else:
+                        current_chunk = line_prefix
+                        species_list.append(current_chunk)
+                    
+                    # Start new chunk with species part
+                    current_species_match = species_match
+                    current_chunk = line_species
+            
+            # Case 3: Multiple species matches
             else:
-                # Add to current block
-                current_text = potential_text
+                for idx, match in enumerate(matches):
+                    start_pos = match.start()
+                    end_pos = matches[idx+1].start() if idx+1 < len(matches) else len(line)
+                    species_match = match.group()  # Get the entire matched string
+                    
+                    # Handle the first match - might need to append prefix to previous chunk
+                    if idx == 0:
+                        line_prefix = line[:start_pos]
+                        if line_prefix:
+                            if current_chunk:
+                                if len(current_chunk + "\n" + line_prefix) > max_chunk_size:
+                                    # Split with current species if possible
+                                    if current_species_match:
+                                        species_list.append(current_chunk)
+                                        current_chunk = f"{current_species_match}\n{line_prefix}"
+                                    else:
+                                        species_list.append(current_chunk)
+                                        current_chunk = line_prefix
+                                else:
+                                    current_chunk += "\n" + line_prefix
+                                    species_list.append(current_chunk)
+                            else:
+                                current_chunk = line_prefix
+                                species_list.append(current_chunk)
+                    
+                    # Extract the current species segment
+                    species_segment = line[start_pos:end_pos]
+                    current_species_match = species_match
+                    
+                    # Check if this segment needs to be chunked further
+                    if len(species_segment) > max_chunk_size:
+                        # First chunk includes full species match
+                        first_chunk = species_segment[:max_chunk_size]
+                        species_list.append(first_chunk)
+                        
+                        # Remaining chunks start with the species match
+                        remaining = species_segment[max_chunk_size:]
+                        while remaining:
+                            chunk_size = min(max_chunk_size - len(species_match) - 1, len(remaining))
+                            next_chunk = f"{species_match}\n{remaining[:chunk_size]}"
+                            species_list.append(next_chunk)
+                            remaining = remaining[chunk_size:]
+                        
+                        current_chunk = ""
+                    else:
+                        if current_chunk:
+                            species_list.append(current_chunk)
+                        current_chunk = species_segment
+                        
+                        # If this is not the last match, add the chunk immediately
+                        if idx + 1 < len(matches):
+                            species_list.append(current_chunk)
+                            current_chunk = ""
         
-        # Add the last block if there's anything left
-        if current_text:
-            blocks.append({
-                "type": "species",
-                **context,
-                "content": current_text
-            })
+        # Don't forget the last chunk
+        if current_chunk:
+            species_list.append(current_chunk)
+        
+        species_list = list(dict.fromkeys(species_list))
+        
+        return species_list if species_list else contents
     
-    def _create_content_blocks(self, blocks, block_type, content, max_block_size, context):
-        """Create blocks from any content with size limitation."""
-        if len(content) <= max_block_size:
-            blocks.append({
-                "type": block_type,
-                **context,
-                "content": content
-            })
-        else:
-            # For text that needs character-by-character splitting
-            self._split_content_by_size(blocks, block_type, content, max_block_size, context)
-    
-    def _split_content_by_size(self, blocks, block_type, content, max_block_size, context):
-        """Split content into blocks of maximum size."""
-        # Try to split at newlines first for more natural breaks
-        lines = content.split('\n')
-        current_block = ""
+    def make_text_blocks(self, text_structure):
+
+        text_blocks = []
+
+        for div, div_content in text_structure.items():
+            for family, family_content in div_content["families"].items():
+                for item in family_content["species"]:
+                    text_blocks.append(dict(
+                    division=div,
+                    family=family,
+                    content=item
+                ))
         
-        for line in lines:
-            if len(current_block + line + '\n') > max_block_size and current_block:
-                # This line would make the block too big, store current block
-                blocks.append({
-                    "type": block_type,
-                    **context,
-                    "content": current_block.rstrip()
-                })
-                current_block = line + '\n'
-            else:
-                current_block += line + '\n'
-        
-        # Add the last block if there's anything left
-        if current_block:
-            blocks.append({
-                "type": block_type,
-                **context,
-                "content": current_block.rstrip()
-            })
+        return text_blocks
+
