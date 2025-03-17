@@ -9,7 +9,7 @@ Manual processing of the page images takes about 40 minutes / page.
 
 ## Approach
 <p align="center">
-    <img src="resources/lightfootcat_pipeline.png" width=500px alt="Project pipeline"/>
+    <img src="resources/samples/lightfootcat_pipeline.png" width=500px alt="Project pipeline"/>
 </p>
 The page images are passed through a pipeline that extracts the text and organises them into a JSON and CSV file. As shown on the flowchart above, the pipeline goes through multi-pre-processing steps before passing text blocks into the model for organising.
 
@@ -17,7 +17,7 @@ Intial pages are generally of the below format. These images are pre processed t
 
 Page image:
 <p align="center">
-    <img src="resources/double_page_sample.jpg" width=500px alt="Example of the input image structure"/>
+    <img src="resources/samples/double_page_sample.jpg" width=500px alt="Example of the input image structure"/>
 </p>
 
 ## Installation
@@ -185,6 +185,8 @@ user:
    Extracted text:
    {extracted_text} 
 ``` 
+
+## Scheduling tasks on SLURM
 
 
 ## Team
