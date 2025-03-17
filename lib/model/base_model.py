@@ -298,7 +298,8 @@ class BaseModel:
         
         # Converting the extracted text into text blocks defined by divisions and families
         logging.info("Converting extracted text into Text Blocks")
-        text_blocks = self.text_processor(extracted_text, divisions=self.prompt.get_divisions(), max_chunk_size=max_chunk_size)
+        text_structure = self.text_processor(extracted_text, divisions=self.prompt.get_divisions(), max_chunk_size=max_chunk_size)
+        text_blocks = self.text_processor.make_text_blocks(text_structure)
 
         # Performing inference on the text blocks to generate JSON files
         organised_blocks = self.inference(text_blocks, save_file_name, json_file_name, save, debug)

@@ -2,6 +2,7 @@ import re
 
 #(?<!\S)              # Assert position is at start-of-string or preceded by whitespace
 #(?!\S)                # Assert that the match is followed by whitespace or end-of-string
+
 FAMILY_REGEX_PATTERN = """
                           [\*"\.\n\d+]*                # Optional leading asterisks or quotes
                           (?:
@@ -9,13 +10,13 @@ FAMILY_REGEX_PATTERN = """
                             \s+                # Ensure at least one space
                             [IVXLCDM\.]+         # Match Roman numerals (I, V, X, L, C, D, M)
                             \s+                # Ensure at least one space before the family name
-                            [A-Z]+((AC|OR)EAE|Æ|(AC|OR)E\.E\.|AE|(ac|or)eae|ORAE|orae|(OR|or)\.(E|e))\.?
+                            ([A-Z]+(EE\.?|(AC|OR)EAE|Æ|(ACE|ORE|FER|NE)\.E\.?|AE|(ac|or)eae|ORAE|orae|(OR|or)\.(E|e))\.? | \w+\.)?
                             |
-                            [A-Z]+((AC|OR)EAE|Æ|(AC|OR)E\.E\.|AE|(ac|or)eae|ORAE|orae|(OR|or)\.(E|e))\.? # All-uppercase families ending with ACEAE (any number of letters before ACEAE)
+                            [A-Z]+((AC|OR)EAE|Æ|(ACE|ORE|FER|NE)\.E\.?|AE|(ac|or)eae|ORAE|orae|(OR|or)\.(E|e))\.? # All-uppercase families ending with ACEAE (any number of letters before ACEAE)
                             |
-                            [A-Za-z]+((AC|OR)EAE|Æ|(AC|OR)E\.E\.|AE|(ac|or)eae|ORAE|orae|(OR|or)\.(E|e))\.?
+                            [A-Za-z]+((AC|OR)EAE|Æ|(ACE|ORE|FER|NE)\.E\.?|AE|(ac|or)eae|ORAE|orae|(OR|or)\.(E|e))\.?
                             |
-                            [A-Z][a-z]+(ac|or)eae\.?    # Normal mixed-case families ending with 'aceae' (e.g. Celastraceae)
+                            [A-Z][a-z]+(ace|ore|fer|ne)ae\.?    # Normal mixed-case families ending with 'aceae' (e.g. Celastraceae)
                             |
                             (?=[A-Za-z]*[A-Z])   # Ensure at least one uppercase letter exists in the following synonym
                               (?:
