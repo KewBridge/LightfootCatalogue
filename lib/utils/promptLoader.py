@@ -1,13 +1,14 @@
 import os
 import yaml
 from typing import Optional, Union
+from lib.json_schemas import get_catalogue
 
 class PromptLoader:
     
     def __init__(
             self, 
             filename: str = None, 
-            default: str = "./prompts/default.yaml"
+            default: str = "./resources/prompts/default.yaml"
             ):
         """
         Prompt Loader class acts as an intermediary between the user prompt and the model.
@@ -147,6 +148,9 @@ class PromptLoader:
         
         return message
 
+    def get_schema(self):
+        return self.yaml_prompt["system"]["schema"]
+
     def get_prompt(self, title: str, prompt: dict, role="system") -> dict:
         """
         Generate the prompt to the model
@@ -161,15 +165,19 @@ class PromptLoader:
         """
 
         message = ""
-        if title is not None and title != "setup" and role == "system":
-            message += f"## {title.upper()} \n"
-            
-        message += self._unravel_prompt(prompt)
-
+        if title and role == "system":
+            if title.lower() == "setup":
+                message += "System Message: {}\n".format(self._unravel_prompt(prompt))
+            elif title.lower() == "schema":
+                catalogue_schema = get_catalogue(self._unravel_prompt(prompt)) ## Must be a single string or file name
+                message += "## Schema \n {}\n".format(catalogue_schema.model_json_schema())
+            else:
+                message += f"## {title.upper()} \n"
+                message += self._unravel_prompt(prompt)
+        
         if role == "user":
-
-            if not("\{extracted_text\}" in message):
-                message += "\{extracted_text\}"
+            message += self._unravel_prompt(prompt)
+            
             contents = (
                 [dict(type="text", text=message)] 
                 if not("image" in title.lower()) else 
@@ -199,10 +207,13 @@ class PromptLoader:
         #TODO: Need to append this for user input as the extracted text
         if "user" in self.yaml_prompt:
             for prompt_title, prompt in self.yaml_prompt["user"].items():
-                if not(extracted_text is None):
+                if not(extracted_text is None) and "{extracted_text}" in prompt:
                     prompt = prompt.format(extracted_text=extracted_text)
+                elif not(extracted_text is None):
+                    prompt += f"\n{extracted_text}"
                 conversation.append(self.get_prompt(prompt_title, prompt, role="user"))
 
+        
         return conversation
     
     def getImagePrompt(self) -> list:

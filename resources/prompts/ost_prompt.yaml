@@ -17,11 +17,11 @@ system:
     **Strict Output Rules:**
     - The output must be a single **valid JSON object** with no surrounding text, explanations, markdown, or formatting.
     - **Do not generate any extra text** beyond the required JSON structure.
-    - **Never introduce extra keys** (e.g., "alpina]" or any unintended variations). Use only the schema-defined keys.
     - **All keys must be quoted properly**.
     - **No trailing commas** should be present.
     - Extract data **as-is** from the input text; do not modify, paraphrase, or infer missing details.
-
+    - Make sure all quotation marks, backslashes, and special characters inside description fields are properly escaped according to JSON standards. Double quotes inside content must be escaped as \".
+    - When extracting text like dates, locations, or scientific references, maintain the exact format from the source without attempting to standardize or reformat.
     Output must match the schema structure and follow rules
   # rules define the key-value rules for each expected key in the output json dict
   rules:
@@ -30,9 +30,8 @@ system:
     species: >
       A list of dictionaries for each species under the family. Each dictionary should include:
       - speciesName: The full scientific name as written in the text.
-      - folderNo: An integer representing the number of folders for that species.
       - folders: A list of dictionaries, each containing:
-           - description: A description of the folder contents.
+           - description: A description of the folder contents.For description fields that contain citations or quotes, ensure proper escaping of all contained quotation marks.
 
   # schema defines the output json structure
   schema: |
@@ -41,7 +40,6 @@ system:
       "species": [ 
         {
           "speciesName": "<extracted species name>",
-          "folderNo": <extracted number of folders>,
           "folders": [ 
             {
               "description": "<extracted description>"
@@ -71,23 +69,21 @@ system:
         "familyName": "ACERACEAE", 
         "species": [ 
             {
-              "speciesName": "Acer campestre L.",
-              "folderNo": 1,
+              "speciesName": "Acer campestre L\.",
               "folders": [ 
                     {
-                      "description": "Acer campestre [TA]"
+                      "description": "Acer campestre \[TA\]"
                     }
               ]    
             },
             {
-              "speciesName": "Acer pseudoplatanus L.",
-              "folderNo": 2,
+              "speciesName": "Acer pseudoplatanus L\.",
               "folders": [
                     {
-                      "description": "Folder 1. Acer Pseudo-Platanus [G]. i. \"Maple. Bulls: [Bulstrode] Park\" [JL]"
+                      "description": "Folder 1\. Acer Pseudo-Platanus \[G\]\. i\. \"Maple. Bulls\:\[Bulstrode\] Park\" \[JL\]"
                     },
                     {
-                      "description": "Folder 2. Acer Pseudo-Platanus [TA]."
+                      "description": "Folder 2\. Acer Pseudo\-Platanus \[TA\]\."
                     },
               ]
             }
