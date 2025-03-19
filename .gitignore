@@ -1,4 +1,6 @@
 # ignore all images
-/images/
+./resources/images/
 /outputs/
 ./temp.txt
+./slurm-*.out
+

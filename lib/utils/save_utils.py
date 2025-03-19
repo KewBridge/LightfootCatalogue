@@ -158,7 +158,7 @@ def save_csv_from_json(json_file: Union[str, dict],
                 # To ensure no lists are misplaced in this column
                 mask = normalised_df[col].apply(lambda x: isinstance(x, list))
                 normalised_df.loc[mask, col] = normalised_df.loc[mask, col].explode(ignore_index=True)
-                dict_df = pd.json_normalize(normalised_df[col]).add_prefix(f"{col}-")
+                dict_df = pd.json_normalize(normalised_df[col])#.add_prefix(f"{col}-")
                 normalised_df = normalised_df.drop(columns=[col]).reset_index(drop=True)
                 normalised_df = pd.concat([normalised_df, dict_df], axis=1)
         
