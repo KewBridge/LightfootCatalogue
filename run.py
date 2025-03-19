@@ -28,7 +28,7 @@ def parse_args():
     parser.add_argument('prompt', help='Path to an input prompt/conversation to the model')
     parser.add_argument('savefilename', help="Save file name for the outputs")
     parser.add_argument('--temp-text', default=None, help="Temporary file storing the extracted text")   
-    parser.add_argument('-mt', '--max-tokens', default=100000, help="Maximum number of tokens for model")
+    parser.add_argument('-mt', '--max-tokens', default=4096, help="Maximum number of tokens for model")
     parser.add_argument('--max-chunk-size', default=2800, help="Define the maximum size of each text block")
     parser.add_argument('--save-path', default=None, help="Save path for json files")
     parser.add_argument('-b','--batch', default=1, help="Batch Size for inference if more than one image provided")
@@ -54,7 +54,7 @@ def main():
     max_tokens = int(args.max_tokens) if (args.max_tokens is not None) else None
 
     model = BaseModel("qwen_model", prompt=args.prompt, max_new_tokens = max_tokens, 
-                      batch_size=batch, temperature=0.6, save_path=args.save_path)
+                      batch_size=batch, temperature=0.3, save_path=args.save_path)
     
     # Intialise DataReader
     data_reader = DataReader(args.images,model,args.crop,

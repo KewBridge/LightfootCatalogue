@@ -8,8 +8,7 @@ from typing import Optional
 from lib.model import get_model
 from lib.utils.promptLoader import PromptLoader
 from lib.utils.save_utils import save_json, save_csv_from_json, verify_json
-from lib.utils.text_utils import convertToTextBlocks
-from lib.utils.text_processing import TextProcessor
+from lib.data_processing.text_processing import TextProcessor
 logger = logging.getLogger(__name__)
 
 class BaseModel:
@@ -218,19 +217,20 @@ class BaseModel:
         for item in tqdm(text_blocks, desc="Processing text blocks", leave=True):
             division = item["division"]
             family = item["family"] if "family" in item.keys() else division
+            family = family if family else ""
             content = item["content"]
             # Add tqdm for the inner loop over families
             self._save_to_file(error_text_file, f"{division}\n", mode="a")
             # Load the system conversation with text blocks added to the prompt
             json_conversation = self.prompt.get_conversation(family+"\n"+content)
-
+            
             # Perform inference on text
             json_text = self.model(json_conversation, None, debug)
             
             # Check the integrity of the JSON output. 
             # Json verified is boolean to check if the integrity of the JSON output is valid
             # Json loaded is the post-processed form of the text into dict (removing and cleaning done)
-            json_verified, json_loaded = verify_json(json_text[0], clean=True, out=True)
+            json_verified, json_loaded = verify_json(json_text[0], clean=True, out=True, schema=self.prompt.get_schema())
             
             if not(json_verified):
                 logging.info("Error Noticed in JSON")
@@ -239,7 +239,7 @@ class BaseModel:
                 # print(error_fix_prompt)
                 json_text = self.model(error_fix_prompt, None, debug)
                 # print(json_text)
-                json_verified, json_loaded = verify_json(json_text[0], clean=True, out=True)
+                json_verified, json_loaded = verify_json(json_text[0], clean=True, out=True, schema=self.prompt.get_schema())
 
                 # storing all erroneous JSON format in error.txt
                 self._save_to_file(error_text_file, f"{family}\n", mode="a")

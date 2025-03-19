@@ -5,13 +5,14 @@ import logging
 from typing import Union
 
 from json_repair import repair_json
+from lib.json_schemas import get_catalogue
 
 logger = logging.getLogger(__name__)
 
 #==================================
 # Saving JSON
 #==================================
-def verify_json(text: str, clean: bool = False, out: bool = False) -> bool:
+def verify_json(text: str, clean: bool = False, out: bool = False, schema: str = "default") -> bool:
     """
     Verifies if the input text is of JSON format
 
@@ -26,10 +27,11 @@ def verify_json(text: str, clean: bool = False, out: bool = False) -> bool:
 
     # Initiate a repair using json-repair
     #message = repair_json(text, ensure_ascii=False, return_objects=True)
-    
+    catalogue_schema = get_catalogue(schema)
     try:
         text = repair_json(text, ensure_ascii=True, return_objects=False) if clean else text
-        json_loaded = json.loads(text)
+        json_loaded = catalogue_schema.model_validate_json(text)
+        json_loaded = json.loads(json_loaded.model_dump_json(indent=2))
         verified = True
         message = json_loaded
     except Exception as e:

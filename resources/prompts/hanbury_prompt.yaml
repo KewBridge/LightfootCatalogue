@@ -17,38 +17,22 @@ system:
     **Strict Output Rules:**
     - The output must be a single **valid JSON object** with no surrounding text, explanations, markdown, or formatting.
     - **Do not generate any extra text** beyond the required JSON structure.
-    - **Never introduce extra keys** (e.g., "alpina]" or any unintended variations). Use only the schema-defined keys.
     - **All keys must be quoted properly**.
     - **No trailing commas** should be present.
     - Extract data **as-is** from the input text; do not modify, paraphrase, or infer missing details.
-
-    Output must match the schema structure and follow rules
+    - Make sure all quotation marks, backslashes, and special characters inside description fields are properly escaped according to JSON standards. Double quotes inside content must be escaped as \".
+    - When extracting text like dates, locations, or scientific references, maintain the exact format from the source without attempting to standardize or reformat.
   # rules define the key-value rules for each expected key in the output json dict
-  rules:
-    familyName: >
-      The scientific family name in uppercase. If not available, use "N/A".
-    species: >
-      A list of dictionaries for each species under the family. Each dictionary should include:
-      - speciesName: The full scientific name as written in the text. Keep the index number infront of the family name.
-      - folders: A list of dictionaries denoted by small letter followed by a dot. Example (a. <text>, b. <text>, c. <text>), each containing:
-           - description: A description of the folder contents.
-      - other: A list of extracted content that does not match the other keys
+  # rules:
+  #   familyName: >
+  #     The scientific family name in uppercase. If not available, use "N/A". Might include Tribe or Series with roman indexes
+  #   species: >
+  #     A list of dictionaries for each species under the family. Each dictionary should include:
+  #     - speciesName: The full scientific name as written in the text. Keep the index number infront of the family name.
+  #     - folders: A list of dictionaries denoted by small letter followed by a dot. Example (a. <text>, b. <text>, c. <text>), each containing:
+  #          - description: A description of the folder contents. For description fields that contain citations or quotes, ensure proper escaping of all contained quotation marks.
   # schema defines the output json structure
-  schema: |
-    {
-      "familyName": "<extracted family name>",
-      "other": [<extracted other information>],
-      "species": [ 
-        {
-          "speciesName": "<extracted species name>",
-          "folders": [ 
-            {
-              "description": "<extracted description>"
-            }
-          ]    
-        }
-      ]
-    }
+  schema: default
 
   examples: 
     - input: |
@@ -61,24 +45,23 @@ system:
     - output: |
         {
         "familyName": "RANUNCULACEAE", 
-        "other": [],
         "species": [ 
             {
-              "speciesName": "1. Aconitum Napellus, L.",
+              "speciesName": "1\. Aconitum Napellus\, L\.",
               "folders": [ 
                     {
-                      "description": "a. A portion of the plant in flower. Hohneck, Vosges, 13 Aug., 1855. Pie de Sancy, Auvergne, Sept., 1858."
+                      "description": "a\. A portion of the plant in flower\. Hohneck\, Vosges\, 13 Aug\., 1855\. Pie de Sancy\, Auvergne\, Sept\.\, 1858\."
                     },
                     {
-                      "description": "b. Plant in flower, with root attached."
+                      "description": "b\. Plant in flower\, with root attached\."
                     }
               ]    
             },
             {
-              "speciesName": "2. Aconitum Lycoctonum, L.",
+              "speciesName": "2\. Aconitum Lycoctonum\, L\.",
               "folders": [
                     {
-                      "description": "a. Plant in flower, with root attached. Hohneck, Vosges, 13 Aug., 1855."
+                      "description": "a\. Plant in flower\, with root attached\. Hohneck\, Vosges\, 13 Aug\.\, 1855\."
                     },
               ]
             }
@@ -88,7 +71,9 @@ system:
 
 # user defines the user input. This can contain more than one prompt. 
 # Different prompts will be passed to the model as individual inputs
+
 user:
+
   # the prompt defines the user's prompt to the model
   text: | 
    Reformat the text below exactly into JSON according to the schema provided.

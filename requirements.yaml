@@ -16,6 +16,7 @@ dependencies:
   - transformers
   - json-repair
   - poppler
+  - pydantic
   - pip:
     - pdf2image
     - natsort

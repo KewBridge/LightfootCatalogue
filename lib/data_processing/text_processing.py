@@ -4,40 +4,43 @@ from pygbif import species
 #(?<!\S)              # Assert position is at start-of-string or preceded by whitespace
 #(?!\S)                # Assert that the match is followed by whitespace or end-of-string
 FAMILY_REGEX_PATTERN = """
-                          [\*"\.\n]*                # Optional leading asterisks or quotes
+                          [\*"\.]*                # Optional leading asterisks or quotes
                           (?:
                             (?i:TRIBE|SERIES)   # Match either "Tribe" or "Series"
                             \s+                # Ensure at least one space
                             [IVXLCDM\.]+         # Match Roman numerals (I, V, X, L, C, D, M)
                             \s+                # Ensure at least one space before the family name
-                            \w+
+                            ([A-Z\-]+(EE\.?|
+                                    (AC|OR)EAE|
+                                    Æ|
+                                    (ACE|ORE|FER|NE)\.E\.?|
+                                    AE|
+                                    (ac|or)eae|
+                                    ORAE|
+                                    orae|
+                                    (?i:OR\.E))\.?|
+                                    \w+\.)?
                             |
-                            [A-Z]+ACEAE\.?        # All-uppercase families ending with ACEAE (any number of letters before ACEAE)
+                            [A-Z\-]+((AC|OR)EAE|Æ|(ACE|ORE|FER|NE)\.E\.?|AE|(ac|or)eae|ORAE|orae|(OR|or)\.(E|e))\.? # All-uppercase families ending with ACEAE (any number of letters before ACEAE)
                             |
-                            [A-Za-z]+Æ\.?
+                            [A-Za-z\-]+((AC|OR)EAE|Æ|(ACE|ORE|FER|NE)\.E\.?|AE|(ac|or)eae|ORAE|orae|(OR|or)\.(E|e))\.?
                             |
-                            [A-Z]+ACE\.E\.?
-                            |
-                            [A-Za-z]+ACE\.E\.?
-                            |
-                            [A-Z]+AE\.?
-                            |
-                            [A-Z][a-z]+aceae\.?    # Normal mixed-case families ending with 'aceae' (e.g. Celastraceae)
+                            [A-Z][a-z\-]+(ace|ore|fer|ne)ae\.?    # Normal mixed-case families ending with 'aceae' (e.g. Celastraceae)
                             |
                             (?=[A-Za-z]*[A-Z])   # Ensure at least one uppercase letter exists in the following synonym
-                              (?:
-                                [Cc][Oo][Mm][Pp][Oo][Ss][Ii][Tt][Aa][Ee]\.?       |   # Compositae
-                                [Cc][Rr][Uu][Cc][Ii][Ff][Ee][Rr][Aa][Ee]\.?       |   # Cruciferae
-                                [Gg][Rr][Aa][Mm][Ii][Nn][Ee][Aa][Ee]\.?           |   # Gramineae
-                                [Gg][Uu][Tt][Tt][Ii][Ff][Ee][Rr][Aa][Ee]\.?       |   # Guttiferae
-                                [Ll][Aa][Bb][Ii][Aa][Tt][Ee][Ee]\.?               |   # Labiatae
-                                [Ll][Ee][Gg][Uu][Mm][Ii][Nn][Oo][Ss][Aa][Ee]\.?   |   # Leguminosae
-                                [Pp][Aa][Ll][Mm][Aa][Ee]\.?                       |   # Palmae
-                                [Uu][Mm][Bb][Ee][Ll][Ll][Ii][Ff][Ee][Rr][Aa][Ee]\.? |   # Umbelliferae
-                                [Pp][Aa][Pp][Ii][Ll][Ii][Oo][Nn][Aa][Cc][Ee][Ee]\.?    # Papilionaceae
+                              (?i:
+                                compositae\.?       |   # Compositae
+                                Cruciferae\.?       |   # Cruciferae
+                                Gramineae\.?           |   # Gramineae
+                                Guttiferae\.?       |   # Guttiferae
+                                Labiatae\.?               |   # Labiatae
+                                Leguminosae\.?   |   # Leguminosae
+                                Palmae\.?                       |   # Palmae
+                                Umbelliferae\.? |   # Umbelliferae
+                                Papilionaceae\.?    # Papilionaceae
                               )
                           )
-                          [\*"\.\n]*                # Optional trailing asterisks or quotes
+                          [\*"\.]*                # Optional trailing asterisks or quotes
                           
 
 """
@@ -55,8 +58,13 @@ class TextProcessor:
                                        (?P<FAMILY>{FAMILY_REGEX_PATTERN})\s*
                                        (?P<PAGENOEND>\d+$)?""", flags=re.VERBOSE)
         # Species Regex
-        self.species_regex_pattern = "(?:\d+\.\s)?[A-Z][a-z]+(?:\s[a-z]+)?(?:\s(var\.|subsp\.|f\.)\s[a-z]+)?(?:\s[A-Z][a-z]+)?(?:\s\([\w\s]+\))?"
-        self.species_regex = re.compile(rf"(?P<SPECIES>{self.species_regex_pattern})")
+        self.species_regex_pattern = """(?:\d+\.\s)?
+                                        [A-Z][a-z\-]+
+                                        (?:\s[a-z\-]+)?
+                                        (?:\s(var\.|subsp\.|f\.)\s[a-z\-]+)?
+                                        (?:\s[A-Z][a-z\-]+)?
+                                        (?:\s\([\w\s]+\))?"""
+        self.species_regex = re.compile(rf"(?P<SPECIES>{self.species_regex_pattern})", flags=re.VERBOSE)
 
         # Known non-species words
         self.not_species_text = set()

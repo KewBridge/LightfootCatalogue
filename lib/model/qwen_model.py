@@ -17,8 +17,8 @@ class QWEN_Model:
 
     def __init__(self, 
                  batch_size: int = 1, # Batch size for inference
-                 max_new_tokens: int = 3000, # Maximum number of tokens
-                 temperature: float = 0.6, # Model temperature. 0 to 2. Higher the value the more random and lower the value the more focused and deterministic.
+                 max_new_tokens: int = 4096, # Maximum number of tokens
+                 temperature: float = 0.3, # Model temperature. 0 to 2. Higher the value the more random and lower the value the more focused and deterministic.
                 ):
         """
         QWEN model class
@@ -69,7 +69,9 @@ class QWEN_Model:
         Return:
             processor (object): Returns the loaded pretrained processor for the model.
         """
-        processor = AutoProcessor.from_pretrained(self.MODEL_NAME)
+        min_pixels = 256*28*28
+        max_pixels = 1024*28*28 
+        processor = AutoProcessor.from_pretrained(self.MODEL_NAME, min_pixels=min_pixels, max_pixels=max_pixels)
     
         return processor
     
