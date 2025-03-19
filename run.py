@@ -47,6 +47,9 @@ def main():
     args = parse_args()
     logger.info(f"Input arguments: {args}")
 
+    if not(os.path.exists(args.save_path)):
+        os.makedirs(args.save_path)
+
     # Load model
     logger.info(">>> Loading Model...")
 
