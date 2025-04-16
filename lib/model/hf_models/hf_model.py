@@ -2,30 +2,28 @@
 import logging
 from PIL import Image
 import torch
-from transformers import Qwen2VLForConditionalGeneration, AutoProcessor
+from transformers import AutoModel, AutoProcessor
 from torch.amp import autocast
-
-# Custom Modules
-import lib.config as config
-
 
 logger = logging.getLogger(__name__)
 
-class QWEN_Model:
+class HF_Model:
 
-    MODEL_NAME = config.MODEL
+    DEFAULT_MODEL_NAME = "Qwen/Qwen2-VL-7B-Instruct"
 
-    def __init__(self, 
+    def __init__(self,
+                 model_name: str = DEFAULT_MODEL_NAME, # Model name
                  batch_size: int = 1, # Batch size for inference
                  max_new_tokens: int = 4096, # Maximum number of tokens
                  temperature: float = 0.3, # Model temperature. 0 to 2. Higher the value the more random and lower the value the more focused and deterministic.
                 ):
         """
-        QWEN model class
+        Hugging Face model class
 
         This class loads the necessary modules and performs inference given conversation and input
 
         Parameters:
+            model_name (str): Model name
             batch_size (int): batch size for inference
             max_new_tokens (int): Maximum number of tokens
             temperature (float): Model temperature. 0 to 2. Higher the value the more random and
@@ -33,6 +31,7 @@ class QWEN_Model:
         """
 
         # Load parameters
+        self.model_name = model_name
         self.batch_size = batch_size
         self.max_new_tokens = max_new_tokens
         self.temperature = temperature
@@ -41,8 +40,11 @@ class QWEN_Model:
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
         # Load model
+
+        print(f"Loading model for [{self.model_name}] to device [{self.device}]")
         self.model = self._load_model()
         # Load processor
+        print(f"Loading processor for [{self.model_name}] to device [{self.device}]")
         self.processor = self._load_processor()
 
 
@@ -53,14 +55,19 @@ class QWEN_Model:
         Return:
             model (object): Returns the loaded pretrained model.
         """
-        model = Qwen2VLForConditionalGeneration.from_pretrained(
-            self.MODEL_NAME,temperature=self.temperature, torch_dtype="auto", device_map="auto"
+        model = AutoModel.from_pretrained(
+            self.model_name,temperature=self.temperature, torch_dtype="auto", device_map="auto"
         )
 
         model.gradient_checkpointing_enable()
     
         return model
 
+    def eval(self):
+        """
+        Set the model to evaluation mode.
+        """
+        self.model.eval()
 
     def _load_processor(self) -> object:
         """
@@ -71,69 +78,74 @@ class QWEN_Model:
         """
         min_pixels = 256*28*28
         max_pixels = 1024*28*28 
-        processor = AutoProcessor.from_pretrained(self.MODEL_NAME, min_pixels=min_pixels, max_pixels=max_pixels)
+        processor = AutoProcessor.from_pretrained(self.model_name, min_pixels=min_pixels, max_pixels=max_pixels)
     
         return processor
     
+    ###################################
+    # Processing inputs to chat models
+    ###################################
 
-    def __call__(self, conversation: list, images:list[str]=None, debug: bool=False) -> list:
-        """
-        Performs inference on the given set of images and/or text.
 
-        When images are provided, the text is extracted.
-        When text is provided, images is set to None and inference is determined by conversation
-    
-        Parameters:
-            conversation (list): The input prompt to the model
-            images (list): A set of images to batch inference.
-            debug (bool): Used to print debug prompts
-    
-        Return:
-            output_text (list): A set of model outputs for given set of images.
+    def process_chat_inputs(self, conversation: list, 
+                            images: list[str]=None, 
+                            add_padding=True) -> object:
         """
 
-        # Process the input conversation
-        if debug:
-            logger.debug("\tProcessing text prompts...")
-        text_prompt = self.processor.apply_chat_template(conversation, add_generation_prompt=True)
-        
-        if images is None:
-            text_prompts = [text_prompt] if isinstance(text_prompt[0], dict) else text_prompt
-            images_opened = None
-        else:
-            # Get N text_prompts for equal number of images
-            text_prompts = [text_prompt] * self.batch_size
+        Processes the input conversation and images to prepare them for the model.
 
-            if debug:
-                logger.debug("\tReading Images (If available)...")
-            # Open the images from the paths if available
-            images_opened = [Image.open(image) for image in images]
+        Args:
+            conversation (list): input prompt to the model
+            images (list[str], optional): input images to model. Defaults to None.
+            add_padding (bool, optional): Whether to add padding to the input text. Defaults to True.
 
-        # Preprocess the inputs
-        if debug:
-            logger.debug("\tProcessing inputs...")
+        Returns:
+            object: A Batch Feature/Ecnoding object containing the processed inputs.
+        """
+
+        text_prompt = self.processor.apply_chat_template(conversation, tokenize=False, add_generation_prompt=True)
+        text_prompts = [text_prompt] if isinstance(text_prompt[0], dict) else text_prompt
+
+        images_opened = None if not(images) else [Image.open(image) for image in images]
+
         inputs = self.processor(
-            text=text_prompts, images=images_opened, padding=True, return_tensors="pt"
+            text=text_prompts,
+            images=images_opened,
+            return_tensors="pt",
+            padding=add_padding,
         )
 
+        inputs = inputs.to(self.device)
 
-        if debug:
-            logger.debug("\tMoving inputs to gpu...")
-        # Move inputs to device (model automatically moves)
-        inputs = inputs.to(self.device.type) # 
-    
+        return inputs
+
+    def inference_chat_model(self, inputs: object, 
+                             max_new_tokens: int = None, 
+                             skip_special_tokens: bool = True, debug: bool = False) -> list:
+        """_summary_
+
+        Args:
+            inputs (object): _description_
+            max_new_tokens (int, optional): _description_. Defaults to None.
+            skip_special_tokens (bool, optional): _description_. Defaults to True.
+
+        Returns:
+            list: _description_
+        """
+
+        
         # Inference
         if debug:
             logger.debug("\tPerforming inference...")
         
+        
         with autocast("cuda", enabled=self.device.type == "cuda"): # Enabling mixed precision to reduce computational load where possible
-            output_ids = self.model.generate(**inputs, max_new_tokens=self.max_new_tokens)
+            output_ids = self.model.generate(**inputs, max_new_tokens=max_new_tokens)
 
         # Increasing the number of new tokens, increases the number of words recognised by the model with trade-off of speed
         # 1024 new tokens was capable of reading upto 70% of the input image (pg132_a.jpeg)
         if debug:
             logger.debug("\tInference Finished")
-        output_ids = output_ids.cpu()
 
         if debug:
             logger.debug("\tSeperating Ids...")
@@ -146,10 +158,13 @@ class QWEN_Model:
         if debug:
             logger.debug("\tDecoding Ids...")
         output_text = self.processor.batch_decode(
-            generated_ids, skip_special_tokens=True, clean_up_tokenization_spaces=True
+            generated_ids, skip_special_tokens=skip_special_tokens, clean_up_tokenization_spaces=True
         )
 
 
         return output_text
 
-    
+
+    def __call__(self, **kargs) -> list:
+        
+        raise NotImplementedError("This method should be implemented in subclasses.")

@@ -11,7 +11,7 @@ from lib.utils.save_utils import save_json, save_csv_from_json, verify_json
 from lib.data_processing.text_processing import TextProcessor
 logger = logging.getLogger(__name__)
 
-class BaseModel:
+class OCRModel:
 
     TEMP_TEXT_FILE = "temp.txt"
     SAVE_TEXT_INTERVAL = 3
@@ -66,66 +66,9 @@ class BaseModel:
         Returns:
             message (str): brief information of parameters and model name
         """
-        message = f"Model: {self.model_name} | Batch Size: {self.batch_size}, Max Tokens: {self.max_new_tokens}, Temperature: {self.temperature}"
+        message = f"OCR Model: {self.model_name} | Batch Size: {self.batch_size}, Max Tokens: {self.max_new_tokens}, Temperature: {self.temperature}"
 
         print(message)
-    
-
-    def _save_to_file(self, file: str, text: str, mode: str="w") -> None:
-        """
-        (Private function)
-        Saves the extracted text to the file
-        """
-
-        with open(file, mode) as f:
-            f.write(text)
-    
-
-    def _load_from_file(self, file: str) -> str:
-        """
-        (Private function)
-        Load the extracted text from the file
-
-        Returns:
-            text: the text read from the file
-
-        """
-
-        text = ""
-
-        with open(file, "r") as f:
-            text = f.read()
-        
-        return text
-
-
-    def _get_save_file_name(self, save_file_name: str) -> str:
-        """
-        (Private function)
-        Get the ideal name for the save file. This function checks for any duplicates and adds version numbers
-        to the end of given save file names to create unique save file names.
-        This ensures no overwriting
-
-        Parameters:
-            save_file_name (str): the input name for the save file as given by user.
-
-        Returns:
-            final_save_file_name (str): the finalised save file name
-        """
-
-        # Load all files under save path as a hashset
-        files = {file for file in os.listdir(self.save_path) if os.path.isfile(os.path.join(self.save_path, file))}
-        
-        id = 0
-        final_save_file_name = save_file_name
-
-        # Do a conditional loop to find best name for save file
-        while f"{final_save_file_name}.json" in files:
-
-            final_save_file_name = f"{save_file_name}_{id}"
-            id += 1
-
-        return final_save_file_name
 
 
     def extract_text(self, images: list[str], save_file: str = None, debug: bool = False) -> str:
@@ -158,10 +101,14 @@ class BaseModel:
             image_conversation = self.prompt.getImagePrompt()
             extracted_text = self.model(image_conversation, batch, debug)
             
+            # Perform ocr noise cleaning
+            ocr_noise_prompt = self.prompt.getOCRNoiseProcessPrompt(extracted_text)
+            cleaned_text = self.model(ocr_noise_prompt, None, debug)
+
             if debug:
                 logger.debug("\tJoining Outputs...")
             # Join all the text and append it together with previous batches
-            batch_texts.append("\n\n".join(extracted_text))
+            batch_texts.append("\n\n".join(cleaned_text))
 
             if (ind + 1) % self.SAVE_TEXT_INTERVAL == 0:
                 if debug:
@@ -232,7 +179,6 @@ class BaseModel:
             # Json loaded is the post-processed form of the text into dict (removing and cleaning done)
             json_verified, json_loaded = verify_json(json_text[0], clean=True, out=True, schema=self.prompt.get_schema())
             
-            # A second check to verify the JSON output if repair_json does not work
             if not(json_verified):
                 logging.info("Error Noticed in JSON")
                 logging.info("Fixing Error")

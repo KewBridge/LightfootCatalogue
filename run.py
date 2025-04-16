@@ -27,6 +27,7 @@ def parse_args():
     parser.add_argument('images', help='Path to images (Can parse in either a single image or a directory of images)')
     parser.add_argument('prompt', help='Path to an input prompt/conversation to the model')
     parser.add_argument('savefilename', help="Save file name for the outputs")
+    parser.add_argument('--model', default="qwen_model", help="Model name to be used")
     parser.add_argument('--temp-text', default=None, help="Temporary file storing the extracted text")   
     parser.add_argument('-mt', '--max-tokens', default=4096, help="Maximum number of tokens for model")
     parser.add_argument('--max-chunk-size', default=2800, help="Define the maximum size of each text block")
@@ -56,7 +57,7 @@ def main():
     batch = int(args.batch) if (args.batch is not None) else None
     max_tokens = int(args.max_tokens) if (args.max_tokens is not None) else None
 
-    model = BaseModel("qwen_model", prompt=args.prompt, max_new_tokens = max_tokens, 
+    model = BaseModel(args.model, prompt=args.prompt, max_new_tokens = max_tokens, 
                       batch_size=batch, temperature=0.3, save_path=args.save_path)
     
     # Intialise DataReader
@@ -65,7 +66,6 @@ def main():
     # Load the extracted text
     extracted_text = data_reader(args.temp_text)
     
-    #qwen_model = model.QWEN_model(prompt= args.prompt, batch_size = batch, max_new_tokens = max_tokens, save_path=args.save_path)
     
     # Perform inference and save the jsons
     _ = model(extracted_text, save=True, save_file_name=args.savefilename)
