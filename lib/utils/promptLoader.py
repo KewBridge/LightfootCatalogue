@@ -204,7 +204,6 @@ class PromptLoader:
             for prompt_title, prompt in self.yaml_prompt["system"].items():
                 conversation.append(self.get_prompt(prompt_title, prompt))
 
-        #TODO: Need to append this for user input as the extracted text
         if "user" in self.yaml_prompt:
             for prompt_title, prompt in self.yaml_prompt["user"].items():
                 if not(extracted_text is None) and "{extracted_text}" in prompt:
@@ -216,27 +215,50 @@ class PromptLoader:
         
         return conversation
     
-    def getImagePrompt(self) -> list:
+    def getImagePrompt(self, system_prompt: str="", image_prompt: str="") -> list:
         """
         Get image prompt to model
+
+        Parameters:
+            system_prompt (str): System prompt to model
+            image_prompt (str): Image prompt to model 
 
         Returns:
             list: Image prompt to model
         """
 
-        image_prompt = """
-                    Extract only the main body text from the image, preserving the original structure and formatting. 
-                    Do not perform any grammatical corrections.  
-                    Ignore any text found in the top or bottom margins of the image, including headers, footers, page numbers, and page titles. 
-                    Only process text located within the central column regions.
-                    Text in the top 5\% and bottom 5\% should be ignored.
-                    Do not add, invent, or repeat text on your own. If a line appears once in the image, it must appear once in the output. If the same line appears multiple times in the image, reproduce it exactly as many times as it actually appears.
-                    """
+        system_prompt = (
+            "You are an expert in extracting text from images."
+        ) if not system_prompt else system_prompt
 
-        return [dict(role="user", content=[dict(type="image"), 
+        image_prompt = (
+            "Extract only the main body text from the image, preserving the original structure and formatting. \n"
+            "Do not perform any grammatical corrections. Ignore Page numbers and any other text that is not part of the main body text.\n"
+            "Do not generate any additional text or explanations."
+        ) if not image_prompt else image_prompt
+
+        return [dict(role="system", content=[dict(type="text", text=system_prompt)]),
+                dict(role="user", content=[dict(type="image"), 
                 dict(type="text", 
                      text=image_prompt)])]
-                
+    
+
+    def getTextPrompt(self, system_prompt: str, text_prompt: str) -> list:
+        """
+        Get text prompt to model
+
+        Parameters:
+            system_prompt (str, optional): System prompt to model.
+            text_prompt (str, optional): Text prompt to model. Defaults to "".
+
+        Returns:
+            list: Text prompt to model
+        """
+
+
+        return [dict(role="system", content=[dict(type="text", text=system_prompt)]),
+                dict(role="user", content=[dict(type="text", text=text_prompt)])]
+    
             
 
     def getJsonPrompt(self, json_text: str) -> list:
@@ -260,4 +282,3 @@ class PromptLoader:
          """
 
         return [dict(role="system", content=[dict(type="text", text=prompt)])]
-     

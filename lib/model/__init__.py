@@ -1,7 +1,8 @@
 import importlib
 
 MODELS = {
-    "qwen_model": ("lib.model.qwen_model", "QWEN_Model")
+    "qwen2": ("lib.model.hf_models.qwen_model", "QWEN2_VL_Model"),
+    "qwen2.5": ("lib.model.hf_models.qwen_model", "QWEN2_5_VL_Model")
 }
 
 

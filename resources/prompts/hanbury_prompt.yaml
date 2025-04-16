@@ -8,7 +8,7 @@ divisions: ["Dicotyledones", "Gamopetalae", "MONOCHLAMYDEAE","GYMNOSPERMEAE", "M
 system:
   # Setup defines the model setup prompt. This lets the model know what area of knowledge to focus on for this task
   setup: >
-    You are a system that converts botanical text into strictly valid JSON.
+    You are an expert in botanical catalogues
   # context defines the context of the task. This includes the input to the model and the description of said input
   # instructions define the step-by-step instructions for the model to follow through
   instructions: |
@@ -22,6 +22,7 @@ system:
     - Extract data **as-is** from the input text; do not modify, paraphrase, or infer missing details.
     - Make sure all quotation marks, backslashes, and special characters inside description fields are properly escaped according to JSON standards. Double quotes inside content must be escaped as \".
     - When extracting text like dates, locations, or scientific references, maintain the exact format from the source without attempting to standardize or reformat.
+    - Any text before the first species must not be included in the JSON output.
   # rules define the key-value rules for each expected key in the output json dict
   # rules:
   #   familyName: >
@@ -43,7 +44,7 @@ system:
         2. Aconitum Lycoctonum, L. a. Plant in flower, with root attached. Hohneck, Vosges, 13 Aug., 1855.
 
     - output: |
-        {
+        {familyContents: [{
         "familyName": "RANUNCULACEAE", 
         "species": [ 
             {
@@ -66,7 +67,30 @@ system:
               ]
             }
           ]
-        }
+        }]}
+    - input2: |
+       BURSERACEAE
+       A small tree about 6 feet high; flowered in April, 1868.
+       c. Ditto.
+       From the gardens at "The Tanks," Aden, 21 Jan., 1872;
+       100. Boswellia Carterii, Birdw. "Mohr Madow." Var. A. a, b, c. Leafy twig.
+    - output2: |
+        {familyContents: [{
+        "familyName": "BURSERACEAE", 
+        "species": [ 
+            {
+              "speciesName": "100\. Boswellia Carterii\, Birdw\. \"Mohr Madow.\" Var\. A\.",
+              "folders": [ 
+                    },
+                    {
+                      "description": "a\, b\, c\. Leafy twig\."
+                    }
+              ]    
+            }
+          ]
+        }]}
+
+
 
 
 # user defines the user input. This can contain more than one prompt. 
