@@ -37,7 +37,9 @@ srun --partition=gpu --gpus=1 --mem=80G --cpus-per-task=4 --pty bash
 ```
 conda create --name <input your conda env name> --file=./requirements.yml
 conda activate <input your conda env name>
-conda install pytorch pytorch-cuda=12.1 -c pytorch -c nvidia
+# conda install pytorch pytorch-cuda=12.1 -c pytorch -c nvidia
+# Conda install for pytorch not supported
+pip3 install torch torchvision torchaudio # Use the following flag if Cuda 12.8: --index-url https://download.pytorch.org/whl/cu128
 ```
 3. Activate conda environment if not already activated
 ```
