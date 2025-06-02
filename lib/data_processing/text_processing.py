@@ -3,50 +3,6 @@ from typing import Optional, Iterator, Match
 from lib.data_processing.chunker import SpeciesChunker
 
 
-#(?<!\S)              # Assert position is at start-of-string or preceded by whitespace
-#(?!\S)                # Assert that the match is followed by whitespace or end-of-string
-# FAMILY_REGEX_PATTERN = """
-#                           [\*"\.]*                # Optional leading asterisks or quotes
-#                           (?:
-#                             (?i:TRIBE|SERIES)   # Match either "Tribe" or "Series"
-#                             \s+                # Ensure at least one space
-#                             [IVXLCDM\.]+         # Match Roman numerals (I, V, X, L, C, D, M)
-#                             \s+                # Ensure at least one space before the family name
-#                             ([A-Z\-]+(EE\.?|
-#                                     (AC|OR)EAE|
-#                                     Æ|
-#                                     (ACE|ORE|FER|NE)\.E\.?|
-#                                     AE|
-#                                     (ac|or)eae|
-#                                     ORAE|
-#                                     orae|
-#                                     (?i:OR\.E))\.?|
-#                                     \w+\.)?
-#                             |
-#                             [A-Z\-]+((AC|OR)EAE|Æ|(ACE|ORE|FER|NE)\.E\.?|AE|(ac|or)eae|ORAE|orae|(OR|or)\.(E|e))\.? # All-uppercase families ending with ACEAE (any number of letters before ACEAE)
-#                             |
-#                             [A-Za-z\-]+((AC|OR)EAE|Æ|(ACE|ORE|FER|NE)\.E\.?|AE|(ac|or)eae|ORAE|orae|(OR|or)\.(E|e))\.?
-#                             |
-#                             [A-Z][a-z\-]+(ace|ore|fer|ne)ae\.?    # Normal mixed-case families ending with 'aceae' (e.g. Celastraceae)
-#                             |
-#                             (?=[A-Za-z]*[A-Z])   # Ensure at least one uppercase letter exists in the following synonym
-#                               (?i:
-#                                 compositae\.?       |   # Compositae
-#                                 Cruciferae\.?       |   # Cruciferae
-#                                 Gramineae\.?           |   # Gramineae
-#                                 Guttiferae\.?       |   # Guttiferae
-#                                 Labiatae\.?               |   # Labiatae
-#                                 Leguminosae\.?   |   # Leguminosae
-#                                 Palmae\.?                       |   # Palmae
-#                                 Umbelliferae\.? |   # Umbelliferae
-#                                 Papilionaceae\.?    # Papilionaceae
-#                               )
-#                           )
-#                           [\*"\.]*                # Optional trailing asterisks or quotes
-                          
-
-# """
-
 FAMILY_REGEX_PATTERN = """
                           [\*"\.]*                # Optional leading asterisks or quotes
                           (?:

@@ -19,11 +19,11 @@ dependencies:
   - pytesseract
   - spacy
   - numpy
-  - thinc
-  - cupy
+  - protobuf
+  - sentencepiece
   - pip:
     - pdf2image
     - natsort
-    - pygbif
-    - taxonerd
-    
+    - fuzzywuzzy
+    - python-Levenshtein
+    - taxonerd  
