@@ -30,10 +30,10 @@ def verify_json(text: str, clean: bool = False, out: bool = False, schema: str =
     catalogue_schema = get_catalogue(schema)
     try:
         text = repair_json(text, ensure_ascii=True, return_objects=False) if clean else text
-        json_loaded = catalogue_schema.model_validate_json(text)
-        json_loaded = json.loads(json_loaded.model_dump_json(indent=2))
+        text_obj = json.loads(text)
+        json_loaded = catalogue_schema(**text_obj)
         verified = True
-        message = json_loaded
+        message = json_loaded.dict()
     except Exception as e:
         logger.debug(f">>> Non JSON format found in input text")
         logger.debug(f">>> Error: \n {e}")

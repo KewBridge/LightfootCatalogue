@@ -1,10 +1,9 @@
-name: lightfootcat
 channels:
   - conda-forge
   - bioconda
 dependencies:
-  - python=3.11
-  - pip
+  - python=3.10
+  - pip<24.1
   - conda
   - accelerate
   - pandas
@@ -17,6 +16,14 @@ dependencies:
   - json-repair
   - poppler
   - pydantic
+  - pytesseract
+  - spacy
+  - numpy
+  - thinc
+  - cupy
   - pip:
     - pdf2image
     - natsort
+    - pygbif
+    - taxonerd
+    

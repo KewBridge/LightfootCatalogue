@@ -4,7 +4,7 @@ from PIL import Image
 import torch
 from transformers import AutoModel, AutoProcessor
 from torch.amp import autocast
-
+import gc
 logger = logging.getLogger(__name__)
 
 class HF_Model:
@@ -31,7 +31,7 @@ class HF_Model:
         """
 
         # Load parameters
-        self.model_name = model_name
+        self.model_name = model_name if model_name else self.DEFAULT_MODEL_NAME
         self.batch_size = batch_size
         self.max_new_tokens = max_new_tokens
         self.temperature = temperature
@@ -41,12 +41,49 @@ class HF_Model:
 
         # Load model
 
+        self.model = None
+        # Load processor
+        
+        self.processor = None
+
+    def load(self):
+        """
+        Load the model and processor.
+        This method is called to ensure that the model and processor are loaded before inference.
+        """
+        if self.model:
+            logger.warning("Model is already loaded. Unloading before loading again.")
+            del self.model
+            self.model = None
+            gc.collect()
+            
         print(f"Loading model for [{self.model_name}] to device [{self.device}]")
         self.model = self._load_model()
-        # Load processor
+
+        
+        if self.processor:
+            logger.warning("Processor is already loaded. Unloading before loading again.")
+            del self.processor
+            self.processor = None
+            gc.collect()
+        
         print(f"Loading processor for [{self.model_name}] to device [{self.device}]")
         self.processor = self._load_processor()
 
+    
+    def unload(self):
+
+        del self.model
+        del self.processor
+
+        self.model = None
+        self.processor = None
+
+        
+        
+        gc.collect()
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
 
     def _load_model(self) -> object:
         """
@@ -76,6 +113,7 @@ class HF_Model:
         Return:
             processor (object): Returns the loaded pretrained processor for the model.
         """
+
         min_pixels = 256*28*28
         max_pixels = 1024*28*28 
         processor = AutoProcessor.from_pretrained(self.model_name, min_pixels=min_pixels, max_pixels=max_pixels)
@@ -107,13 +145,19 @@ class HF_Model:
         text_prompts = [text_prompt] if isinstance(text_prompt[0], dict) else text_prompt
 
         images_opened = None if not(images) else [Image.open(image) for image in images]
-
-        inputs = self.processor(
-            text=text_prompts,
-            images=images_opened,
-            return_tensors="pt",
-            padding=add_padding,
-        )
+        
+        if images_opened is not None:
+            inputs = self.processor(
+                text=text_prompts,
+                images=images_opened,
+                return_tensors="pt",
+                padding=add_padding,
+            )
+        else:
+            inputs = self.processor(
+                text=text_prompts,
+                return_tensors="pt"
+            )
 
         inputs = inputs.to(self.device)
 
@@ -165,6 +209,14 @@ class HF_Model:
         return output_text
 
 
+    def _check(self):
+
+        if self.model is None or self.processor is None:
+            self.load()
+
     def __call__(self, **kargs) -> list:
+
+        if self.model is None or self.processor is None:
+            self.load()
         
         raise NotImplementedError("This method should be implemented in subclasses.")

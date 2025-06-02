@@ -1,16 +1,14 @@
-# Python Modules
 import logging
-from transformers import Qwen2VLForConditionalGeneration, Qwen2_5_VLForConditionalGeneration
-
+from transformers import AutoModelForCausalLM, AutoTokenizer
+import torch
 # Custom Modules
 from lib.model.hf_models.hf_model import HF_Model
 
-
 logger = logging.getLogger(__name__)
 
-class QWEN2_VL_Model(HF_Model):
+class MISTRAL_7B_INSTRUCT(HF_Model):
 
-    DEFAULT_MODEL_NAME = "Qwen/Qwen2-VL-7B-Instruct"
+    DEFAULT_MODEL_NAME = "mistralai/Mistral-7B-Instruct-v0.3"
 
     def __init__(self,
                  model_name: str = DEFAULT_MODEL_NAME, # Model name
@@ -39,19 +37,58 @@ class QWEN2_VL_Model(HF_Model):
         Return:
             model (object): Returns the loaded pretrained model.
         """
-        model = Qwen2VLForConditionalGeneration.from_pretrained(
-            self.model_name,temperature=self.temperature, torch_dtype="auto", device_map="auto"
+        model = AutoModelForCausalLM.from_pretrained(
+            self.model_name,temperature=self.temperature, torch_dtype=torch.bfloat16, device_map="auto"
         )
 
         self.device = model.device
         # Enable gradient checkpointing to reduce memory usage
-        model.gradient_checkpointing_enable()
+        #model.gradient_checkpointing_enable()
     
         return model    
 
+    def _load_processor(self) -> object:
+        """
+        Loads the pre-processor that is used to pre-process the input prompt and images.
+    
+        Return:
+            processor (object): Returns the loaded pretrained processor for the model.
+        """
+
+        processor = AutoTokenizer.from_pretrained(self.model_name)
+    
+        return 
+    
+    def process_chat_inputs(self, conversation: list, 
+                            images: list[str]=None, 
+                            add_padding=True) -> object:
+        """
+
+        Processes the input conversation and images to prepare them for the model.
+
+        Args:
+            conversation (list): input prompt to the model
+            images (list[str], optional): input images to model. Defaults to None.
+            add_padding (bool, optional): Whether to add padding to the input text. Defaults to True.
+
+        Returns:
+            object: A Batch Feature/Ecnoding object containing the processed inputs.
+        """
+
+        inputs = self.processor.apply_chat_template(
+                conversation,
+                return_dict=True,
+                return_tensors="pt",
+        )
+
+        inputs = inputs.to(self.device)
+
+        max_tokens = inputs.input_ids.shape[1]
+        return inputs, max_tokens
+
     def __call__(self, conversation: list, images:list[str]=None, 
                  debug: bool=False, max_new_tokens=None,
-                 add_padding: bool=True, skip_special_tokens: bool=True) -> list:
+                 add_padding: bool=False, skip_special_tokens: bool=True) -> list:
         """
         Performs inference on the given set of images and/or text.
 
@@ -69,18 +106,14 @@ class QWEN2_VL_Model(HF_Model):
         Return:
             output_text (list): A set of model outputs for given set of images.
         """
-
         self._check()
-
-        if max_new_tokens is None:
-            max_new_tokens = self.max_new_tokens    
         # Set the device to the model's device
         self.eval()
 
         # Process the input conversation
         if debug:
             logger.debug("\tProcessing inputs...")
-        inputs = self.process_chat_inputs(conversation, images, add_padding=add_padding) 
+        inputs, max_new_tokens = self.process_chat_inputs(conversation, images, add_padding=add_padding) 
         
 
         output_text = self.inference_chat_model(inputs, max_new_tokens, skip_special_tokens=skip_special_tokens)
@@ -88,29 +121,3 @@ class QWEN2_VL_Model(HF_Model):
 
 
         return output_text
-
-    
-
-class QWEN2_5_VL_Model(QWEN2_VL_Model):
-
-    DEFAULT_MODEL_NAME = "Qwen/Qwen2.5-VL-7B-Instruct"
-
-    def __init__(self, model_name = DEFAULT_MODEL_NAME, batch_size = 1, max_new_tokens = 4096, temperature = 0.3):
-        super().__init__(model_name, batch_size, max_new_tokens, temperature)
-
-    def _load_model(self):
-        """
-        Load the Qwen2.5-VL pretrained model, automatically setting to available device (GPU is given priority if it exists).
-    
-        Return:
-            model (object): Returns the loaded pretrained model.
-        """
-        model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
-            self.model_name,temperature=self.temperature, torch_dtype="auto", device_map="auto"
-        )
-
-        self.device = model.device
-        # Enable gradient checkpointing to reduce memory usage
-        model.gradient_checkpointing_enable()
-    
-        return model 

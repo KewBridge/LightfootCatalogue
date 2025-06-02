@@ -1,8 +1,52 @@
 import re
 from typing import Optional, Iterator, Match
-from pygbif import species
+from lib.data_processing.chunker import SpeciesChunker
+
+
 #(?<!\S)              # Assert position is at start-of-string or preceded by whitespace
 #(?!\S)                # Assert that the match is followed by whitespace or end-of-string
+# FAMILY_REGEX_PATTERN = """
+#                           [\*"\.]*                # Optional leading asterisks or quotes
+#                           (?:
+#                             (?i:TRIBE|SERIES)   # Match either "Tribe" or "Series"
+#                             \s+                # Ensure at least one space
+#                             [IVXLCDM\.]+         # Match Roman numerals (I, V, X, L, C, D, M)
+#                             \s+                # Ensure at least one space before the family name
+#                             ([A-Z\-]+(EE\.?|
+#                                     (AC|OR)EAE|
+#                                     Æ|
+#                                     (ACE|ORE|FER|NE)\.E\.?|
+#                                     AE|
+#                                     (ac|or)eae|
+#                                     ORAE|
+#                                     orae|
+#                                     (?i:OR\.E))\.?|
+#                                     \w+\.)?
+#                             |
+#                             [A-Z\-]+((AC|OR)EAE|Æ|(ACE|ORE|FER|NE)\.E\.?|AE|(ac|or)eae|ORAE|orae|(OR|or)\.(E|e))\.? # All-uppercase families ending with ACEAE (any number of letters before ACEAE)
+#                             |
+#                             [A-Za-z\-]+((AC|OR)EAE|Æ|(ACE|ORE|FER|NE)\.E\.?|AE|(ac|or)eae|ORAE|orae|(OR|or)\.(E|e))\.?
+#                             |
+#                             [A-Z][a-z\-]+(ace|ore|fer|ne)ae\.?    # Normal mixed-case families ending with 'aceae' (e.g. Celastraceae)
+#                             |
+#                             (?=[A-Za-z]*[A-Z])   # Ensure at least one uppercase letter exists in the following synonym
+#                               (?i:
+#                                 compositae\.?       |   # Compositae
+#                                 Cruciferae\.?       |   # Cruciferae
+#                                 Gramineae\.?           |   # Gramineae
+#                                 Guttiferae\.?       |   # Guttiferae
+#                                 Labiatae\.?               |   # Labiatae
+#                                 Leguminosae\.?   |   # Leguminosae
+#                                 Palmae\.?                       |   # Palmae
+#                                 Umbelliferae\.? |   # Umbelliferae
+#                                 Papilionaceae\.?    # Papilionaceae
+#                               )
+#                           )
+#                           [\*"\.]*                # Optional trailing asterisks or quotes
+                          
+
+# """
+
 FAMILY_REGEX_PATTERN = """
                           [\*"\.]*                # Optional leading asterisks or quotes
                           (?:
@@ -15,30 +59,21 @@ FAMILY_REGEX_PATTERN = """
                                     Æ|
                                     (ACE|ORE|FER|NE)\.E\.?|
                                     AE|
-                                    (ac|or)eae|
                                     ORAE|
-                                    orae|
                                     (?i:OR\.E))\.?|
                                     \w+\.)?
                             |
-                            [A-Z\-]+((AC|OR)EAE|Æ|(ACE|ORE|FER|NE)\.E\.?|AE|(ac|or)eae|ORAE|orae|(OR|or)\.(E|e))\.? # All-uppercase families ending with ACEAE (any number of letters before ACEAE)
+                            [A-Z\-]+((AC|OR)EAE|Æ|(ACE|ORE|FER|NE)\.E\.?|AE|ORAE|OR\.E)\.? # All-uppercase families ending with ACEAE (any number of letters before ACEAE)
                             |
-                            [A-Za-z\-]+((AC|OR)EAE|Æ|(ACE|ORE|FER|NE)\.E\.?|AE|(ac|or)eae|ORAE|orae|(OR|or)\.(E|e))\.?
-                            |
-                            [A-Z][a-z\-]+(ace|ore|fer|ne)ae\.?    # Normal mixed-case families ending with 'aceae' (e.g. Celastraceae)
-                            |
-                            (?=[A-Za-z]*[A-Z])   # Ensure at least one uppercase letter exists in the following synonym
-                              (?i:
-                                compositae\.?       |   # Compositae
-                                Cruciferae\.?       |   # Cruciferae
-                                Gramineae\.?           |   # Gramineae
-                                Guttiferae\.?       |   # Guttiferae
-                                Labiatae\.?               |   # Labiatae
-                                Leguminosae\.?   |   # Leguminosae
-                                Palmae\.?                       |   # Palmae
-                                Umbelliferae\.? |   # Umbelliferae
-                                Papilionaceae\.?    # Papilionaceae
-                              )
+                            (COMPOSITAE
+                            |CRUCIFERAE
+                            |GRAMINEAE
+                            |GUTTIFERAE
+                            |LABIATAE
+                            |LEGUMINOSAE
+                            |PALMAE
+                            |UMBELLIFERAE
+                            |PAPILIONACEAE)\.? # All-uppercase families ending with ACEAE (any number of letters before ACEAE)
                           )
                           [\*"\.]*                # Optional trailing asterisks or quotes
                           
@@ -54,7 +89,7 @@ class TextProcessor:
         
         # Family Regex
         self.family_regex = re.compile(rf"""(?P<PAGENOSTART>^\d+)?\s*
-                                       (?P<INDEX>[IVXLCDM\.]+)?(\s+|-)?
+                                       (?P<INDEX>[IVXLCDM\.]+\s)?(\s+|-)?
                                        (?P<FAMILY>{FAMILY_REGEX_PATTERN})\s*
                                        (?P<PAGENOEND>\d+$)?""", flags=re.VERBOSE)
         # Species Regex
@@ -68,6 +103,8 @@ class TextProcessor:
 
         # Known non-species words
         self.not_species_text = set()
+
+        self.species_chunker = SpeciesChunker()
 
 
     
@@ -85,59 +122,35 @@ class TextProcessor:
         for current_div, div_content in div_struct.items():
             current_div = current_div.strip()
             #print(f"==> Processing {current_div}")
-            
-            # Split the text into paragraphs
-            split_content = div_content.split("\n\n")
-
-            current_family = None
-
-            # Start a dict for the division
-            struct[current_div] = dict(details=[], families = {})
-
-            for line in split_content:
-                line = line.strip()
-                if not line:
-                    continue
-
-                family_matches = self._check_family(line)
-                if family_matches:
-                    add_to_family_name = False
-                    for family, family_content in family_matches.items():
-                        if family:
-                            current_family = family if not(add_to_family_name) else current_family + " " + family
-                            add_to_family_name = False
-                        
-                        contents = list(filter(None, family_content["content"]))
-                        species = list(filter(None, family_content["species"]))
-
-                        if not(contents) and not(species):
-                            add_to_family_name = True
-                            continue
-
-                        if current_family in struct[current_div]["families"]:
-                            struct[current_div]["families"][current_family]["content"].extend(contents)
-                            struct[current_div]["families"][current_family]["species"].extend(species)
-                        else:
-                            struct[current_div]["families"][current_family] = dict(content=contents, species=species)
-                        
-                else:
-                    #print(self._find_all_species(line, current_family))
-                    if current_family in struct[current_div]["families"]:
-                        struct[current_div]["families"][current_family]["content"].append(line)
-                    else:
-                        struct[current_div]["families"][current_family] = dict(content=[line], species=[])
 
 
-        
-        for div, div_content in struct.items():
-            for family, fam_content in div_content["families"].items():
-                contents = fam_content["content"]
-                species_list = self._clean_species_content(contents, family, max_chunk_size)
-                fam_content["species"].extend(species_list)
-                fam_content["content"] = []
-        
+            family_split = self.split_by_families(div_content)
+
+
+            for i, text_chunk in enumerate(family_split):
+                chunks = self.species_chunker.chunk_species(text_chunk["text"])
+                text_chunk["species"] = self.species_chunker.group_into_major_chunks(chunks, max_chunk_size=max_chunk_size)
+
+            struct[current_div] = family_split
         
         return struct
+    
+    def split_by_families(self, text: str):
+
+        finds = re.finditer(self.family_regex, text)
+
+        find_matches = [i for i in finds]
+
+        text_chunks = []
+        
+        for idx, i in enumerate(find_matches):
+            match = re.sub(r"[.\n\t,]*\s*([A-Z]+)\s*[.\n\t,]*", r"\1", i.group())
+            start = i.end()
+            end = find_matches[idx+1].start() if idx+1 < len(find_matches) else None
+            text_chunk = text[start:end] if end else text[start:]
+            text_chunks.append(dict(family=match, text=text_chunk))
+        
+        return text_chunks
 
     def _check_family(self, line: str) -> dict:
         """
@@ -231,9 +244,9 @@ class TextProcessor:
         species_name = species_name.strip()
         
         if family:
-            gbif_search = species.name_backbone(name=species_name, family=family, kingdom="plants", strict=False, verbose=True, limit=1)
+            gbif_search = None #species.name_backbone(name=species_name, family=family, kingdom="plants", strict=False, verbose=True, limit=1)
         else:
-            gbif_search = species.name_backbone(name=species_name, kingdom="plants", strict=False, verbose=True, limit=1)
+            gbif_search = None #species.name_backbone(name=species_name, kingdom="plants", strict=False, verbose=True, limit=1)
         
 
         def check_gbif_dict(gbif_dict: dict) -> bool:
@@ -505,18 +518,49 @@ class TextProcessor:
         
         return species_list if species_list else contents
     
-    def make_text_blocks(self, text_structure):
+    def make_text_blocks(self, text_structure, max_chunk_size=3000, overlap_context=1000):
 
         text_blocks = []
 
         for div, div_content in text_structure.items():
-            for family, family_content in div_content["families"].items():
-                for item in family_content["species"]:
+            # for family, family_content in div_content["families"].items():
+
+            #     if len("\n".join(family_content["species"])) <= max_chunk_size:
+            #         text_blocks.append(dict(
+            #             division=div,
+            #             family=family,
+            #             content="\n".join(family_content["species"])
+            #         ))
+            #         continue 
+                
+            #     text_block = ""
+            #     overlap = ""
+            #     for item in family_content["species"]:
+                    
+            #         if len(text_block) + len(item) <= max_chunk_size:
+            #             text_block += item.strip() + "\n"
+            #             if len(text_block) + len(item) >= max_chunk_size - overlap_context:
+            #                 overlap += item.strip() + "\n"
+            #         else:
+            #             text_blocks.append(dict(
+            #             division=div,
+            #             family=family,
+            #             content=text_block
+            #             ))
+
+            #             text_block = overlap
+            #             overlap = ""
+
+            for family_content in div_content:
+                family = family_content["family"]
+                contents = family_content["species"]
+
+                for chunk in contents:
                     text_blocks.append(dict(
-                    division=div,
-                    family=family,
-                    content=item
-                ))
-        
+                        division=div,
+                        family=family,
+                        content=chunk
+                    ))
+            
         return text_blocks
 
