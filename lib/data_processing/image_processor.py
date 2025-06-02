@@ -122,7 +122,8 @@ class ImageProcessor:
         w, h = cropped.size
 
         # Resize the image if the new dimensions (scaled) are reasonably large.
-        if (w * self.resize_factor) > 100 and (h * self.resize_factor) > 100:
+        # No need for resizing if the resize factor is 1 (no change).
+        if (w * self.resize_factor) > 100 and (h * self.resize_factor) > 100 and self.resize_factor != 1:
             cropped = cropped.resize((int(w * self.resize_factor), int(h * self.resize_factor)))
 
         return cropped

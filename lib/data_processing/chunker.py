@@ -1,4 +1,5 @@
-from taxonerd import TaxoNERD
+#from taxonerd import TaxoNERD
+import spacy
 import re
 import string
 from fuzzywuzzy import fuzz
@@ -182,8 +183,8 @@ class SpeciesChunker:
         if self.nlp is not None:
             raise RuntimeError("Chunker is already loaded. Please create a new instance to load again.")
         
-        taxonerd = TaxoNERD(prefer_gpu=False)
-        self.nlp = taxonerd.load("en_core_eco_md", exclude=[], threshold=self.threshold)
+        # = TaxoNERD(prefer_gpu=False)
+        self.nlp = spacy.load("en_ner_eco_md")#taxonerd.load("en_core_eco_md", exclude=[], threshold=self.threshold)
 
     def chunk_species(self, text: str) -> list[str]:
         """
