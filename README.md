@@ -33,13 +33,9 @@ git clone https://github.com/KewBridge/LightfootCatalogue.git
 ```
 srun --partition=gpu --gpus=1 --mem=80G --cpus-per-task=4 --pty bash
 ```
-2. Create a conda environment (assuming conda is installed in your local device, if not follow this link for [Crop Diversity HPC](https://help.cropdiversity.ac.uk/bioconda.html))
+2. Run installation script (assuming conda is installed in your local device, if not follow this link for [Crop Diversity HPC](https://help.cropdiversity.ac.uk/bioconda.html))
 ```
-conda create --name <input your conda env name> --file=./requirements.yml
-conda activate <input your conda env name>
-# conda install pytorch pytorch-cuda=12.1 -c pytorch -c nvidia
-# Conda install for pytorch not supported
-pip3 install torch torchvision torchaudio # Use the following flag if Cuda 12.8: --index-url https://download.pytorch.org/whl/cu128
+./install_req.sh
 ```
 3. Activate conda environment if not already activated
 ```
@@ -51,32 +47,44 @@ conda activate <input your conda env name>
 python run.py \
     <path to image/image directory> \
     <path to prompt> \
-    <savefilename> \
-    --temp-text \
-    --max-tokens [maximum tokens for model] \
-    --max-chunk-size [maximum size of each text block. Default 3000] \
-    --save-path [path to save the jsons] \
-    --batch [Batch size. Default 1] \
-    --crop [Crop and pre-process the images or not. Default True]
-
+    --savefilename [name for the save file]\
+    --temp-text [any text file you want to transcribe]\
+    --model [Name of model to use for transcription]\
+    --ocr-only [Add this flag only if you want OCR of images]\
+    --test [Add this flag only if you want to do a quick test]
 ```
 To run the program post installation, follow steps 3 and 4 after navigating to project directory on your local device / HPC account. Do not forget to request a partition if using HPC cluster.
 
 ## Defining user prompts
 
-User prompts are found under **prompts** folder. A user prompt is imperative to define the output structure of the JSON file and subsequently the CSV file. These prompts are defined in a YAML file and can be created following the structure below.
+User prompts are found under **prompts** folder. A user prompt is imperative to define the output structure of the JSON file and subsequently the CSV file. These prompts are defined in a YAML file and can be created following the structure below. We have provided a default script to inherit from and two scripts each for lightfoot and hanbury catalogue.
 
-To define a working user prompts, you must include the keys **inherit_default**, **default_file**, **divisions**, **system** and **user**.
+To define a working user prompts, you must include the **configuration keys**, **inherit_default**, **default_file**, **divisions**, **system** and **user**.
 
-**inherit_default** takes either True or False. This defined if your prompt should inherit anything missing from a default file. RECOMMENDED to leave it as False, especially if **default_file** is None.
-```
-inherit_default: <True/False> 
-```
-
-**default_file** takes the relative path to the default file to inherit any missing keys from. You can leave it as None or the path to default file.
-```
-default_file: <None/path-to-default-file>
-```
+| Configuration Key | Description | Example Value |
+|-------------------|-------------|--------------|
+| `model`           | Name of the model to use for transcription | `"qwen2"` |
+| `output_save_file_name` | Name for the output save file | `"default"` |
+| `max_tokens`      | Maximum number of tokens for model output | `4096` |
+| `max_chunk_size`  | Maximum size of each chunk for processing | `3000` |
+| `output_save_path`| Directory to save the output files | `"outputs/default/"` |
+| `batch_size`      | Number of items to process in a batch | `1` |
+| `ocr_model`       | Name of the OCR model to use. Recommending mistral model for OCR clean up. | `"mistral7b"` |
+| `ocr_temperature` | Temperature setting for OCR model | `0.1` |
+| `transcription_temperature` | Temperature setting for transcription model | `0.1` |
+| `timeout`         | Number of tries before timeout | `4` |
+| `crop`            | Whether to crop images before processing | `True` |
+| `padding`         | Padding to apply when cropping images | `100.0` |
+| `resize_factor`   | Factor to resize images by | `0.4` |
+| `remove_area_perc`| Percentage of area to remove as noise | `0.01` |
+| `middle_margin_perc` | Percentage for middle margin cropping | `0.20` |
+| `has_columns`     | Whether the page images have columns | `True` |
+| `inherit_default` | Whether to inherit missing keys from a default file | `True` or `False` |
+| `default_file`    | Path to the default file to inherit from, or `None` | `None` or `prompts/default.yaml` |
+| `divisions`       | List of division names to look for in the pages | `["Dicotyledones", "Monocotyledones"]` |
+| `system`          | Main set of instructions for the model | See example below |
+| `user`            | User prompt/input, must include `{extracted_text}` placeholder | See example below |
+|-------------------|-------------|--------------|
 
 **divisions** takes a list of all page/text divisions to look out for in the pages. These include any one time category names that are optional and not needed. RECOMMENDED to fill this with all the names of the divisions in the images.
 
@@ -190,6 +198,19 @@ user:
 
 ## Scheduling tasks on SLURM
 
+Currently three SLURM scheduling scripts are provided in the [`resources/slurm_jobs`](./resources/slurm_jobs) directory. Ensure you change the name of the environment (to the one you defined during installation) in each script before using. If working with new catalogues, not provided by us, you will have to edit the script to use it. 
+
+SLURM script find and edit line: `source activate <Add your environment name>`
+
+Make script is also available. 
+
+```
+submit -> submit full run script to SLURM. Provide name of catalogue.
+submit_ocr -> submit ocr only script to SLURM. Provide name of catalogue.
+clean -> Clean up any slurm output files (file ending .out)
+clean_submit -> Runs clean, and submits full script for lightfoot and hanbury (can add more later for custom prompts)
+clean_submit_ocr -> Runs clean, and submits ocr only script for lightfoot and hanbury (can add more later for custom prompts)
+```
 
 ## Team
 

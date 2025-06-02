@@ -32,7 +32,7 @@ def parse_args():
     parser.add_argument('--model', help="Model name to be used")
     parser.add_argument('--temp-text',  help="Temporary file storing the extracted text")   
     parser.add_argument("--ocr-only", action="store_true", help="Only run OCR on the images and save the text to a file")
-    parser.add_argument('--debug', default=False, help="Debug mode where testing on only the first 5 images")
+    #parser.add_argument('--debug', default=False, help="Debug mode where testing on only the first 5 images")
     parser.add_argument("--test", action="store_true", help="Test mode where testing on only the first 5 images")
     args = parser.parse_args()
 
