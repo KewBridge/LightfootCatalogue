@@ -9,7 +9,9 @@ os.environ["TORCH_USE_CUDA_DSA"] = "1"
 
 import argparse
 from lib.data_processing.data_reader import DataReader
-from lib.model.base_model import BaseModel
+from lib.model.transcription_model import TranscriptionModel
+from lib.model.ocr_model import OCRModel
+from lib.utils.promptLoader import PromptLoader
 from torch.cuda import is_available
 
 logger.info(f"GPU Status: {is_available()}")
@@ -26,14 +28,10 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Run inference on pages')
     parser.add_argument('images', help='Path to images (Can parse in either a single image or a directory of images)')
     parser.add_argument('prompt', help='Path to an input prompt/conversation to the model')
-    parser.add_argument('savefilename', help="Save file name for the outputs")
-    parser.add_argument('--model', default="qwen_model", help="Model name to be used")
-    parser.add_argument('--temp-text', default=None, help="Temporary file storing the extracted text")   
-    parser.add_argument('-mt', '--max-tokens', default=4096, help="Maximum number of tokens for model")
-    parser.add_argument('--max-chunk-size', default=2800, help="Define the maximum size of each text block")
-    parser.add_argument('--save-path', default=None, help="Save path for json files")
-    parser.add_argument('-b','--batch', default=1, help="Batch Size for inference if more than one image provided")
-    parser.add_argument('-c', '--crop', default=True, help="Choose to crop and resize an image before parsing into system")
+    parser.add_argument('--savefilename', help="Save file name for the outputs")
+    parser.add_argument('--model', help="Model name to be used")
+    parser.add_argument('--temp-text',  help="Temporary file storing the extracted text")   
+    parser.add_argument("--ocr-only", action="store_true", help="Only run OCR on the images and save the text to a file")
     parser.add_argument('--debug', default=False, help="Debug mode where testing on only the first 5 images")
     args = parser.parse_args()
 
@@ -48,27 +46,46 @@ def main():
     args = parse_args()
     logger.info(f"Input arguments: {args}")
 
-    if not(os.path.exists(args.save_path)):
+    prompt = PromptLoader(args.prompt)
+
+    if args.model:
+        prompt["model"] = args.model
+    if args.savefilename:
+        prompt["output_save_file_name"] = args.savefilename
+    
+
+    if not(os.path.exists(prompt["output_save_path"])):
         os.makedirs(args.save_path)
 
     # Load model
     logger.info(">>> Loading Model...")
 
-    batch = int(args.batch) if (args.batch is not None) else None
-    max_tokens = int(args.max_tokens) if (args.max_tokens is not None) else None
+    ocr_model = OCRModel(prompt=prompt)
 
-    model = BaseModel(args.model, prompt=args.prompt, max_new_tokens = max_tokens, 
-                      batch_size=batch, temperature=0.3, save_path=args.save_path)
-    
+    # Load the model
+    print(f"Loading model: {ocr_model.model_name}")
+    ocr_model.model.load()
     # Intialise DataReader
-    data_reader = DataReader(args.images,model,args.crop,
-                             pad = 100.0, resize_factor = 0.4, remove_area_perc = 0.01, save_file_name = None)
+    data_reader = DataReader(args.images, extraction_model=ocr_model, prompt=prompt)
     # Load the extracted text
     extracted_text = data_reader(args.temp_text)
-    
-    
+
+    print(f"Unloading model: {ocr_model.model_name}")
+    ocr_model.model.unload()
+    if args.ocr_only:
+        logger.info(">>> OCR Finished")
+        return
+    # Load the transription model
+
+
+    transcription_model = TranscriptionModel(prompt=prompt)
+    print(f"Loading model: {transcription_model.model_name}")
+    transcription_model.model.load()
     # Perform inference and save the jsons
-    _ = model(extracted_text, save=True, save_file_name=args.savefilename)
+    _ = transcription_model(extracted_text, save=True, save_file_name=prompt["output_save_file_name"])
+
+    print(f"Unloading model: {transcription_model.model_name}")
+    transcription_model.model.unload()
     logger.info(">>> Inference Finished")
     
 

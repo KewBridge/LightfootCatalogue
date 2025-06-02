@@ -1,3 +1,22 @@
+#Define variable configuration
+# Model config
+model: "qwen2.5"
+output_save_file_name: "hanbury"
+max_tokens: 4096
+max_chunk_size: 3000
+output_save_path: "outputs/hanbury_with_extract/"    # Where to save the output
+batch_size: 1
+ocr_model: "mistral7b"
+ocr_temperature: 0.1
+transcription_temperature: 0.1
+timeout: 4 # Number of tries
+# Data reader config
+crop: False
+padding: 50.0
+resize_factor: 1
+remove_area_perc: 0.01
+middle_margin_perc: 0.20
+has_columns: False
 # define to inherit any missing prompts from the default prompt
 inherit_default: False
 # Path to default file if inheriting from another custom prompt

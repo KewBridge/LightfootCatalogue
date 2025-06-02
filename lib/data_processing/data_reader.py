@@ -2,11 +2,12 @@
 import logging
 import os
 import time
-from typing import Optional
+from typing import Optional, Union
 from pdf2image import convert_from_path
 from natsort import natsorted
 
 # Custom Modules
+from lib.utils.promptLoader import PromptLoader
 import lib.config as config
 from lib.data_processing.image_processor import ImageProcessor
 # Logging
@@ -21,12 +22,12 @@ class DataReader:
     def __init__(self,
                  data_path: str,
                  extraction_model: object,
+                 prompt: Union[PromptLoader, Optional[str]] = None,
                  crop: bool=False,
                  pad: float=100.0,
                  resize_factor: float=0.4,
                  remove_area_perc: float=0.01,
                  middle_margin_perc: float=0.20,
-                 save_file_name: Optional[str]=None
                  ):
         """
           Data reader class used to read and extract text from any source of input (image or pdfs)
@@ -44,11 +45,13 @@ class DataReader:
               save_file_name (str): the name of the save file
         """
         self.data_path = data_path
-        self.crop = crop
-        self.save_file_name = save_file_name
-
-        self.image_processor = ImageProcessor(pad,resize_factor, remove_area_perc, middle_margin_perc)
         self.extraction_model = extraction_model
+        self.prompt = PromptLoader(prompt) if isinstance(prompt, str) else prompt
+        self.crop = prompt["crop"] if prompt["crop"] is not None else False
+        
+
+        self.image_processor = ImageProcessor(self.prompt["padding"],prompt["resize_factor"], prompt["remove_area_perc"], prompt["middle_margin_perc"])
+        
         # Loading all files under directory
         self.data_files = self.load_files()        
 
@@ -86,7 +89,7 @@ class DataReader:
                 extension = file.split(".")[-1]
                 if (extension in self.ALLOWED_EXT):
                     
-                    if extension == "pdf":
+                    if extension == "pdf" and not(os.path.isdir(os.path.join(path, "extracted_images"))):
                         logger.info("Detected PDF! Converting to images ...")
                         image_paths = self.pdf_to_images(path, file_path)
 
@@ -135,6 +138,7 @@ class DataReader:
 
         logger.info("Gathering input data")
         cropped_dir = os.path.join(self.data_path, self.CROPPED_DIR_NAME)
+        pdf_extracted_path = os.path.join(self.data_path, "extracted_images")
         pdf_cropped_dir = os.path.join(self.data_path, "extracted_images", self.CROPPED_DIR_NAME)
         if self.crop and not(os.path.isdir(cropped_dir) or os.path.isdir(pdf_cropped_dir)):
             images = sorted(self.load_files())
@@ -142,6 +146,8 @@ class DataReader:
             images = self.image_processor(images)
         elif os.path.isdir(cropped_dir):
             images = self.load_files(cropped_dir)
+        elif os.path.isdir(pdf_extracted_path):
+            images = self.load_files(pdf_extracted_path)
         elif os.path.isdir(pdf_cropped_dir):
             images = self.load_files(pdf_cropped_dir)
         else:
@@ -166,10 +172,10 @@ class DataReader:
         temp_text_file = os.path.join(self.data_path, temp_text) if not(temp_text is None) else os.path.join(self.data_path, self.EXTRACTED_TEXT)
         if not(temp_text_file is None) and os.path.isfile(temp_text_file):
             logger.info("Temperory text file found")
-            return self.extraction_model.get_extracted_text([], temp_text_file)
+            return self.extraction_model([], temp_text_file)
 
         images = self.get_data()
 
-        extracted_text = self.extraction_model.get_extracted_text(images, None, temp_text_file)
+        extracted_text = self.extraction_model(images, None, temp_text_file)
 
         return extracted_text

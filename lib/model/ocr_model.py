@@ -2,28 +2,27 @@
 import os
 from tqdm import tqdm
 import logging
-from typing import Optional
+from typing import Optional, Union
+import re
+import cv2
+from pytesseract import image_to_string
+import numpy as np
+import gc
 
 # Import Custom Modules
+from lib.utils.file_utils import save_to_file, load_from_file, get_save_file_name
 from lib.model import get_model
+from lib.model.base_model import BaseModel
 from lib.utils.promptLoader import PromptLoader
 from lib.utils.save_utils import save_json, save_csv_from_json, verify_json
 from lib.data_processing.text_processing import TextProcessor
+from lib.data_processing.chunker import TextChunker
 logger = logging.getLogger(__name__)
 
-class OCRModel:
-
-    TEMP_TEXT_FILE = "temp.txt"
-    SAVE_TEXT_INTERVAL = 3
+class OCRModel(BaseModel):
 
     def __init__(self, 
-                 model_name: str,
-                 prompt: Optional[str] = None,
-                 batch_size: int = 3, 
-                 max_new_tokens: int = 5000,
-                 temperature: float = 0.2, 
-                 save_path: Optional[str]= None, 
-                 timeout: int = 4,
+                 prompt: Union[Optional[str], PromptLoader] = None,
                  **kwargs
                  ):
         """
@@ -36,42 +35,210 @@ class OCRModel:
             max_new_tokens (int): Maximum number of tokens
             temperature (float): Model temperature. 0 to 2. Higher the value the more random and lower the value the more focused and deterministic.
             save_path (str): Where to save the outputs
-            timeout (int): The number of times to rechech for JSON validation (currrently a placeholder)
             **kwargs (dict): extra parameters for other models
         """
-        
-        self.model_name = model_name
-        self.batch_size = batch_size
-        self.max_new_tokens = max_new_tokens
-        self.temperature = temperature
-        self.save_path = save_path if save_path is not None else "./outputs/"
-        
-        if not(os.path.isdir(self.save_path)):
-            os.makedirs(self.save_path)
+        super().__init__(prompt, **kwargs)
+        self.temperature = prompt["ocr_temperature"] if prompt["ocr_temperature"] is not None else 0.
+        self.overlap = 100
+        self.context_size = 500
+        self.model_name = prompt["ocr_model"]
+        self.load_model()
+        self.chunker = TextChunker(self.overlap, prompt["max_chunk_size"])
 
-        # Defining a temperory file to store extracted text
-        self.TEMP_TEXT_FILE = os.path.join(self.save_path, self.TEMP_TEXT_FILE)
-
-        self.timeout = timeout
-        
-        # Load the model, prompt, and the conversation
-        self.model = get_model(self.model_name)(self.batch_size, self.max_new_tokens, self.temperature, **kwargs)
-        self.prompt = PromptLoader(prompt)#prompt
-        self.text_processor = TextProcessor()
-
-    def info(self) -> str:
+    def getImagePrompt(self) -> list:
         """
-        Info on the the model pipeline and the paramters used
+        Get the image extraction prompt
 
         Returns:
-            message (str): brief information of parameters and model name
+            list: Image extraction conversation to VL model
         """
-        message = f"OCR Model: {self.model_name} | Batch Size: {self.batch_size}, Max Tokens: {self.max_new_tokens}, Temperature: {self.temperature}"
 
-        print(message)
+        system_prompt = (
+            "You are an expert in extracting text from images."
+        )
 
+        image_prompt = (
+            "Extract only the main body text from the image, preserving the original structure and formatting. \n"
+            "Do not perform any grammatical corrections. Ignore Page numbers and any other text that is not part of the main body text.\n"
+            "Do not generate any additional text or explanations."
+        )
 
-    def extract_text(self, images: list[str], save_file: str = None, debug: bool = False) -> str:
+        return self.prompt.getImagePrompt(system_prompt, image_prompt)
+    
+
+    def getOCRNoiseCleaningPrompt(self, extracted_text: str, context: str="") -> list:
+        """
+        Get OCR noise cleaning prompt
+        This is used to clean the extracted text from the images.
+
+        Parameters:
+            extracted_text (str): Extracted text from the images
+
+        Returns:
+            list: ocr noise cleaning conversation to the model
+        """
+
+        system_prompt = (
+            "You are an expert in cleaning OCR induced errors in the text. \n"
+            "Follow the instructions below to clean the text, ensuring the text flows coherently with the previous context:\n"
+            "1. Fix OCR induced typographical errors, such as incorrect characters or spacing.\n"
+            "- Use provided context and common sense to identify and correct errors.\n"
+            "- For example, 'l' and '1' or 'o' and '0' are often confused.\n"
+            "- Ensure that the text is grammatically correct and coherent.\n"
+            "- Remove any unnecessary line breaks or extra spaces.\n"
+            "- Identify and correct word splits and line breaks.\n"
+            "- Only fix clear OCR errors. DO NOT ALTER THE CONTEXT OR MEANING of the text.\n"
+            "- DO NOT add any generated text, punctuation, or capitalization.\n"
+            "2. Ensure structure is maintained.\n"
+            "- Maintain original structure, including paragraphs and line breaks.\n"
+            "- Preserve the original content. \n"
+            "- Keep all importatnt information intact.\n"
+            "- DO NOT add any new text not present in the text. \n"
+            "3. Ensure flow and coherence.\n"
+            "- Ensure the text flows naturally and coherently.\n"
+            "- Use provided context to ensure the text makes sense.\n"
+            "- HANDLE text that starts or ends mid-sentence correctly. \n\n"
+            "4. Return ONLY the cleaned text.\n"
+            "- Do not add any additional information, explanations, or thoughts.\n"
+            "- Do not include your thoughts, explanations, or steps.\n"
+            "- Do not add any new text not present in the text.\n"
+        )
+        noise_prompt = (
+            # "IMPORTATANT: RETURN ONLY THE CLEANED TEXT. Preserve the orignial structure and content. Do not add anything else. Do not include your thoughts, explantions or steps.\n\n"
+            f"Previous context:\n {context}\n\n"
+            f"Text to clean:\n {extracted_text}\n\n"
+            "Cleaned text:\n"
+        )
+
+        return self.prompt.getTextPrompt(system_prompt, noise_prompt)
+
+    def clean(self, text: str) -> str:
+        """
+        Clean any headings added by the model and remove any unwanted text
+
+        Parameters:
+            text (str): text in need of cleaning
+
+        Returns:
+            str: Cleaned text
+        """
+
+        text = re.sub(r"^(Cleaned|Corrected)\stext\s{0,1}:\s*", "", text, flags=re.IGNORECASE)
+
+        return text
+    
+    def post_process(self, text: str) -> str:
+        
+        ocr_cleaning_prompt = self.getOCRNoiseCleaningPrompt(text)
+        cleaned_text = self.model(ocr_cleaning_prompt)
+        cleaned_text = self.clean(cleaned_text[0])
+
+        # seperation_prompt = self.getSeperateRecordsPrompt(cleaned_text)
+        # organised_text = self.model(seperation_prompt)
+        # cleaned_text = self.clean(organised_text[0])
+
+        cleaned_text_split = cleaned_text.split("\n")
+
+        # Return the cleaned text and the last record
+        return cleaned_text #"\n".join(cleaned_text_split[:-1]), cleaned_text_split[-1]
+    
+
+    def detect_column_cuts(self, gray_img, min_gap_width=50, gap_thresh_ratio=0.05):
+        """
+        Given a grayscale page image, return the x-coordinates where you should cut 
+        to split into columns.  If no good gutter is found, returns [] (i.e. one column).
+        """
+        # 1) Binarize (invert so text is “1”)
+        binarized_image = cv2.threshold(gray_img, 0, 255,
+                            cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
+        # 2) Optional: close tiny text-break gaps
+        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5,5))
+        binarized_image = cv2.morphologyEx(binarized_image, cv2.MORPH_CLOSE, kernel)
+        # 3) Sum ink pixels in each column
+        vert_proj = binarized_image.sum(axis=0)  # shape: (width,)
+        # 4) Threshold to find “mostly white” columns
+        thresh = vert_proj.max() * gap_thresh_ratio
+        is_gap = vert_proj < thresh
+        # 5) Find contiguous gap runs wider than min_gap_width
+        cuts = []
+        start = None
+        for x, val in enumerate(is_gap):
+            if val and start is None:
+                start = x
+            elif not val and start is not None:
+                width = x - start
+                if width >= min_gap_width:
+                    cuts.append((start + x)//2)  # mid-point of the gap
+                start = None
+        # handle case run-to-end
+        if start is not None and (len(is_gap) - start) >= min_gap_width:
+            cuts.append((start + len(is_gap))//2)
+        return cuts
+    
+    def ocr_page_with_columns(self, path_to_image: Union[str, np.ndarray]) -> str:
+
+        if isinstance(path_to_image, str):
+            img = cv2.imread(path_to_image)
+            grey_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        elif isinstance(path_to_image, np.ndarray):
+            grey_img = path_to_image
+        else:
+            raise ValueError("Input must be a file path or a numpy array.")
+            
+        cuts = self.detect_column_cuts(grey_img)
+
+        # define our column boxes
+        xs = [0] + cuts + [grey_img.shape[1]]
+        text = []
+        
+        #col_imgs = []
+        for left, right in zip(xs[:-1], xs[1:]):
+            col_img = grey_img[:, left:right]
+            
+            #col_imgs.append(col_img)
+            txt = image_to_string(col_img, lang="eng")
+            text.append(txt.strip())
+        # join them in reading order, separated by two line breaks
+        return "\n\n\n\n\n".join(text)
+    
+    def extract_text_from_image(self, image:list[np.ndarray]) -> list[str]:
+        """
+        Extract text from a single image
+
+        Parameters:
+            image (str): path to the image
+
+        Returns:
+            list: extracted text from the image
+        """
+        
+        # Load the image
+        return [self.ocr_page_with_columns(im) if self.prompt["has_columns"] else image_to_string(im, lang="eng").strip() for im in image]
+    
+    def clean_text(self, text):
+        
+        text = re.sub(r"\n{2,}", "\n\n", text)  # Remove excessive newlines
+        
+        text = text.strip()
+        # Clean line breaks
+        text = re.sub(r"-\n+", "", text)
+        text = re.sub(r"^(\d*|[a-z]{0,3})\s?(Joh|Cat).*\n", "", text, re.I)
+        text = re.sub(r"^.*(l?o?gue|ghtfoot|foot)\s?(\d*)?\n", "", text, re.I)
+        text = re.sub(r"([a-zA-Z])-\n([a-zA-Z])", r"\1\2", text)
+        text = re.sub(r"([A-Z]+)\s*(EAE|FAE|EAF)", r"\1EAE", text)
+
+        # Add a newline before any indexing patterns like 1. or i. or a., but only if not part of a word ending
+        # Ensure the pattern is preceded by whitespace or start of line, and not a letter (to avoid word endings)
+        # exclusions = r'(?:e\.g\.|i\.e\.|etc\.|cf\.|vs\.)'
+        # text = re.sub(rf'(?<![a-zA-Z0-9])\s+(?!{exclusions})(\d+\.)\n?', r'\n\1', text)
+        # text = re.sub(rf'(?<![a-zA-Z0-9])\s+(?!{exclusions})([ivxlc]+\.)\n?', r'\n\1', text)
+        # text = re.sub(rf'(?<![a-zA-Z0-9])\s+(?!{exclusions})([a-z]\.)\n?', r'\n\1', text)
+
+        text = re.sub(r"\n\n+", "\n\n", text)
+        return text
+    
+
+    def extract_text(self, images: list[str], save_file: str = None, debug: bool = False, clean: bool = True) -> str:
         """
         Iterate through all images and extract the text from the image, saving at intervals.
         Combine all extracted text into one long text
@@ -84,26 +251,22 @@ class OCRModel:
         Returns:
             joined_text (str): a combined form of all the text extracted from the images.
         """
-        if debug:
-            logger.debug("Batching Images...")
-
 
         batch_texts = []
         # Create batches of images
-        batched_images = [images[x:min(x + self.batch_size, len(images))] for x in range(0, len(images), self.batch_size)]
 
+        #Add previous block of text to the next batch
+        # This is done to ensure that the model does not forget the previous text
         # Add tqdm for progress tracking
-        for ind, batch in enumerate(tqdm(batched_images, desc="Processing Batches", unit="batch")):
+        for ind, batch in enumerate(tqdm(images, desc="Processing images", unit="image")):
             #print(f">>> Batch {ind + 1} starting...")
 
             if debug:
                 logger.debug("Extracting text from image")
-            image_conversation = self.prompt.getImagePrompt()
-            extracted_text = self.model(image_conversation, batch, debug)
-            
-            # Perform ocr noise cleaning
-            ocr_noise_prompt = self.prompt.getOCRNoiseProcessPrompt(extracted_text)
-            cleaned_text = self.model(ocr_noise_prompt, None, debug)
+
+            extracted_text = self.extract_text_from_image([batch])
+
+            cleaned_text = [self.clean_text(text) for text in extracted_text] if clean else extracted_text
 
             if debug:
                 logger.debug("\tJoining Outputs...")
@@ -113,15 +276,90 @@ class OCRModel:
             if (ind + 1) % self.SAVE_TEXT_INTERVAL == 0:
                 if debug:
                     logger.debug("\tStoring at interval...")
-                self._save_to_file(self.TEMP_TEXT_FILE if save_file is None else save_file, "\n\n".join(batch_texts))
+                save_to_file(self.TEMP_TEXT_FILE if save_file is None else save_file, "\n\n".join(batch_texts))
 
             if debug:
                 logger.debug("\tBatch Finished")
 
-        return "\n\n".join(batch_texts)
+        return "".join(batch_texts) 
+
+
+    def process_images(self, images: list[str]) -> np.ndarray:
+        
+        logger.debug("Step 1: Grayscale Conversion")
+        gray_images = [cv2.cvtColor(cv2.imread(image), cv2.COLOR_BGR2GRAY) for image in images]
+
+        logger.debug("Step 2: Remove shadows")
+        thresh = lambda x: cv2.adaptiveThreshold(x, 255,
+                                    cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+                                    cv2.THRESH_BINARY, 31, 10)
+
+        median_filter = lambda x: cv2.medianBlur(x, 3)
+        shadows_removes = [median_filter(thresh(image)) for image in gray_images]
+
+
+
+        logger.debug("Step 3: Noise Reductiion")
+        denoised_images = [cv2.bilateralFilter(image, 9, 75, 75) for image in shadows_removes]
+
+
+        logger.debug("Setp 4: Binarization (black and White) via Otsu's method")
+        binarized_images = [cv2.threshold(image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1] for image in denoised_images]
+
+
+        logger.debug("Step 5: Deskewing")
+        logger.debug("Skipping deskewing for now")
+        deskewed_images = binarized_images
+
+        logger.debug("Step 6: Morphological opening (erosion followed by dilation)")
+        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1,1))#np.ones((1, 1), np.uint8)
+        opened = lambda x: cv2.morphologyEx(x, cv2.MORPH_OPEN,
+                                            kernel, iterations=1)
+        opened_images = [opened(image) for image in deskewed_images]
+
+
+        logger.debug("Step 7: Optional dilation to thicken strokes")
+        kernel2 = cv2.getStructuringElement(cv2.MORPH_RECT, (1, 1))
+        processed = [cv2.dilate(i, kernel2, iterations=1) for i in opened_images]
+
+        return processed
     
 
-    def get_extracted_text(self, images: list[str], text_file: Optional[str] = None, save_file: str = None, debug: bool = False) -> str:
+    
+
+    def chunk_and_clean(self, text: str, add_overlap: bool = True) -> list[str]:
+
+        """
+        Chunk the text into smaller chunks for cleaning and processing.
+        This is done to ensure that the model does not run out of memory when processing large texts.
+
+        Parameters:
+            text (str): The text to chunk and clean
+            add_overlap (bool): Whether to add overlap between chunks
+
+        Returns:
+            list: A list of cleaned chunks
+        """
+
+        logger.info("Chunking text for cleaning...")
+        chunks = self.chunker.chunk_text_for_cleaning(text, add_overlap=add_overlap)
+
+        logger.info("Cleaning chunks...")
+        cleaned_chunks = []
+        context = ""
+        for chunk in tqdm(chunks, desc="Cleaning Chunks", unit="chunk"):
+            message = self.getOCRNoiseCleaningPrompt(chunk, context)
+            cleaned_chunk = self.model(message)[0]
+
+            cleaned_chunks.append(cleaned_chunk)
+
+            context = cleaned_chunk[-self.context_size:] if len(cleaned_chunk) > self.context_size else cleaned_chunk
+            gc.collect()
+
+        merged_text = self.chunker.merge_chunks(cleaned_chunks)
+        return merged_text
+
+    def __call__(self, images: list[str], text_file: Optional[str] = None, save_file: str = None, debug: bool = False) -> str:
         """
         Extracting text from image or loading a temp file
 
@@ -134,10 +372,21 @@ class OCRModel:
         Returns:
             extracted_text (str): Extracted text as a long string
         """
+
+        
+        self.info()
+
         
         if text_file is None:
-            logger.info("Extracting Text from Images")
+            logger.info(f"Processing input images before extraction...")
+            images = self.process_images(images)
+            logger.info(f"Extracting text from images...")
             extracted_text = self.extract_text(images, save_file, debug)
+            logger.info(f"Chunking text for cleaning...")
+            extracted_text = self.chunk_and_clean(extracted_text, add_overlap=True)
+
+            # Overwrite the existing text file with the cleaned text
+            save_to_file(self.TEMP_TEXT_FILE if save_file is None else save_file, extracted_text)
         else:
             logger.info("Skipping extraction...")
             logger.info(f"Loading text from provided extracted text file `{text_file}`")
@@ -145,115 +394,3 @@ class OCRModel:
                 extracted_text = file_.read()
         
         return extracted_text
-
-    def inference(self, 
-                  text_blocks: dict, 
-                  save_file_name: str, 
-                  json_file_name: Optional[str] = None, 
-                  save: bool = False, 
-                  debug: bool = False) -> dict:
-
-        
-        json_file_name = save_file_name + ".json" if json_file_name is None else json_file_name
-        error_text_file = os.path.join(self.save_path, save_file_name + "_errors.txt")
-        organised_blocks = {}
-
-        logging.info("Organising text into JSON blocks")
-        # Add tqdm for the outer loop over division
-        save_counter = 0
-        for item in tqdm(text_blocks, desc="Processing text blocks", leave=True):
-            division = item["division"]
-            family = item["family"] if "family" in item.keys() else division
-            family = family if family else ""
-            content = item["content"]
-            # Add tqdm for the inner loop over families
-            self._save_to_file(error_text_file, f"{division}\n", mode="a")
-            # Load the system conversation with text blocks added to the prompt
-            json_conversation = self.prompt.get_conversation(family+"\n"+content)
-            
-            # Perform inference on text
-            json_text = self.model(json_conversation, None, debug)
-            
-            # Check the integrity of the JSON output. 
-            # Json verified is boolean to check if the integrity of the JSON output is valid
-            # Json loaded is the post-processed form of the text into dict (removing and cleaning done)
-            json_verified, json_loaded = verify_json(json_text[0], clean=True, out=True, schema=self.prompt.get_schema())
-            
-            if not(json_verified):
-                logging.info("Error Noticed in JSON")
-                logging.info("Fixing Error")
-                error_fix_prompt = self.prompt.getJsonPrompt(json_text[0])
-                # print(error_fix_prompt)
-                json_text = self.model(error_fix_prompt, None, debug)
-                # print(json_text)
-                json_verified, json_loaded = verify_json(json_text[0], clean=True, out=True, schema=self.prompt.get_schema())
-
-                # storing all erroneous JSON format in error.txt
-                self._save_to_file(error_text_file, f"{family}\n", mode="a")
-                    
-                
-            # If verified, add to organised block and break
-            if json_verified:
-                if division in organised_blocks:
-                    organised_blocks[division].append(json_loaded)
-                else:
-                    organised_blocks[division] = [json_loaded]
-                                    
-            save_counter += 1
-            # save to file after 10 iterations
-            if save and (save_counter == 10):
-                save_counter = 0
-                save_json(organised_blocks, json_file_name, self.save_path)
-                save_csv_from_json(os.path.join(self.save_path, json_file_name), save_file_name, self.save_path)
-    
-        return organised_blocks
-
-    def __call__(self,
-                 extracted_text: Optional[str] = None,
-                 images: Optional[list[str]] = None,
-                 save: bool = False,
-                 save_file_name: str = "sample",
-                 max_chunk_size: int = 3000,
-                 debug: bool = False) -> dict:
-        """
-        The main pipeline that extracts text from the images, seperates them into text blocks and organises them into JSON objects
-
-        Paramaters:
-            extracted_text (str): The extracted text from the images
-            images (list): a list of images to extract text from
-            save (bool): Boolean to determine whether to save the outputs or not
-            save_file_name (str): the name of the save files
-            debug (bool): used when debugging. logs debug messages
-
-        Returns:
-            organised_blocks (dict): Extracted data organised in a JSON format
-        """
-
-        self.info()
-        save_file_name = self._get_save_file_name(save_file_name)
-        json_file_name = save_file_name + ".json"
-        
-        logging.info(f"""Saving data into following files at {self.save_path}: \n
-                     \t==> JSON file: {save_file_name}.json\n
-                     \t==> CSV file: {save_file_name}.csv
-                     \t==> Errors: {save_file_name}_errors.txt
-                     """)
-        # Get the extracted text whether from file or from images
-        if extracted_text is None or extracted_text == "":
-            extracted_text = self.get_extracted_text(images, None, debug)
-        
-        
-        # Converting the extracted text into text blocks defined by divisions and families
-        logging.info("Converting extracted text into Text Blocks")
-        text_structure = self.text_processor(extracted_text, divisions=self.prompt.get_divisions(), max_chunk_size=max_chunk_size)
-        text_blocks = self.text_processor.make_text_blocks(text_structure)
-
-        # Performing inference on the text blocks to generate JSON files
-        organised_blocks = self.inference(text_blocks, save_file_name, json_file_name, save, debug)
-        
-        # Saving the outputs if prompted       
-        if save:
-            save_json(organised_blocks, json_file_name, self.save_path)
-            save_csv_from_json(os.path.join(self.save_path, json_file_name), save_file_name, self.save_path)
-        
-        return organised_blocks
