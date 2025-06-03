@@ -216,4 +216,4 @@ clean_submit_ocr -> Runs clean, and submits ocr only script for lightfoot and ha
 - [Marie-Helene Weech](https://github.com/Cupania) (RBG Kew, digitisation)
 - Priscila Reis (RBG Kew, senior curator-botanist)
 - [Nicky Nicolson](https://github.com/nickynicolson) (RBG Kew, digital collections)
-- [Piriyan Karunakularatnam](https://github.com/ipiriyan2002) (RBG Kew, digital research associate)
+- [Ishaipiriyan Karunakularatnam](https://github.com/ipiriyan2002) (RBG Kew, digital research associate)
