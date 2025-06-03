@@ -3,3 +3,5 @@
 /outputs/
 temp.txt
 slurm-*.out
+/.*/
+/__pycache__/
