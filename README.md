@@ -84,7 +84,6 @@ To define a working user prompts, you must include the **configuration keys**, *
 | `divisions`       | List of division names to look for in the pages | `["Dicotyledones", "Monocotyledones"]` |
 | `system`          | Main set of instructions for the model | See example below |
 | `user`            | User prompt/input, must include `{extracted_text}` placeholder | See example below |
-|-------------------|-------------|--------------|
 
 **divisions** takes a list of all page/text divisions to look out for in the pages. These include any one time category names that are optional and not needed. RECOMMENDED to fill this with all the names of the divisions in the images.
 
