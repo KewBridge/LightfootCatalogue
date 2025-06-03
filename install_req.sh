@@ -15,8 +15,19 @@ echo "==> Using environment name: $env_name"
 # ============ Install requirements ============
 
 if ! command -v mamba &> /dev/null; then
-    echo "[[Mamba is not installed. Please install Mamba first.]]"
-    exit 1
+    echo "[[Mamba is not installed.]]"
+    echo "==> Attempting install with conda"
+    conda env create -f requirements.yml -n "$env_name" -y || {
+        echo "[[Failed to create the environment. Please check the requirements.yml file.]]"
+        exit 1
+    }
+else
+    echo "[[Mamba is installed.]]"
+    echo "==> Installing with Mamba"
+    mamba env create -f requirements.yml -n "$env_name" -y || {
+        echo "[[Failed to create the environment. Please check the requirements.yml file.]]"
+        exit 1
+    }
 fi
 
 mamba env create -f requirements.yml -n "$env_name" -y || {
