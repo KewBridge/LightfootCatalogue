@@ -2,6 +2,9 @@ import os
 import yaml
 from typing import Optional, Union
 from lib.json_schemas import get_catalogue
+# Logging
+from lib.utils import get_logger
+logger = get_logger(__name__)
 
 class PromptLoader:
     
@@ -256,8 +259,10 @@ class PromptLoader:
         """
 
 
-        return [dict(role="system", content=[dict(type="text", text=system_prompt)]),
-                dict(role="user", content=[dict(type="text", text=text_prompt)])]
+        return [dict(role="system", content=system_prompt),
+                dict(role="user", content=text_prompt)]
+        # return [dict(role="system", content=[dict(type="text", text=system_prompt)]),
+        #             dict(role="user", content=[dict(type="text", text=text_prompt)])]
     
             
 

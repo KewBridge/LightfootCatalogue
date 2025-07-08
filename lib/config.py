@@ -1,5 +1,6 @@
 
 
+# TODO: Move constants to config.py
 # Using Qwen2-VL-7B model
 MODEL = "Qwen/Qwen2-VL-7B-Instruct"
 

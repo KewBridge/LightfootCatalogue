@@ -1,7 +1,6 @@
 import os
-import logging
-
-logger = logging.getLogger(__name__)
+from lib.utils import get_logger
+logger = get_logger(__name__)
 # OS setting for Pytorch dynamic GPU memory allocation
 logger.info("Setting OS envrionmnet variables")
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"

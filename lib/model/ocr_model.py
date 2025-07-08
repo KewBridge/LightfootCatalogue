@@ -1,13 +1,13 @@
 # Python Modules
 import os
 from tqdm import tqdm
-import logging
 from typing import Optional, Union
 import re
 import cv2
 from pytesseract import image_to_string
 import numpy as np
 import gc
+from PIL import Image
 
 # Import Custom Modules
 from lib.utils.file_utils import save_to_file, load_from_file, get_save_file_name
@@ -17,10 +17,13 @@ from lib.utils.promptLoader import PromptLoader
 from lib.utils.save_utils import save_json, save_csv_from_json, verify_json
 from lib.data_processing.text_processing import TextProcessor
 from lib.data_processing.chunker import TextChunker
-logger = logging.getLogger(__name__)
+
+# Logging
+from lib.utils import get_logger
+logger = get_logger(__name__)
 
 class OCRModel(BaseModel):
-
+    
     def __init__(self, 
                  prompt: Union[Optional[str], PromptLoader] = None,
                  **kwargs
@@ -42,7 +45,10 @@ class OCRModel(BaseModel):
         self.overlap = 100
         self.context_size = 500
         self.model_name = prompt["ocr_model"]
-        self.load_model()
+        self.extraction_model = None
+        self.extraction_model_name = prompt["ocr_extraction_model"]
+        self.grayscale_only = prompt["grayscale_only"]
+        self.model = self.load_model()
         self.chunker = TextChunker(self.overlap, prompt["max_chunk_size"])
 
     def getImagePrompt(self) -> list:
@@ -81,8 +87,9 @@ class OCRModel(BaseModel):
         system_prompt = (
             "You are an expert in cleaning OCR induced errors in the text. \n"
             "Follow the instructions below to clean the text, ensuring the text flows coherently with the previous context:\n"
-            "1. Fix OCR induced typographical errors, such as incorrect characters or spacing.\n"
+            "1. Fix OCR induced typographical errors, such as incorrect characters, spacing and improper symbols.\n"
             "- Use provided context and common sense to identify and correct errors.\n"
+            "- The letter 'AE' and 'Æ' are often confused with symbols such as '&' and other special symbols.\n"
             "- For example, 'l' and '1' or 'o' and '0' are often confused.\n"
             "- Ensure that the text is grammatically correct and coherent.\n"
             "- Remove any unnecessary line breaks or extra spaces.\n"
@@ -175,6 +182,30 @@ class OCRModel(BaseModel):
             cuts.append((start + len(is_gap))//2)
         return cuts
     
+
+    def single_image_extract(self, image: Union[str, np.ndarray]) -> str:
+
+        logger.debug("Extracting text from image...")
+        logger.debug(f"Image type: {type(image)}")
+        logger.debug(f"Image shape: {image.shape if isinstance(image, np.ndarray) else 'N/A'}")
+        logger.debug(f"Image dtype: {image.dtype if isinstance(image, np.ndarray) else 'N/A'}")
+        logger.debug("=" * 50)
+
+        if isinstance(image, np.ndarray):
+
+            image = Image.fromarray(image)
+        text = ""
+        if (self.extraction_model_name is None) or (self.extraction_model_name.lower() == "default"):
+            text = image_to_string(image, lang="eng+lat", config="--psm 4")
+        else:
+            print(f"Using {self.extraction_model_name} for text extraction.")
+            if self.extraction_model is None:
+                self.extraction_model = self.load_model(self.extraction_model_name)
+            message = self.getImagePrompt()
+            text = self.extraction_model(message, [image])[0]
+        
+        return text.strip()
+        
     def ocr_page_with_columns(self, path_to_image: Union[str, np.ndarray]) -> str:
 
         if isinstance(path_to_image, str):
@@ -196,7 +227,7 @@ class OCRModel(BaseModel):
             col_img = grey_img[:, left:right]
             
             #col_imgs.append(col_img)
-            txt = image_to_string(col_img, lang="eng")
+            txt = self.single_image_extract(col_img)
             text.append(txt.strip())
         # join them in reading order, separated by two line breaks
         return "\n\n\n\n\n".join(text)
@@ -212,9 +243,11 @@ class OCRModel(BaseModel):
             list: extracted text from the image
         """
         
+        
         # Load the image
-        return [self.ocr_page_with_columns(im) if self.prompt["has_columns"] else image_to_string(im, lang="eng").strip() for im in image]
+        return [self.ocr_page_with_columns(im) if self.prompt["has_columns"] else self.single_image_extract(im) for im in image]
     
+
     def clean_text(self, text):
         
         text = re.sub(r"\n{2,}", "\n\n", text)  # Remove excessive newlines
@@ -226,15 +259,15 @@ class OCRModel(BaseModel):
         text = re.sub(r"^.*(l?o?gue|ghtfoot|foot)\s?(\d*)?\n", "", text, re.I)
         text = re.sub(r"([a-zA-Z])-\n([a-zA-Z])", r"\1\2", text)
         text = re.sub(r"([A-Z]+)\s*(EAE|FAE|EAF)", r"\1EAE", text)
-
+        
         # Add a newline before any indexing patterns like 1. or i. or a., but only if not part of a word ending
         # Ensure the pattern is preceded by whitespace or start of line, and not a letter (to avoid word endings)
         # exclusions = r'(?:e\.g\.|i\.e\.|etc\.|cf\.|vs\.)'
         # text = re.sub(rf'(?<![a-zA-Z0-9])\s+(?!{exclusions})(\d+\.)\n?', r'\n\1', text)
         # text = re.sub(rf'(?<![a-zA-Z0-9])\s+(?!{exclusions})([ivxlc]+\.)\n?', r'\n\1', text)
         # text = re.sub(rf'(?<![a-zA-Z0-9])\s+(?!{exclusions})([a-z]\.)\n?', r'\n\1', text)
-
-        text = re.sub(r"\n\n+", "\n\n", text)
+        
+        #text = re.sub(r"\n\n+", "\n\n", text)
         return text
     
 
@@ -284,11 +317,13 @@ class OCRModel(BaseModel):
         return "".join(batch_texts) 
 
 
-    def process_images(self, images: list[str]) -> np.ndarray:
+    def process_images(self, images: list[str], grayscale_only:bool = False) -> np.ndarray:
         
         logger.debug("Step 1: Grayscale Conversion")
         gray_images = [cv2.cvtColor(cv2.imread(image), cv2.COLOR_BGR2GRAY) for image in images]
 
+        if grayscale_only or self.grayscale_only:
+            return gray_images
         logger.debug("Step 2: Remove shadows")
         thresh = lambda x: cv2.adaptiveThreshold(x, 255,
                                     cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
@@ -296,8 +331,6 @@ class OCRModel(BaseModel):
 
         median_filter = lambda x: cv2.medianBlur(x, 3)
         shadows_removes = [median_filter(thresh(image)) for image in gray_images]
-
-
 
         logger.debug("Step 3: Noise Reductiion")
         denoised_images = [cv2.bilateralFilter(image, 9, 75, 75) for image in shadows_removes]
@@ -325,8 +358,6 @@ class OCRModel(BaseModel):
         return processed
     
 
-    
-
     def chunk_and_clean(self, text: str, add_overlap: bool = True) -> list[str]:
 
         """
@@ -340,7 +371,6 @@ class OCRModel(BaseModel):
         Returns:
             list: A list of cleaned chunks
         """
-
         logger.info("Chunking text for cleaning...")
         chunks = self.chunker.chunk_text_for_cleaning(text, add_overlap=add_overlap)
 
@@ -348,7 +378,12 @@ class OCRModel(BaseModel):
         cleaned_chunks = []
         context = ""
         for chunk in tqdm(chunks, desc="Cleaning Chunks", unit="chunk"):
+
+            chunk = re.sub(r"\[", "\[", chunk)
+            chunk = re.sub(r"\]", "\]", chunk)
+            
             message = self.getOCRNoiseCleaningPrompt(chunk, context)
+
             cleaned_chunk = self.model(message)[0]
 
             cleaned_chunks.append(cleaned_chunk)
@@ -356,8 +391,9 @@ class OCRModel(BaseModel):
             context = cleaned_chunk[-self.context_size:] if len(cleaned_chunk) > self.context_size else cleaned_chunk
             gc.collect()
 
-        merged_text = self.chunker.merge_chunks(cleaned_chunks)
+        merged_text = self.chunker.merge_sentences(cleaned_chunks)
         return merged_text
+
 
     def __call__(self, images: list[str], text_file: Optional[str] = None, save_file: str = None, debug: bool = False) -> str:
         """
@@ -378,6 +414,7 @@ class OCRModel(BaseModel):
 
         
         if text_file is None:
+
             logger.info(f"Processing input images before extraction...")
             images = self.process_images(images)
             logger.info(f"Extracting text from images...")
@@ -385,6 +422,8 @@ class OCRModel(BaseModel):
             logger.info(f"Chunking text for cleaning...")
             extracted_text = self.chunk_and_clean(extracted_text, add_overlap=True)
 
+            del self.extraction_model
+            gc.collect()
             # Overwrite the existing text file with the cleaned text
             save_to_file(self.TEMP_TEXT_FILE if save_file is None else save_file, extracted_text)
         else:

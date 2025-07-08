@@ -1,7 +1,6 @@
 # Python Modules
 import os
 from tqdm import tqdm
-import logging
 from typing import Optional, Union
 
 # Import Custom Modules
@@ -10,7 +9,10 @@ from lib.model.base_model import BaseModel
 from lib.utils.promptLoader import PromptLoader
 from lib.utils.save_utils import save_json, save_csv_from_json, verify_json
 from lib.data_processing.text_processing import TextProcessor
-logger = logging.getLogger(__name__)
+# Logging
+from lib.utils import get_logger
+logger = get_logger(__name__)
+
 
 class TranscriptionModel(BaseModel):
 
@@ -37,7 +39,9 @@ class TranscriptionModel(BaseModel):
         self.temperature = prompt["transcription_temperature"] if prompt["transcription_temperature"] is not None else 0.1
 
         self.text_processor = TextProcessor()
-        self.load_model()
+        self.model = self.load_model()
+
+    
 
     def inference(self, 
                   text_blocks: dict, 
@@ -51,14 +55,22 @@ class TranscriptionModel(BaseModel):
         error_text_file = os.path.join(self.save_path, save_file_name + "_errors.txt")
         organised_blocks = {}
 
-        logging.info("Organising text into JSON blocks")
+        logger.info("Organising text into JSON blocks")
         # Add tqdm for the outer loop over division
         save_counter = 0
-        for item in tqdm(text_blocks, desc="Processing text blocks", leave=True):
+
+        bar = tqdm(
+            text_blocks,
+            desc="Processing text blocks", 
+            leave=True
+            )
+        
+        for item in bar:
             division = item["division"]
             family = item["family"] if "family" in item.keys() else division
             family = family if family else ""
             content = item["content"]
+            bar.set_description(f"Processing division: {division} | family: {family}")
             # Add tqdm for the inner loop over families
             self._save_to_file(error_text_file, f"{division}\n", mode="a")
             # Load the system conversation with text blocks added to the prompt
@@ -74,8 +86,8 @@ class TranscriptionModel(BaseModel):
             
             # A second check to verify the JSON output if repair_json does not work
             if not(json_verified):
-                logging.info("Error Noticed in JSON")
-                logging.info("Fixing Error")
+                logger.info("Error Noticed in JSON")
+                logger.info("Fixing Error")
                 error_fix_prompt = self.prompt.getJsonPrompt(json_text[0])
                 # print(error_fix_prompt)
                 json_text = self.model(error_fix_prompt, None, debug)
@@ -127,7 +139,7 @@ class TranscriptionModel(BaseModel):
         save_file_name = self._get_save_file_name(save_file_name)
         json_file_name = save_file_name + ".json"
         
-        logging.info(f"""Saving data into following files at {self.save_path}: \n
+        logger.info(f"""Saving data into following files at {self.save_path}: \n
                      \t==> JSON file: {save_file_name}.json\n
                      \t==> CSV file: {save_file_name}.csv
                      \t==> Errors: {save_file_name}_errors.txt
@@ -138,7 +150,7 @@ class TranscriptionModel(BaseModel):
         
         
         # Converting the extracted text into text blocks defined by divisions and families
-        logging.info("Converting extracted text into Text Blocks")
+        logger.info("Converting extracted text into Text Blocks")
         text_structure = self.text_processor(extracted_text, divisions=self.prompt.get_divisions(), max_chunk_size=max_chunk_size)
         text_blocks = self.text_processor.make_text_blocks(text_structure)
 

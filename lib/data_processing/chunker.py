@@ -4,6 +4,9 @@ import re
 import string
 from fuzzywuzzy import fuzz
 
+from lib.utils import get_logger
+logger = get_logger(__name__)
+
 class TextChunker:
 
     def __init__(self, overlap: int = 100, max_chunk_size: int = 2000,
