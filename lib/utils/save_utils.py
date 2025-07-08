@@ -1,14 +1,15 @@
 import pandas as pd
 import os
 import json
-import logging
+
 from typing import Union
 
 from json_repair import repair_json
 from lib.json_schemas import get_catalogue
 
-logger = logging.getLogger(__name__)
-
+# Logging
+from lib.utils import get_logger
+logger = get_logger(__name__)
 #==================================
 # Saving JSON
 #==================================
@@ -72,33 +73,6 @@ def save_json(json_file: dict, file_name: str = "sample", save_path: str = "./ou
 # Saving CSV
 #==================================
 
-def check_for_lists_and_dicts(dataframe: pd.DataFrame) -> tuple[bool, list[str]]:
-    """
-    Check if there are any lists and dicts in the Dataframe
-
-    Args:
-        dataframe (pd.DataFrame): Pandas Dataframe
-
-    Returns:
-        tuple[bool, list[str]]: 
-            1) If there are any lists or not. Boolean answer
-            2) List of all columns with lists and dicts
-    """
-     
-    list_of_columns = []
-
-    for col in dataframe.columns:
-        try:
-            non_null_values = dataframe[col].dropna()
-
-            if non_null_values.apply(lambda x: isinstance(x, (list,dict))).any():
-                list_of_columns.append(col)
-        except:
-            logger.debug(f"{col} not found in datafrom")
-            logger.debug(dataframe.head(2))
-
-    return len(list_of_columns) > 0, list_of_columns
-
 
 def save_csv_from_json(json_file: Union[str, dict], 
                        file_name: str = "sample", 
@@ -124,65 +98,98 @@ def save_csv_from_json(json_file: Union[str, dict],
     else:
         raise ValueError(f"{json_file} is not a valid JSON file path or object")
 
-    # Collate the data into a pandas normalisable format
-    collapse_dict_lists = lambda x: x[0] if isinstance(x, list) else x
-    unnormalised = dict(
-            data = [
-                dict(division=div_name, items=div_value) for div_name, div_value in json_data.items()
-            ]
-        )      
-    
-    # Normalise with pandas
-    normalised_df = pd.json_normalize(unnormalised)
-    
-    max_iter = 10
-    # Define an infinite loop
-    while max_iter > 0:
+    converter = JSONTOCSVCONVERTER(output_path=save_path)
+    div_data = converter.add_division(json_data)
+    flattened_data = converter.flatten_all(div_data)
+    normalised_df = pd.json_normalize(flattened_data)
 
-        # Check for any dicts or lists in each column         
-        has_lists_and_dicts, list_of_columns = check_for_lists_and_dicts(normalised_df)
-
-        # If no lists or dicts as values then break the loop
-        if not(has_lists_and_dicts):
-            break
-
-        # Iterate through each column
-        for col in list_of_columns:
-            
-            sample_value = normalised_df[col].dropna().iloc[0]
-            # If it is a list then use pandas explode function to seperate them into multiple fields
-            if isinstance(sample_value, list):
-                normalised_df = normalised_df.explode(col, ignore_index=True)
-            #If not and it is a dict, then perform json_normalisation provided by pandas
-            elif isinstance(sample_value, dict):
-                # To ensure no lists are misplaced in this column
-                mask = normalised_df[col].apply(lambda x: isinstance(x, list))
-                normalised_df.loc[mask, col] = normalised_df.loc[mask, col].explode(ignore_index=True)
-                dict_df = pd.json_normalize(normalised_df[col])#.add_prefix(f"{col}-")
-                normalised_df = normalised_df.drop(columns=[col]).reset_index(drop=True)
-                normalised_df = pd.concat([normalised_df, dict_df], axis=1)
-        
-        max_iter -= 1
-    # Save as csv
-    save_csv(normalised_df, file_name, save_path)
-
-
-def save_csv(csv_file: pd.DataFrame, file_name: str = "sample", save_path: str = "./outputs") -> None:
-    """
-    Save csv file
-
-    Args:
-        csv_file (object): Pandas Dataframe to be save as csv file
-        file_name (str, optional): File name to save the CSV file under. Defaults to "sample".
-        save_path (str, optional): Save path for csv file. Defaults to "./outputs".
-    """
-    # Check if file name is valid
     if not(file_name.endswith(".csv")):
         file_name += ".csv"
-    
-    # Load file path (path in which the json is saved)
-    file_path = os.path.join(save_path, file_name)
 
-    # Save to CSV
-    logger.debug(f"Dumping extracted text into {file_path}")
-    csv_file.to_csv(file_path, encoding="utf-8", index=False)
+    normalised_df.to_csv(os.path.join(save_path, file_name), index=True)
+
+
+class JSONTOCSVCONVERTER:
+
+    def __init__(self, output_path: str = "./outputs"):
+        self.output_path = output_path
+
+    def flatten_dict(self, key, value, parent_record):
+        """
+        Flatten a single key/value pair from a dict.
+        Handles nested dicts, lists, and primitive values.
+        """
+        next_batch = []
+
+        for child_record in self.flatten(value, {}):
+            new_parent_record = parent_record.copy()
+            for child_key, child_value in child_record.items():
+                column_name = child_key if child_key else key #f"{key}.{child_key}"
+                new_parent_record[column_name] = child_value
+            next_batch.append(new_parent_record)
+
+        return next_batch
+    
+    def flatten_list(self, key, value, parent_record):
+
+        next_batch = []
+
+        if all(not isinstance(elem, (dict, list)) for elem in value):
+            # join primitives
+            new_parent_record = parent_record.copy()
+            new_parent_record[key] = ",".join(map(str, value))
+            next_batch.append(new_parent_record)
+        else:
+            # explode objects/lists
+            for elem in value:
+                for child_record in self.flatten(elem, {}):
+                    new_parent_record = parent_record.copy()
+                    for child_key, child_value in child_record.items():
+                        column_name = child_key if child_key else key #f"{key}.{child_key}"
+                        new_parent_record[column_name] = child_value
+                    next_batch.append(new_parent_record)
+        
+        return next_batch
+
+    def flatten(self, item, record=None):
+        if record is None:
+            record = {}
+
+        # If it's a dict, walk each key/value
+        if isinstance(item, dict):
+            records = [record]
+            for key, value in item.items():
+                next_batch = []
+                for record in records:
+                    if isinstance(value, dict):
+                        # flatten nested dict under 'key'
+                        next_batch.extend(self.flatten_dict(key, value, record))
+
+                    elif isinstance(value, list):
+                        # decide: list of primitives vs list of dicts
+                        next_batch.extend(self.flatten_list(key, value, record))
+                    else:
+                        # primitive value
+                        new_record = record.copy()
+                        new_record[key] = value
+                        next_batch.append(new_record)
+
+                records = next_batch
+            return records
+        
+    def add_division(self, data):
+        
+        new_data = []
+        for key, value in data.items():
+            new_data.append({"division": key, "data": value})
+        
+        return new_data
+
+    def flatten_all(self, data):
+
+        flattened_data = []
+
+        for item in data:
+            flattened_data.extend(self.flatten(item))
+
+        return flattened_data

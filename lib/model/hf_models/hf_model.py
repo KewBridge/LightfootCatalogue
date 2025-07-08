@@ -1,15 +1,17 @@
 # Python Modules
-import logging
 from PIL import Image
 import torch
 from transformers import AutoModel, AutoProcessor
 from torch.amp import autocast
 import gc
-logger = logging.getLogger(__name__)
+# Logging
+from lib.utils import get_logger
+logger = get_logger(__name__)
 
 class HF_Model:
 
     DEFAULT_MODEL_NAME = "Qwen/Qwen2-VL-7B-Instruct"
+    MODEL_TYPE = "multi" # multi if multi-model, single if single model => Used to define the type of prompt to be used
 
     def __init__(self,
                  model_name: str = DEFAULT_MODEL_NAME, # Model name
@@ -70,6 +72,13 @@ class HF_Model:
         print(f"Loading processor for [{self.model_name}] to device [{self.device}]")
         self.processor = self._load_processor()
 
+        try:
+            if self.processor.pad_token is None:
+                logger.warning("Pad token is None. Setting pad token to eos token.")
+                self.processor.pad_token = self.processor.eos_token
+        except Exception as e:
+            logger.error(f"Error setting pad token: {e}")
+
     
     def unload(self):
 
@@ -93,7 +102,7 @@ class HF_Model:
             model (object): Returns the loaded pretrained model.
         """
         model = AutoModel.from_pretrained(
-            self.model_name,temperature=self.temperature, torch_dtype="auto", device_map="auto"
+            self.model_name, torch_dtype="auto", device_map="auto"
         )
 
         model.gradient_checkpointing_enable()
@@ -126,8 +135,7 @@ class HF_Model:
 
 
     def process_chat_inputs(self, conversation: list, 
-                            images: list[str]=None, 
-                            add_padding=True) -> object:
+                            images: list[str]=None) -> object:
         """
 
         Processes the input conversation and images to prepare them for the model.
@@ -135,7 +143,6 @@ class HF_Model:
         Args:
             conversation (list): input prompt to the model
             images (list[str], optional): input images to model. Defaults to None.
-            add_padding (bool, optional): Whether to add padding to the input text. Defaults to True.
 
         Returns:
             object: A Batch Feature/Ecnoding object containing the processed inputs.
@@ -144,34 +151,35 @@ class HF_Model:
         text_prompt = self.processor.apply_chat_template(conversation, tokenize=False, add_generation_prompt=True)
         text_prompts = [text_prompt] if isinstance(text_prompt[0], dict) else text_prompt
 
-        images_opened = None if not(images) else [Image.open(image) for image in images]
         
-        if images_opened is not None:
+        if images is None or images == []:
+            # If no images are provided, only process text prompts
             inputs = self.processor(
                 text=text_prompts,
-                images=images_opened,
                 return_tensors="pt",
-                padding=add_padding,
+                padding=True,
             )
         else:
+            images_opened = [Image.open(image) if isinstance(image, str) else image for image in images]
             inputs = self.processor(
-                text=text_prompts,
-                return_tensors="pt"
-            )
+                    text=text_prompts,
+                    images=images_opened,
+                    return_tensors="pt",
+                    padding=True,
+                )
 
         inputs = inputs.to(self.device)
-
-        return inputs
+        max_tokens = inputs.input_ids.shape[1]
+        return inputs, max_tokens
 
     def inference_chat_model(self, inputs: object, 
                              max_new_tokens: int = None, 
-                             skip_special_tokens: bool = True, debug: bool = False) -> list:
+                             debug: bool = False) -> list:
         """_summary_
 
         Args:
             inputs (object): _description_
             max_new_tokens (int, optional): _description_. Defaults to None.
-            skip_special_tokens (bool, optional): _description_. Defaults to True.
 
         Returns:
             list: _description_
@@ -182,9 +190,9 @@ class HF_Model:
         if debug:
             logger.debug("\tPerforming inference...")
         
-        
+        do_sample_set = self.temperature > 0.0 # If temperature is greater than 0, use sampling
         with autocast("cuda", enabled=self.device.type == "cuda"): # Enabling mixed precision to reduce computational load where possible
-            output_ids = self.model.generate(**inputs, max_new_tokens=max_new_tokens)
+            output_ids = self.model.generate(**inputs, max_new_tokens=max_new_tokens, temperature=self.temperature, do_sample=do_sample_set,)
 
         # Increasing the number of new tokens, increases the number of words recognised by the model with trade-off of speed
         # 1024 new tokens was capable of reading upto 70% of the input image (pg132_a.jpeg)
@@ -202,7 +210,7 @@ class HF_Model:
         if debug:
             logger.debug("\tDecoding Ids...")
         output_text = self.processor.batch_decode(
-            generated_ids, skip_special_tokens=skip_special_tokens, clean_up_tokenization_spaces=True
+            generated_ids, skip_special_tokens=True, clean_up_tokenization_spaces=True
         )
 
 
@@ -214,9 +222,41 @@ class HF_Model:
         if self.model is None or self.processor is None:
             self.load()
 
-    def __call__(self, **kargs) -> list:
 
-        if self.model is None or self.processor is None:
-            self.load()
+    def __call__(self, conversation: list, images:list[str]=None, 
+                 debug: bool=False, max_new_tokens=None) -> list:
+        """
+        Performs inference on the given set of images and/or text.
+
+        When images are provided, the text is extracted.
+        When text is provided, images is set to None and inference is determined by conversation
+    
+        Parameters:
+            conversation (list): The input prompt to the model
+            images (list): A set of images to batch inference.
+            debug (bool): Used to print debug prompts
+            max_new_tokens (int): The maximum number of new tokens to generate. If None, the maximum tokens are used
+
+        Return:
+            output_text (list): A set of model outputs for given set of images.
+        """
+
+        self._check()
+
+                # Set the device to the model's device
+        self.eval()
+
+        # Process the input conversation
+        if debug:
+            logger.debug("\tProcessing inputs...")
+
+        inputs , max_tokens = self.process_chat_inputs(conversation, images) 
         
-        raise NotImplementedError("This method should be implemented in subclasses.")
+        if max_new_tokens is None:
+            max_new_tokens = max_tokens   
+
+        output_text = self.inference_chat_model(inputs, max_new_tokens)
+        
+
+
+        return output_text

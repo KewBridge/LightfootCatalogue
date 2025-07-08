@@ -10,13 +10,17 @@ from tesserocr import PyTessBaseAPI, PSM, RIL
 # Custom modules – adjust these imports as needed in your project
 import lib.config as config
 
+# Logging
+from lib.utils import get_logger
+logger = get_logger(__name__)
 
 class ImageProcessor:
     def __init__(self,
                  pad: float = 50.0,
                  resize_factor: float = 0.4,
                  remove_area_perc: float = 0.01,
-                 middle_margin_perc: float = 0.20):
+                 middle_margin_perc: float = 0.20,
+                 double_pages: bool = False):
         """
         Initialize the ImageProcessor with parameters for cropping and splitting.
         
@@ -25,11 +29,13 @@ class ImageProcessor:
             resize_factor (float): Factor by which to resize the cropped image.
             remove_area_perc (float): Minimum percentage of the image area required for a detected box.
             middle_margin_perc (float): Margin (as a percentage of the image width) used for filtering lines near the middle.
+            double_pages (bool): Whether to handle double pages (default is False).
         """
         self.pad = pad
         self.resize_factor = resize_factor
         self.remove_area_perc = remove_area_perc
         self.middle_margin_perc = middle_margin_perc
+        self.double_pages = double_pages
 
     def pil_to_cv2(self, image: Image.Image) -> np.ndarray:
         """
@@ -157,7 +163,7 @@ class ImageProcessor:
         cv2_image = self.pil_to_cv2(resized)
         # Use the split_image method (defined below) to split the image.
         file_display_name = ".".join(path.split(os.sep)[-1].split("."))
-        split_imgs = self.split_image(cv2_image, name=file_display_name)
+        split_imgs = self.split_image(cv2_image, name=file_display_name) if self.double_pages else [cv2_image]
 
         counter = 0
         saved_paths = []
@@ -268,7 +274,7 @@ class ImageProcessor:
         lines = self.get_lines(image)
         line_length = len(lines) if lines is not None else 0
         # Find height and width of the image
-        height, width = image.shape[:2]
+        _, width = image.shape[:2]
         # Get the middle line X value
         middle_line = width // 2
         middle_lines = self.filter_lines(lines, middle_line)

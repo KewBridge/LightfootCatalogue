@@ -1,17 +1,17 @@
 # Python Modules
-import logging
 import os
 import time
 from typing import Optional, Union
 from pdf2image import convert_from_path
 from natsort import natsorted
-
+from tqdm import tqdm
 # Custom Modules
 from lib.utils.promptLoader import PromptLoader
 import lib.config as config
 from lib.data_processing.image_processor import ImageProcessor
 # Logging
-logger = logging.getLogger(__name__)
+from lib.utils import get_logger
+logger = get_logger(__name__)
 
 class DataReader:
 
@@ -22,12 +22,7 @@ class DataReader:
     def __init__(self,
                  data_path: str,
                  extraction_model: object,
-                 prompt: Union[PromptLoader, Optional[str]] = None,
-                 crop: bool=False,
-                 pad: float=100.0,
-                 resize_factor: float=0.4,
-                 remove_area_perc: float=0.01,
-                 middle_margin_perc: float=0.20,
+                 prompt: PromptLoader
                  ):
         """
           Data reader class used to read and extract text from any source of input (image or pdfs)
@@ -50,10 +45,7 @@ class DataReader:
         self.crop = prompt["crop"] if prompt["crop"] is not None else False
         
 
-        self.image_processor = ImageProcessor(self.prompt["padding"],prompt["resize_factor"], prompt["remove_area_perc"], prompt["middle_margin_perc"])
-        
-        # Loading all files under directory
-        self.data_files = self.load_files()        
+        self.image_processor = ImageProcessor(self.prompt["padding"],prompt["resize_factor"], prompt["remove_area_perc"], prompt["middle_margin_perc"], prompt["double_pages"])       
 
     def load_files(self, path: Optional[str]=None) -> list[str]:
         """
@@ -71,14 +63,25 @@ class DataReader:
 
         path = self.data_path if path is None else path
         
+        extraction_path = os.path.join(path, "extracted_images")
+        needs_conversion = (
+            not(os.path.isdir(extraction_path)) or len(os.listdir(extraction_path)) == 0
+                
+        )
+        
         # Return just file if path is to an image or pdf (confirms by checking approved extensions)
-        if os.path.isfile(path) and (path.split(".")[-1] in self.ALLOWED_EXT):
+        if os.path.isfile(path) and (path.split(".")[-1].lower() in self.ALLOWED_EXT):
+            if path.split(".")[-1].lower() == "pdf" and needs_conversion:
+                logger.info("Detected PDF! Converting to images ...")
+                image_paths = self.pdf_to_images(os.path.dirname(path), path)
+                return image_paths
             return [self.data_path]
         
         all_files = []
 
         # Traverse through the directory
         for file in os.listdir(path):
+            #print(f"Processing file: {file}")
             if file in config.IGNORE_FILE:
                 continue
             # Get the file path
@@ -88,8 +91,7 @@ class DataReader:
             if not(os.path.isdir(file_path)):
                 extension = file.split(".")[-1]
                 if (extension in self.ALLOWED_EXT):
-                    
-                    if extension == "pdf" and not(os.path.isdir(os.path.join(path, "extracted_images"))):
+                    if extension == "pdf" and needs_conversion:
                         logger.info("Detected PDF! Converting to images ...")
                         image_paths = self.pdf_to_images(path, file_path)
 
@@ -117,9 +119,9 @@ class DataReader:
 
         pdf_name = pdf_path.split(os.sep)[-1].split(".")[0]
 
-        images = convert_from_path(pdf_path)
+        images = convert_from_path(pdf_path, dpi=600, fmt="png")
         image_paths = []
-        for i, page in enumerate(images):
+        for i, page in tqdm(enumerate(images), desc="Converting PDF to Images", unit="page"):
             image_filename = os.path.join(output_dir, f"{pdf_name}_{i+1}.png")
             page.save(image_filename, "PNG")
             image_paths.append(image_filename)
@@ -136,22 +138,36 @@ class DataReader:
             list[str]: sorted list of post-processed image filenames
         """
 
+        has_files = lambda path: os.path.exists(path) and bool(os.listdir(path))
+
         logger.info("Gathering input data")
-        cropped_dir = os.path.join(self.data_path, self.CROPPED_DIR_NAME)
         pdf_extracted_path = os.path.join(self.data_path, "extracted_images")
-        pdf_cropped_dir = os.path.join(self.data_path, "extracted_images", self.CROPPED_DIR_NAME)
-        if self.crop and not(os.path.isdir(cropped_dir) or os.path.isdir(pdf_cropped_dir)):
-            images = sorted(self.load_files())
+
+        if self.crop:
+            logger.info("Cropping is enabled. Cropped images will be saved in a separate directory")
+
+            logger.info("Checking if cropped images already exist")
+            cropped_dir = os.path.join(self.data_path, self.CROPPED_DIR_NAME)
+            pdf_cropped_dir = os.path.join(self.data_path, "extracted_images", self.CROPPED_DIR_NAME)
+            
+            for d in (cropped_dir, pdf_cropped_dir):
+                if has_files(d):
+                    logger.info(f"Cropped images already exist in {d}. Using them instead of cropping again")
+                    return natsorted(self.load_files(d))
+            
+            logger.info("No cropped images found. Cropping the images now")
+
+
+            images = self.load_files(pdf_extracted_path) if has_files(pdf_extracted_path) else self.load_files() 
+
             logger.info("Cropping Images...")
             images = self.image_processor(images)
-        elif os.path.isdir(cropped_dir):
-            images = self.load_files(cropped_dir)
-        elif os.path.isdir(pdf_extracted_path):
-            images = self.load_files(pdf_extracted_path)
-        elif os.path.isdir(pdf_cropped_dir):
-            images = self.load_files(pdf_cropped_dir)
         else:
-            images = self.load_files()
+            logger.info("Cropping is disabled. Using the original images")
+            images = self.load_files(pdf_extracted_path) if has_files(pdf_extracted_path) else self.load_files() 
+
+        if not images:
+            raise FileNotFoundError(f"No images or PDFs found under {self.data_path}")
 
         # return the images sorted wrt to filename
         return natsorted(images)

@@ -1,7 +1,7 @@
 # Python Modules
 import os
 from tqdm import tqdm
-import logging
+
 from typing import Optional, Union
 
 # Import Custom Modules
@@ -9,7 +9,9 @@ from lib.model import get_model
 from lib.utils.promptLoader import PromptLoader
 from lib.utils.save_utils import save_json, save_csv_from_json, verify_json
 from lib.data_processing.text_processing import TextProcessor
-logger = logging.getLogger(__name__)
+# Logging
+from lib.utils import get_logger
+logger = get_logger(__name__)
 
 class BaseModel:
 
@@ -53,9 +55,10 @@ class BaseModel:
         # Load the model, prompt, and the conversation
         self.model = None
     
-    def load_model(self):
-
-        self.model = get_model(self.model_name)(None, self.batch_size, self.max_new_tokens, self.temperature)
+    def load_model(self, model_name: Optional[str] = None) -> object:
+        
+        model_name = model_name if model_name is not None else self.model_name
+        return get_model(model_name)(None, self.batch_size, self.max_new_tokens, self.temperature)
 
     def info(self) -> str:
         """
