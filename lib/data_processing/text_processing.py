@@ -8,6 +8,9 @@ logger = get_logger(__name__)
 
 
 # TODO: Improve regex / code for identifying family names
+
+# TODO: Strictly split by family only
+# THEN Under each family split by tribe
 FAMILY_REGEX_PATTERN = """
                           [\*"\.]*                # Optional leading asterisks or quotes
                           (?:
@@ -49,10 +52,18 @@ class TextProcessor:
     def __init__(self):
         
         # Family Regex
-        self.family_regex = re.compile(rf"""(?P<PAGENOSTART>^\d+)?\s*
-                                       (?P<INDEX>[IVXLCDM\.]+\s)?(\s+|-)?
-                                       (?P<FAMILY>{FAMILY_REGEX_PATTERN})\s*
-                                       (?P<PAGENOEND>\d+$)?""", flags=re.VERBOSE)
+        # self.family_regex = re.compile(rf"""(?P<PAGENOSTART>^\d+)?\s*
+        #                                (?P<INDEX>[IVXLCDM\.]+\s)?(\s+|-)?
+        #                                (?P<FAMILY>{FAMILY_REGEX_PATTERN})\s*
+        #                                (?P<PAGENOEND>\d+$)?""", flags=re.VERBOSE)
+        legacy = [
+            "COMPOSITAE", "GRAMINEAE", "LEGUMINOSAE", "PALMAE",
+            "UMBELLIFERAE", "CRUCIFERAE", "LABIATAE", "GUTTIFERAE",
+            "PAPILIONACEAE", "MIMOSACEAE", "CAESALPINIACEAE"
+        ]
+        legacy_alts = "|".join([re.escape(alt) for alt in legacy])
+
+        self.family_regex = rf"\b([A-Z]+ACEAE|{legacy_alts})\b"
         # Species Regex
         self.species_regex_pattern = """(?:\d+\.\s)?
                                         [A-Z][a-z\-]+
@@ -68,7 +79,7 @@ class TextProcessor:
         self.species_chunker = SpeciesChunker()
 
 
-    
+#TODO: update for family, tribe, series and species
     def __call__(self, text: str, divisions: list, max_chunk_size: int = 3000):
         
         # Pre-process input text to clean it
@@ -95,7 +106,7 @@ class TextProcessor:
             struct[current_div] = family_split
         
         return struct
-    
+# TODO:  update for family, tribe, series and species
     def split_by_families(self, text: str):
 
         finds = re.finditer(self.family_regex, text)
@@ -111,7 +122,10 @@ class TextProcessor:
             text_chunk = text[start:end] if end else text[start:]
             text_chunks.append(dict(family=match, text=text_chunk))
         
-        return text_chunks
+        if text_chunks:
+              return text_chunks
+        else:
+              return [{"family": "No family found", "text": text.strip()}]
 
 
     def preprocess_text(self, text: str, first_division: str) -> str:
@@ -126,16 +140,14 @@ class TextProcessor:
             str: Cleaned text
         """
         text = re.sub(rf"^.*?({re.escape(first_division)})", r"\1", text, flags=re.S | re.I)
-         
-        text = re.sub(r"\*\*(.+?)\*\*", r"\1", text, flags=re.MULTILINE) # Remove any markdown (bold) on string
-        text = re.sub(r"\*", "", text, flags=re.MULTILINE)
-        text = re.sub(r"```", "", text, flags=re.MULTILINE) # Remove any markdown
+        
         text = re.sub(r"^(Catalogue|catalogue)$", "", text, flags=re.MULTILINE) # Remove Catalogue/catalogue
-        text = re.sub(f"^\d+\.?$", "", text, flags=re.MULTILINE)
+        #text = re.sub(f"^\d+\.?$", "", text, flags=re.MULTILINE)
         # Clean family ending
         text = re.sub(r"Æ", "AE", text, flags=re.MULTILINE)
         text = re.sub(r"œ", "ae", text, flags=re.MULTILINE)
 
+        text = re.sub(r"NE(\.|A)?E\.?", "NEAE", text, flags= re.MULTILINE) # This changes for all family level ones")
         text = re.sub(r"ACE(\.|A)?E\.?", "ACEAE", text, flags= re.MULTILINE) # This changes for all family level ones
         text = re.sub(r"ace(\.|a)?e\.?", "aceae", text, flags= re.MULTILINE) # This changes for all others
         text = re.sub(r"FLOR(\.|A)?E", "FLORAE", text, flags= re.MULTILINE) # This changes for all family level ones

@@ -7,11 +7,13 @@ from lib.utils import get_logger
 logger = get_logger(__name__)
 
 class PromptLoader:
+
+    SETTINGS = "./resources/settings.yaml"
+    DEFAULT = "./resources/prompts/default.yaml"
     
     def __init__(
             self, 
-            filename: str = None, 
-            default: str = "./resources/prompts/default.yaml"
+            filename: str = None
             ):
         """
         Prompt Loader class acts as an intermediary between the user prompt and the model.
@@ -22,9 +24,22 @@ class PromptLoader:
             filename (str): the file name of the prompt
         """
         self.filename = filename
-        self.default = default
         
         self.yaml_prompt = self.load()
+
+    def get(self, key: str, default: Optional[Union[int, str, list]] = None) -> Union[int, str, list]:
+        """
+        Get value at key or return default if not found
+
+        Args:
+            key (str): Key in prompt
+            default (Optional[Union[int, str, list]], optional): Default value to return if key not found. Defaults to None.
+
+        Returns:
+            Union[int, str, list]: Value at key or default
+        """
+        return self.yaml_prompt.get(key, default)
+
 
     def __getitem__(self, key: str) -> Union[int, str, list]:
         """
@@ -63,21 +78,15 @@ class PromptLoader:
         Returns:
             custom_file (dict): loaded prompt
         """
-            
-
-        default_file = self.load_yaml(self.default)
         
-        if self.filename == self.default or self.filename is None:
-            return default_file
+        if self.filename == self.DEFAULT or self.filename is None:
+            loaded_file = self.load_yaml(self.DEFAULT)
+        else:
+            loaded_file = self.load_yaml(self.filename)
 
-        custom_file = self.load_yaml(self.filename)
+        self.update_missing(loaded_file, self.load_yaml(self.SETTINGS))
 
-        if custom_file["inherit_default"]:
-            if "default_file" in custom_file.keys() and custom_file["defualt_file"] is not None:
-                default_file = self.load_yaml(custom_file["default_file"])
-            self.update_missing(custom_file, default_file)
-
-        return custom_file
+        return loaded_file
 
 
     def load_yaml(self, filename: str) -> dict:
@@ -90,7 +99,7 @@ class PromptLoader:
         Returns:
             yaml file (dict): returns the read yaml dict
         """
-
+        logger.info(f"Loading prompt from {filename}")
         if filename is None:
             return None
         
@@ -232,12 +241,12 @@ class PromptLoader:
 
         system_prompt = (
             "You are an expert in extracting text from images."
+            "Do not perform any grammatical corrections. Ignore Page numbers and any other text that is not part of the main body text.\n"
+            "Do not generate any additional text or explanations."
         ) if not system_prompt else system_prompt
 
         image_prompt = (
-            "Extract only the main body text from the image, preserving the original structure and formatting. \n"
-            "Do not perform any grammatical corrections. Ignore Page numbers and any other text that is not part of the main body text.\n"
-            "Do not generate any additional text or explanations."
+            "Extract only the main body text from the image, preserving the original structure and formatting." 
         ) if not image_prompt else image_prompt
 
         return [dict(role="system", content=[dict(type="text", text=system_prompt)]),

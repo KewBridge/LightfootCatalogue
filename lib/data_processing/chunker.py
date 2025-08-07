@@ -32,7 +32,7 @@ class TextChunker:
 
         chunk_size = 0
 
-        paragraphs = re.split("\n\s*\n", text)
+        paragraphs = re.split("\n\s*", text)
         for paragraph in paragraphs:
             para_length = len(paragraph)
 
@@ -41,38 +41,38 @@ class TextChunker:
                 chunk_size += para_length
             else:
                 if current_chunk:
-                    chunks.append("\n\n".join(current_chunk))
+                    chunks.append("\n".join(current_chunk))
                 current_chunk = []
                 chunk_size = 0
 
-                lines = paragraph.split("\n")
-                num_of_lines_not_taken = len(lines)
+                # lines = paragraph.split("\n")
+                # num_of_lines_not_taken = len(lines)
 
-                while num_of_lines_not_taken > 0:
+                # while num_of_lines_not_taken > 0:
 
-                    num_lines_to_take = min(int(float(self.max_chunk_size / para_length) * len(lines)), num_of_lines_not_taken)
+                #     num_lines_to_take = min(int(float(self.max_chunk_size / para_length) * len(lines)), num_of_lines_not_taken)
 
-                    lines_to_add = lines[:num_lines_to_take]
-                    joined_lines = "\n".join(lines_to_add)
+                #     lines_to_add = lines[:num_lines_to_take]
+                #     joined_lines = "\n".join(lines_to_add)
 
-                    while len(joined_lines) > self.max_chunk_size and num_lines_to_take > 1:
-                        num_lines_to_take -= 1
-                        lines_to_add = lines[:num_lines_to_take]
-                        joined_lines = "\n".join(lines_to_add)
+                #     while len(joined_lines) > self.max_chunk_size and num_lines_to_take > 1:
+                #         num_lines_to_take -= 1
+                #         lines_to_add = lines[:num_lines_to_take]
+                #         joined_lines = "\n".join(lines_to_add)
 
 
-                    if len(joined_lines) <= self.max_chunk_size:
-                        current_chunk.append(joined_lines)
-                        chunk_size += len(joined_lines)
+                #     if len(joined_lines) <= self.max_chunk_size:
+                #         current_chunk.append(joined_lines)
+                #         chunk_size += len(joined_lines)
                     
-                    if current_chunk:
-                        chunks.append("\n\n".join(current_chunk))
-                    current_chunk = []
-                    chunk_size = 0
-                    num_of_lines_not_taken -= num_lines_to_take        
+                #     if current_chunk:
+                #         chunks.append("\n\n".join(current_chunk))
+                #     current_chunk = []
+                #     chunk_size = 0
+                #     num_of_lines_not_taken -= num_lines_to_take        
 
         if current_chunk:
-            chunks.append("\n\n".join(current_chunk) if len(current_chunk) > 1 else current_chunk[0])
+            chunks.append("\n".join(current_chunk) if len(current_chunk) > 1 else current_chunk[0])
 
         if not add_overlap:
             return chunks
@@ -234,7 +234,7 @@ class SpeciesChunker:
         
         return chunks
     
-    def group_into_major_chunks(self, chunks: list[str], max_chunk_size: int = 2000) -> list[str]:
+    def group_into_major_chunks(self, chunks: list[str], max_chunk_size: int = 1000) -> list[str]:
 
         major_chunks = []
         current_chunk = ""

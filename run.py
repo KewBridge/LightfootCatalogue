@@ -57,17 +57,17 @@ def main():
     if not(os.path.exists(prompt["output_save_path"])):
         os.makedirs(args.save_path)
 
-    # Load model
-    logger.info(">>> Loading Model...")
 
     ocr_model = OCRModel(prompt=prompt)
 
     # Load the model
-    print(f"Loading model: {ocr_model.model_name}")
+    logger.info(f"Loading model: {ocr_model.model_name}")
     ocr_model.model.load()
     # Intialise DataReader
+    logger.info(">>> Initializing DataReader...")
     data_reader = DataReader(args.images, extraction_model=ocr_model, prompt=prompt)
     # Load the extracted text
+    logger.info(">>> Extracting text from images...")
     extracted_text = data_reader(args.temp_text)
 
     if args.test:
@@ -84,13 +84,13 @@ def main():
 
 
     transcription_model = TranscriptionModel(prompt=prompt)
-    print(f"Loading model: {transcription_model.model_name}")
-    transcription_model.model.load()
+    #logger.info(f"Loading model: {transcription_model.model_name}")
+    #transcription_model.model.load()
     # Perform inference and save the jsons
     _ = transcription_model(extracted_text, save=True, save_file_name=prompt["output_save_file_name"])
 
-    print(f"Unloading model: {transcription_model.model_name}")
-    transcription_model.model.unload()
+    #logger.info(f"Unloading model: {transcription_model.model_name}")
+    #transcription_model.model.unload()
     logger.info(">>> Inference Finished")
     
 

@@ -1,8 +1,8 @@
 from typing import Optional
 from pydantic import BaseModel, Field, root_validator
 
-class Folder(BaseModel):
-    description: str = Field(..., description="A description of the folder contents. For description fields that contain citations or quotes, ensure proper escaping of all contained quotation marks.") 
+class FolderAndSheets(BaseModel):
+    description: str = Field(..., description="A description of the folder or sheet contents. For description fields that contain citations or quotes, ENSURE proper escaping of all contained quotation marks.") 
 
     class Config:
         extra="allow"
@@ -24,10 +24,12 @@ class Folder(BaseModel):
         return values
 
 class Species(BaseModel):
-    speciesName: str = Field(..., description="The full scientific name as written in the text. Keep the index number infront of the family name.N/A if not available.")
-    folders: list[Folder] = Field(default_factory=list, description="A list of each folder under species.")
+    species_name: str = Field(..., description="The full SCIENTIFIC SPECIES NAME as written in the text. Keep the index number infront of the family name. If not available, use N/A.")
+    number_of_folders: int = Field(..., description="The number of folders under this species. If not available, use 0.")
+    number_of_sheets: int = Field(..., description="The number of sheets under this species. If not available, use 0.")
+    folders_and_sheets: list[FolderAndSheets] = Field(default_factory=list, description="A list of each folder and sheet under species.")
 
 class BotanicalCatalogue(BaseModel):
-    familyName: str = Field(..., description="The scientific family name in uppercase. If not available, use \"N/A\". Might include Tribe or Series with roman indexes.")
+    family_name: str = Field(..., description="The SCIENTIFIC FAMILY NAME in uppercase. If not available, use \"N/A\".")
     species: list[Species] = Field(default_factory=list, description="List of all species and their contents")
     

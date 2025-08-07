@@ -1,4 +1,7 @@
 import importlib
+from lib.utils import get_logger
+
+logger = get_logger(__name__)
 
 MODELS = {
     "qwen2": ("lib.model.hf_models.qwen_model", "QWEN2_VL_Model"),
@@ -16,9 +19,9 @@ def get_model(model_name: str):
 
     try:
         module = importlib.import_module(models[model_name][0])
-        print("Importing model:", model_name)
+        logger.info(f"Importing model: {model_name}")
         model = getattr(module, models[model_name][1])
-        print("Model imported successfully:", model_name)
+        logger.info(f"Model imported successfully: {model_name}")
         return model
     except:
         raise ImportError(f"{model_name} cannot be imported. Provide the correct name of the model. \n==> {models.keys()}")

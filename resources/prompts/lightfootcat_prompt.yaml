@@ -1,50 +1,35 @@
 #Define variable configuration
 # Model config
-model: "qwen2.5"
-output_save_file_name: "lightfootcat"
-max_tokens: 4096
-max_chunk_size: 3000
-output_save_path: "outputs/lightfootcat_with_extract/"    # Where to save the output
-batch_size: 
-ocr_model: "mistral7b"
+#model: "qwen2.5"
 ocr_extraction_model: null
-ocr_temperature: 0.1
-transcription_temperature: 0.1
-timeout: 4 # Number of tries
-# Data reader config
-crop: True
-padding: 100.0
-resize_factor: 0.4
-remove_area_perc: 0.01
-middle_margin_perc: 0.20
+output_save_file_name: "lightfootcat"
+output_save_path: "outputs/lightfootcat_with_extract/"    # Where to save the output
 has_columns: True
-grayscale_only: False
 double_pages: True
 # define to inherit any missing prompts from the default prompt
 inherit_default: False
 # Path to default file if inheriting from another custom prompt
-default_file: None
+default_file: null
 # Any divisions in the catalogue
 divisions: ["Dicotyledones", "Monocotyledones", "Pteridophyta", "Hepaticae", "Algae"]
 # System defines the system prompt to the model
 system:
   # Setup defines the model setup prompt. This lets the model know what area of knowledge to focus on for this task
   setup: >
-    You are a system that converts botanical text into strictly valid JSON.
+    You are an expert in botanical cataloguing and classification. Your task is to accurately extract and format botanical information from the provided text into a structured JSON format. You will follow strict output rules to ensure the data is presented correctly.
   # context defines the context of the task. This includes the input to the model and the description of said input
   # instructions define the step-by-step instructions for the model to follow through
   instructions: |
-    Reformat the following botanical text **exactly** into JSON according to the provided schema.
+    Reformat the following botanical text EXACTLY into JSON according to the provided SCHEMA.
 
-    **Strict Output Rules:**
-    - The output must be a single **valid JSON object** with no surrounding text, explanations, markdown, or formatting.
-    - **Do not generate any extra text** beyond the required JSON structure.
-    - **All keys must be quoted properly**.
-    - **No trailing commas** should be present.
-    - Extract data **as-is** from the input text; do not modify, paraphrase, or infer missing details.
-    - Make sure all quotation marks, backslashes, and special characters inside description fields are properly escaped according to JSON standards. Double quotes inside content must be escaped as \".
+    - The output must be a single VALID JSON OBJECT with no surrounding text, explanations, markdown, or formatting.
+    - DO NOT GENERATE ANYTHING beyond the required JSON structure.
+    - **ALL KEYS MUST BE QUOTED PROPERLY**.
+    - NO TRAILING COMMAS should be present.
+    - Extract ONLY the text in the providede text; do not modify, paraphrase, infer or assume missing details.
+    - Escape all special characters properly: `[` → `\[`, `]` → `\]`, `.` → `\.` if part of abbreviation or formatting.
     - When extracting text like dates, locations, or scientific references, maintain the exact format from the source without attempting to standardize or reformat.
-    Output must match the schema structure and follow rules
+    Output must strictly match this schema:
   # rules define the key-value rules for each expected key in the output json dict
   # rules:
   #   familyName: >
@@ -58,58 +43,117 @@ system:
   # schema defines the output json structure
   schema: default
 
-  examples: 
-    - input_species_and_records: |
+  Examples: 
+    - input: |
         ACERACEAE
-
         Acer campestre L.
-
         1 folder. Acer campestre [TA]
-
         Acer pseudoplatanus L.
-        
-        2 folders.
-        
-        Folder
+        2 folders. 07
+        Folder 1. Acer Pseudo-Platanus
+        [(G]. i. "Maple. Bulls: [Bulstrode]
+        Park” [JL]
+        Folder 2. Acer Pseudo-Platanus
+        [TA].
 
     - output_species_and_records: |
-        {"familyName": "ACERACEAE", 
-        "species": [{"speciesName": "Acer campestre L\.",
-              "folders": [{"description": "Acer campestre \[TA\]"}]},
-            {"speciesName": "Acer pseudoplatanus L\."
-              folders :[{"description": "Folder"}]}]}
+        {
+        "family_name": "ACERACEAE",
+        "species": [
+            {
+                "species_name": "Acer campestre L\.",
+                "number_of_folders": 1,
+                "number_of_sheets": 0,
+                "folders_and_sheets": [
+                    {
+                        "description": "1 folder\. Acer campestre \[TA\]"
+                    }
+                ]
+            },
+            {
+                "species_name": "Acer pseudoplatanus L\.",
+                "number_of_folders": 2,
+                "number_of_sheets": 0,
+                "folders_and_sheets": [
+                    {
+                        "description": "Folder 1\. Acer pseudoplatanus \[\(G\]\. i\. \"Maple\. Bulls\: \[Bulstrode\] Park\" \[JL\]"
+                    },
+                    {
+                        "description": "Folder 2\. Acer pseudoplatanus \[TA\]"
+                    }
+                ]
+            }
+        ]
+    - input: |
+        CAMPANULACEAE
+        Campanula latifolia L.
+        2 folders.
+        Folder 1. Companula latifolia [TA].
+        Folder 2. Companula latifolia [G].
+        Campanula patula L.
+        1 folder. Campanula patula [TA].
+        Campanula rapunculus L.
+        2 folders.
 
-    - input_species_only: |
-        ACERACEAE
+        Folder 1, Campanula rapunculus
+        [TA].
 
-        1. Acer Pseudo-Platanus [G]. i. "Maple. Bulls: [Bulstrode] Park" [JL]
-        
-        Folder 
+        ightfoot
 
-    - output_species_only: |
+        Folder 2. Campanula rapunculus
+        [G].
 
-        {"familyName": "ACERACEAE", 
-        "species": [{"speciesName": "N\A",
-              "folders": [{"description": "1\. Acer Pseudo\-Platanus \[G\]\. i\. \"Maple\. Bulls\: \[Bulstrode\] Park\" \[JL\]"}, {"description": "Folder"}]},]}
-
-    - input_records_only: |
-        EMNACEAE
-
-        Lemna trisulca L.
-
-    - output_records_only: |   
-
-        {"familyName": "EMNACEAE", 
-        "species": [{"speciesName": "Lemna trisulca L\.", "folders": [{"description": "N\A"}]},]} 
+    - output: |
+        {
+            "family_name": "CAMPANULACEAE",
+            "species": [
+                {
+                    "species_name": "Campanula latifolia L\.",
+                    "number_of_folders": 2,
+                    "number_of_sheets": 0,
+                    "folders_and_sheets": [
+                        {
+                            "description": "Folder 1\. Companula latifolia \[TA\]"
+                        },
+                        {
+                            "description": "Folder 2\. Companula latifolia \[G\]"
+                        }
+                    ]
+                },
+                {
+                    "species_name": "Campanula patula L\.",
+                    "number_of_folders": 1,
+                    "number_of_sheets": 0,
+                    "folders_and_sheets": [
+                        {
+                            "description": "Campanula patula \[TA\]"
+                        }
+                    ]
+                },
+                {
+                    "species_name": "Campanula rapunculus L\.",
+                    "number_of_folders": 2,
+                    "number_of_sheets": 0,
+                    "folders_and_sheets": [
+                        {
+                            "description": "Folder 1\, Campanula rapunculus \[TA\]"
+                        },
+                        {
+                            "description": "Folder 2\. Campanula rapunculus \[G\]"
+                        }
+                    ]
+                }
+            ]
+        }
 
 # user defines the user input. This can contain more than one prompt. 
 # Different prompts will be passed to the model as individual inputs
 user:
   # the prompt defines the user's prompt to the model
   text: | 
-   Reformat the text below exactly into JSON according to the schema provided.
-    Only output the JSON object and nothing else.
+   Extract the botanical information from the provided text and format it into JSON according to the schema. 
+   Ensure that all special characters are escaped properly and that the output is a single valid JSON object with no additional text or formatting.
   
-   Extracted text:
-   {extracted_text} 
+   Text to extract from:
+   \n\n{extracted_text}\n\n
     
