@@ -17,7 +17,7 @@ class HF_Model:
                  model_name: str = DEFAULT_MODEL_NAME, # Model name
                  batch_size: int = 1, # Batch size for inference
                  max_new_tokens: int = 4096, # Maximum number of tokens
-                 temperature: float = 0.3, # Model temperature. 0 to 2. Higher the value the more random and lower the value the more focused and deterministic.
+                 temperature: float = 0.1, # Model temperature. 0 to 2. Higher the value the more random and lower the value the more focused and deterministic.
                 ):
         """
         Hugging Face model class
@@ -33,7 +33,7 @@ class HF_Model:
         """
 
         # Load parameters
-        self.model_name = model_name if model_name else self.DEFAULT_MODEL_NAME
+        self.model_name = model_name or self.DEFAULT_MODEL_NAME
         self.batch_size = batch_size
         self.max_new_tokens = max_new_tokens
         self.temperature = temperature
@@ -87,8 +87,6 @@ class HF_Model:
 
         self.model = None
         self.processor = None
-
-        
         
         gc.collect()
         if torch.cuda.is_available():
@@ -187,28 +185,24 @@ class HF_Model:
 
         
         # Inference
-        if debug:
-            logger.debug("\tPerforming inference...")
+        logger.debug("\tPerforming inference...")
         
         do_sample_set = self.temperature > 0.0 # If temperature is greater than 0, use sampling
         with autocast("cuda", enabled=self.device.type == "cuda"): # Enabling mixed precision to reduce computational load where possible
-            output_ids = self.model.generate(**inputs, max_new_tokens=max_new_tokens, temperature=self.temperature, do_sample=do_sample_set,)
+            output_ids = self.model.generate(**inputs, max_new_tokens=max_new_tokens, temperature=self.temperature)#, do_sample=do_sample_set,)
 
         # Increasing the number of new tokens, increases the number of words recognised by the model with trade-off of speed
         # 1024 new tokens was capable of reading upto 70% of the input image (pg132_a.jpeg)
-        if debug:
-            logger.debug("\tInference Finished")
+        logger.debug("\tInference Finished")
 
-        if debug:
-            logger.debug("\tSeperating Ids...")
+        logger.debug("\tSeperating Ids...")
         generated_ids = [
             output_ids[len(input_ids) :]
             for input_ids, output_ids in zip(inputs.input_ids, output_ids)
         ]
 
         # Using the preprocessor to decode the numerical values into tokens (words)
-        if debug:
-            logger.debug("\tDecoding Ids...")
+        logger.debug("\tDecoding Ids...")
         output_text = self.processor.batch_decode(
             generated_ids, skip_special_tokens=True, clean_up_tokenization_spaces=True
         )
@@ -247,8 +241,7 @@ class HF_Model:
         self.eval()
 
         # Process the input conversation
-        if debug:
-            logger.debug("\tProcessing inputs...")
+        logger.debug("\tProcessing inputs...")
 
         inputs , max_tokens = self.process_chat_inputs(conversation, images) 
         

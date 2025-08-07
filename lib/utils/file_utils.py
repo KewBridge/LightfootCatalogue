@@ -5,12 +5,12 @@ import os
 
 
 def save_to_file(file: str, text: str, mode: str="w") -> None:
-        """
-        Saves the extracted text to the file
-        """
-
-        with open(file, mode) as f:
-            f.write(text)
+    """
+    Saves the extracted text to the file
+    """
+    logger.debug(f"Saving text to file: {file}")
+    with open(file, mode) as f:
+        f.write(text)
     
 
 def load_from_file(file: str) -> str:
@@ -23,7 +23,7 @@ def load_from_file(file: str) -> str:
     """
 
     text = ""
-
+    logger.debug(f"Loading text from file: {file}")
     with open(file, "r") as f:
         text = f.read()
     

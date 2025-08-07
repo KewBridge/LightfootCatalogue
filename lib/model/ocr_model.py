@@ -1,5 +1,6 @@
 # Python Modules
 import os
+import unicodedata
 from tqdm import tqdm
 from typing import Optional, Union
 import re
@@ -16,7 +17,7 @@ from lib.model.base_model import BaseModel
 from lib.utils.promptLoader import PromptLoader
 from lib.utils.save_utils import save_json, save_csv_from_json, verify_json
 from lib.data_processing.text_processing import TextProcessor
-from lib.data_processing.chunker import TextChunker
+from lib.data_processing.chunker import SpeciesChunker
 
 # Logging
 from lib.utils import get_logger
@@ -41,15 +42,14 @@ class OCRModel(BaseModel):
             **kwargs (dict): extra parameters for other models
         """
         super().__init__(prompt, **kwargs)
-        self.temperature = prompt["ocr_temperature"] if prompt["ocr_temperature"] is not None else 0.
+        self.temperature = self.prompt.get("ocr_temperature", 0.1)
         self.overlap = 100
         self.context_size = 500
-        self.model_name = prompt["ocr_model"]
+        self.model_name = self.prompt.get("ocr_model", "qwen2")
         self.extraction_model = None
-        self.extraction_model_name = prompt["ocr_extraction_model"]
-        self.grayscale_only = prompt["grayscale_only"]
+        self.extraction_model_name = self.prompt.get("ocr_extraction_model", "qwen2.5")
         self.model = self.load_model()
-        self.chunker = TextChunker(self.overlap, prompt["max_chunk_size"])
+        self.chunker = SpeciesChunker()#TextChunker(self.overlap, self.prompt.get("max_chunk_size", 1024))
 
     def getImagePrompt(self) -> list:
         """
@@ -61,12 +61,14 @@ class OCRModel(BaseModel):
 
         system_prompt = (
             "You are an expert in extracting text from images."
+            "Do not perform any grammatical corrections. Ignore Page numbers and any other text that is not part of the main body text.\n"
+            "Only extract literal text from the image.\n"
+            "Do not add or insert any new content.\n"
+            "If the text is unclear or incomplete, leave it blank."
         )
 
         image_prompt = (
             "Extract only the main body text from the image, preserving the original structure and formatting. \n"
-            "Do not perform any grammatical corrections. Ignore Page numbers and any other text that is not part of the main body text.\n"
-            "Do not generate any additional text or explanations."
         )
 
         return self.prompt.getImagePrompt(system_prompt, image_prompt)
@@ -84,40 +86,62 @@ class OCRModel(BaseModel):
             list: ocr noise cleaning conversation to the model
         """
 
+        # system_prompt = (
+        #     "You are an expert in cleaning OCR induced errors in the text. \n"
+        #     "Follow the instructions below to clean the text, ensuring the text flows coherently with the previous context:\n"
+        #     "1. Fix OCR induced typographical errors, such as incorrect characters, spacing and improper symbols.\n"
+        #     "- Use provided context and common sense to identify and correct errors.\n"
+        #     "- The letter 'AE' and 'Æ' are often confused with symbols such as '&' and other special symbols.\n"
+        #     "- For example, 'l' and '1' or 'o' and '0' are often confused.\n"
+        #     "- Ensure that the text is grammatically correct and coherent.\n"
+        #     "- Remove any unnecessary line breaks or extra spaces.\n"
+        #     "- Identify and correct word splits and line breaks.\n"
+        #     "- Only fix clear OCR errors. DO NOT ALTER THE CONTEXT OR MEANING of the text.\n"
+        #     "- DO NOT add any generated text, punctuation, or capitalization.\n"
+        #     "2. Ensure structure is maintained.\n"  
+        #     "- Maintain original structure, including paragraphs and line breaks.\n"
+        #     "- Preserve the original content. \n"
+        #     "- Keep all importatnt information intact.\n"
+        #     "- DO NOT add any new text not present in the text. \n"
+        #     "3. Ensure flow and coherence.\n"
+        #     "- Ensure the text flows naturally and coherently.\n"
+        #     "- Use provided context to ensure the text makes sense.\n"
+        #     "- HANDLE text that starts or ends mid-sentence correctly. \n\n"
+        #     "4. Return ONLY the cleaned text.\n"
+        #     "- Do not add any additional information, explanations, or thoughts.\n"
+        #     "- Do not include your thoughts, explanations, or steps.\n"
+        #     "- Do not add any new text not present in the text.\n"
+        # )
+        # noise_prompt = (
+        #     # "IMPORTATANT: RETURN ONLY THE CLEANED TEXT. Preserve the orignial structure and content. Do not add anything else. Do not include your thoughts, explantions or steps.\n\n"
+        #     f"Previous context:\n {context}\n\n"
+        #     f"Text to clean:\n {extracted_text}\n\n"
+        #     "Cleaned text:\n"
+        # )
+
         system_prompt = (
-            "You are an expert in cleaning OCR induced errors in the text. \n"
-            "Follow the instructions below to clean the text, ensuring the text flows coherently with the previous context:\n"
-            "1. Fix OCR induced typographical errors, such as incorrect characters, spacing and improper symbols.\n"
-            "- Use provided context and common sense to identify and correct errors.\n"
-            "- The letter 'AE' and 'Æ' are often confused with symbols such as '&' and other special symbols.\n"
-            "- For example, 'l' and '1' or 'o' and '0' are often confused.\n"
-            "- Ensure that the text is grammatically correct and coherent.\n"
-            "- Remove any unnecessary line breaks or extra spaces.\n"
-            "- Identify and correct word splits and line breaks.\n"
-            "- Only fix clear OCR errors. DO NOT ALTER THE CONTEXT OR MEANING of the text.\n"
-            "- DO NOT add any generated text, punctuation, or capitalization.\n"
-            "2. Ensure structure is maintained.\n"
-            "- Maintain original structure, including paragraphs and line breaks.\n"
-            "- Preserve the original content. \n"
-            "- Keep all importatnt information intact.\n"
-            "- DO NOT add any new text not present in the text. \n"
-            "3. Ensure flow and coherence.\n"
-            "- Ensure the text flows naturally and coherently.\n"
-            "- Use provided context to ensure the text makes sense.\n"
-            "- HANDLE text that starts or ends mid-sentence correctly. \n\n"
-            "4. Return ONLY the cleaned text.\n"
-            "- Do not add any additional information, explanations, or thoughts.\n"
-            "- Do not include your thoughts, explanations, or steps.\n"
-            "- Do not add any new text not present in the text.\n"
-        )
-        noise_prompt = (
-            # "IMPORTATANT: RETURN ONLY THE CLEANED TEXT. Preserve the orignial structure and content. Do not add anything else. Do not include your thoughts, explantions or steps.\n\n"
-            f"Previous context:\n {context}\n\n"
-            f"Text to clean:\n {extracted_text}\n\n"
-            "Cleaned text:\n"
+            "You are an expert in cleaning OCR text\n"
+            "You will be provided with a text containing botanical information from a historical botanical catalogue.\n"
+            "The text contains botanical information, including family names, species names, and other relevant details.\n"
+            "This information denotes the how each speciemen is stored in the catalogue.\n"
+            # "You task is to list all ocr artefacts, grammatical errors, and formatting issues in the text.\n"
+            # "You will not make any changes to the text.\n"
+            # "Do not make any assumption about the text, if you are not sure about something, keep the original text.\n"
+            # "Think step by step and provide a detailed analysis of the text.\n"
+            # "Return a rating out of 10 for the overall quality of the text.\n"
+            "Your task is to clean the text by following the rules:\n"
+            "1. Find and clean any OCR artefacts, like missing spaces, incorrect characters, or formatting issues.\n"
+            "2. Join any words that are split across lines, ensuring that the meaning is preserved. Ensure the lines joined are contextually appropriate.\n"
+            "3. Only return the cleaned text, without any additional comments or explanations.\n"
+            #"4. Compare and return an accuracy rating out of 10 between the original and cleaned text. Higher the rating, the more accurate. The returned rating should be at the end of the cleaned text following the strucutre: RATING: <rating>\n"
         )
 
-        return self.prompt.getTextPrompt(system_prompt, noise_prompt)
+        user_prompt = (
+            "By following the rules cleaned the following OCR'd text:\n\n"
+            f"{extracted_text}\n"
+        )
+
+        return self.prompt.getTextPrompt(system_prompt, user_prompt)
 
     def clean(self, text: str) -> str:
         """
@@ -135,6 +159,8 @@ class OCRModel(BaseModel):
         return text
     
     def post_process(self, text: str) -> str:
+
+        return text
         
         ocr_cleaning_prompt = self.getOCRNoiseCleaningPrompt(text)
         cleaned_text = self.model(ocr_cleaning_prompt)
@@ -196,7 +222,7 @@ class OCRModel(BaseModel):
             image = Image.fromarray(image)
         text = ""
         if (self.extraction_model_name is None) or (self.extraction_model_name.lower() == "default"):
-            text = image_to_string(image, lang="eng+lat", config="--psm 4")
+            text = image_to_string(image, lang="eng+lat", config="--psm 1")
         else:
             print(f"Using {self.extraction_model_name} for text extraction.")
             if self.extraction_model is None:
@@ -232,7 +258,7 @@ class OCRModel(BaseModel):
         # join them in reading order, separated by two line breaks
         return "\n\n\n\n\n".join(text)
     
-    def extract_text_from_image(self, image:list[np.ndarray]) -> list[str]:
+    def extract_text_from_image(self, image:np.ndarray) -> list[str]:
         """
         Extract text from a single image
 
@@ -245,20 +271,52 @@ class OCRModel(BaseModel):
         
         
         # Load the image
-        return [self.ocr_page_with_columns(im) if self.prompt["has_columns"] else self.single_image_extract(im) for im in image]
+        return self.ocr_page_with_columns(image) if self.prompt["has_columns"] else self.single_image_extract(image)
     
 
     def clean_text(self, text):
         
         text = re.sub(r"\n{2,}", "\n\n", text)  # Remove excessive newlines
-        
-        text = text.strip()
-        # Clean line breaks
-        text = re.sub(r"-\n+", "", text)
-        text = re.sub(r"^(\d*|[a-z]{0,3})\s?(Joh|Cat).*\n", "", text, re.I)
-        text = re.sub(r"^.*(l?o?gue|ghtfoot|foot)\s?(\d*)?\n", "", text, re.I)
-        text = re.sub(r"([a-zA-Z])-\n([a-zA-Z])", r"\1\2", text)
+                # Remove page numbers that are just digits surrounded by newlines
+        text = re.sub(r"(?m)^\s*\d+\s*$\n?", r"", text)
+
+        #Remove common headers
+        common_headers = ["John Lightfoot"]
+        alts = "|".join([re.escape(header) for header in common_headers])
+        common_headers_regex = rf"(?<=\n\n)[^\n]*?(?:{alts})[^\n]*?(?=\n\n)"
+        text = re.sub(common_headers_regex, r"", text, flags=re.IGNORECASE)
+        text = re.sub(r"(\w+)-\s*\n\s*(\w+)", r"\1\2", text)
         text = re.sub(r"([A-Z]+)\s*(EAE|FAE|EAF)", r"\1EAE", text)
+        text = re.sub(r"\n{2,}", r"\n", text)  # Collapse multiple newlines
+        text = re.sub(r"[ \t]{2,}", " ", text).strip()  # Find multiple spaces
+
+
+        legacy_family_names = [
+            "COMPOSITAE", "GRAMINEAE", "LEGUMINOSAE", "PALMAE",
+            "UMBELLIFERAE", "CRUCIFERAE", "LABIATAE", "GUTTIFERAE",
+            "PAPILIONACEAE", "MIMOSACEAE", "CAESALPINIACEAE"
+        ]
+        legacy_alts = "|".join([re.escape(alt) for alt in legacy_family_names])
+
+        family_regex = rf"\b([A-Z]+ACEAE|{legacy_alts})\b"
+
+
+        text = re.sub(family_regex, r"\n\n\1\n\n", text)  # Find all uppercase words
+        text = re.sub(r"\n{3,}", r"\n\n", text)  # Collapse multiple newlines
+
+        def normalize_unicode(text):
+            """Normalize Unicode characters in the text."""
+            text = unicodedata.normalize("NFKD", text)
+            text = text.replace("‘", "'").replace("’", "'")  # Replace smart quotes with straight quotes
+            text = text.replace("“", '"').replace("”", '"')  # Replace smart quotes with straight quotes
+            text = text.replace("–", "-")  # Replace en dash with hyphen
+            text = text.replace("—", "-")  # Replace em dash with hyphen
+            text = text.replace("…", "...")  # Replace ellipsis with three dots
+            
+            return text
+
+        text = normalize_unicode(text)
+        text = text.strip()
         
         # Add a newline before any indexing patterns like 1. or i. or a., but only if not part of a word ending
         # Ensure the pattern is preceded by whitespace or start of line, and not a letter (to avoid word endings)
@@ -294,68 +352,88 @@ class OCRModel(BaseModel):
         for ind, batch in enumerate(tqdm(images, desc="Processing images", unit="image")):
             #print(f">>> Batch {ind + 1} starting...")
 
-            if debug:
-                logger.debug("Extracting text from image")
+            logger.debug("Extracting text from image")
+            extracted_text = self.extract_text_from_image(batch)
 
-            extracted_text = self.extract_text_from_image([batch])
+            cleaned_text = self.clean_text(extracted_text) if clean else extracted_text
 
-            cleaned_text = [self.clean_text(text) for text in extracted_text] if clean else extracted_text
-
-            if debug:
-                logger.debug("\tJoining Outputs...")
+            logger.debug("\tJoining Outputs...")
             # Join all the text and append it together with previous batches
-            batch_texts.append("\n\n".join(cleaned_text))
+            batch_texts.append("\n" + cleaned_text)
 
             if (ind + 1) % self.SAVE_TEXT_INTERVAL == 0:
-                if debug:
-                    logger.debug("\tStoring at interval...")
+                logger.debug("\tStoring at interval...")
                 save_to_file(self.TEMP_TEXT_FILE if save_file is None else save_file, "\n\n".join(batch_texts))
 
-            if debug:
-                logger.debug("\tBatch Finished")
+
+            logger.debug("\tBatch Finished")
 
         return "".join(batch_texts) 
 
+    def process_image(self, image: Union[str, np.ndarray]) -> np.ndarray:
+        """
+        Process a single image for OCR extraction.
+        This includes converting to grayscale, removing shadows, denoising, binarization, and morphological operations.
 
-    def process_images(self, images: list[str], grayscale_only:bool = False) -> np.ndarray:
-        
+        Parameters:
+            image (str or np.ndarray): Path to the image or the image itself as a numpy array
+
+        Returns:
+            np.ndarray: Processed image ready for OCR extraction
+        """
+        assert isinstance(image, (str, np.ndarray)), "Image must be a file path or a numpy array."
+
+        if isinstance(image, str):
+            image = cv2.imread(image)
+
         logger.debug("Step 1: Grayscale Conversion")
-        gray_images = [cv2.cvtColor(cv2.imread(image), cv2.COLOR_BGR2GRAY) for image in images]
+        gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-        if grayscale_only or self.grayscale_only:
-            return gray_images
+        logger.debug("Step 2: Gaussian Blur")
+        blurred = cv2.GaussianBlur(gray_image, (3, 3), 0)
+
         logger.debug("Step 2: Remove shadows")
-        thresh = lambda x: cv2.adaptiveThreshold(x, 255,
-                                    cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-                                    cv2.THRESH_BINARY, 31, 10)
+        thresh = cv2.adaptiveThreshold(blurred, 255,
+                                        cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+                                        cv2.THRESH_BINARY, 41, 10)
 
-        median_filter = lambda x: cv2.medianBlur(x, 3)
-        shadows_removes = [median_filter(thresh(image)) for image in gray_images]
+        logger.debug("Step 3: Noise Reduction")
+        denoised_image = cv2.bilateralFilter(thresh, 9, 75, 75)
 
-        logger.debug("Step 3: Noise Reductiion")
-        denoised_images = [cv2.bilateralFilter(image, 9, 75, 75) for image in shadows_removes]
+        # logger.debug("Step 4: Binarization (black and White) via Otsu's method")
+        # binarized_image = cv2.threshold(denoised_image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
 
+        # logger.debug("Step 5: Deskewing")
+        # logger.debug("Skipping deskewing for now")
+        # deskewed_image = binarized_image
 
-        logger.debug("Setp 4: Binarization (black and White) via Otsu's method")
-        binarized_images = [cv2.threshold(image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1] for image in denoised_images]
-
-
-        logger.debug("Step 5: Deskewing")
-        logger.debug("Skipping deskewing for now")
-        deskewed_images = binarized_images
-
-        logger.debug("Step 6: Morphological opening (erosion followed by dilation)")
-        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1,1))#np.ones((1, 1), np.uint8)
-        opened = lambda x: cv2.morphologyEx(x, cv2.MORPH_OPEN,
-                                            kernel, iterations=1)
-        opened_images = [opened(image) for image in deskewed_images]
-
+        # logger.debug("Step 6: Morphological opening (erosion followed by dilation)")
+        # kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1, 1))
+        # opened_image = cv2.morphologyEx(deskewed_image, cv2.MORPH_OPEN, kernel, iterations=1)
 
         logger.debug("Step 7: Optional dilation to thicken strokes")
         kernel2 = cv2.getStructuringElement(cv2.MORPH_RECT, (1, 1))
-        processed = [cv2.dilate(i, kernel2, iterations=1) for i in opened_images]
+        processed_image = cv2.dilate(denoised_image, kernel2, iterations=1)
 
-        return processed
+        return processed_image
+
+    def process_images(self, images: list[str]) -> np.ndarray:
+        """
+        Process a list of images for OCR extraction.
+
+        Args:
+            images (list[str]): List of image file paths.
+            grayscale_only (bool, optional): If True, only grayscale images will be processed. Defaults to False.
+
+        Returns:
+            np.ndarray: Array of processed images.
+        """
+        processed_images = []
+        for image in images:
+            processed = self.process_image(image)
+            processed_images.append(processed)
+            
+        return processed_images
     
 
     def chunk_and_clean(self, text: str, add_overlap: bool = True) -> list[str]:
@@ -378,18 +456,18 @@ class OCRModel(BaseModel):
         cleaned_chunks = []
         context = ""
         for chunk in tqdm(chunks, desc="Cleaning Chunks", unit="chunk"):
-
-            chunk = re.sub(r"\[", "\[", chunk)
-            chunk = re.sub(r"\]", "\]", chunk)
+            cleaned_chunks.append(chunk)
+            # chunk = re.sub(r"\[", "\[", chunk)
+            # chunk = re.sub(r"\]", "\]", chunk)
             
-            message = self.getOCRNoiseCleaningPrompt(chunk, context)
+            # message = self.getOCRNoiseCleaningPrompt(chunk, context)
 
-            cleaned_chunk = self.model(message)[0]
+            # cleaned_chunk = self.model(message)[0]
 
-            cleaned_chunks.append(cleaned_chunk)
+            # cleaned_chunks.append(cleaned_chunk)
 
-            context = cleaned_chunk[-self.context_size:] if len(cleaned_chunk) > self.context_size else cleaned_chunk
-            gc.collect()
+            # context = cleaned_chunk[-self.context_size:] if len(cleaned_chunk) > self.context_size else cleaned_chunk
+            # gc.collect()
 
         merged_text = self.chunker.merge_sentences(cleaned_chunks)
         return merged_text
@@ -419,8 +497,8 @@ class OCRModel(BaseModel):
             images = self.process_images(images)
             logger.info(f"Extracting text from images...")
             extracted_text = self.extract_text(images, save_file, debug)
-            logger.info(f"Chunking text for cleaning...")
-            extracted_text = self.chunk_and_clean(extracted_text, add_overlap=True)
+            #logger.info(f"Chunking text for cleaning...")
+            #extracted_text = self.chunk_and_clean(extracted_text, add_overlap=True)
 
             del self.extraction_model
             gc.collect()

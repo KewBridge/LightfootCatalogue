@@ -1,29 +1,3 @@
-#Define variable configuration
-# Model config
-model: "qwen2"
-output_save_file_name: "default"
-max_tokens: 4096
-max_chunk_size: 3000
-output_save_path: "outputs/default/"    # Where to save the output
-batch_size: 1
-ocr_model: "mistral7b"
-ocr_extraction_model: "qwen2.5"
-ocr_temperature: 0.0
-transcription_temperature: 0.0
-timeout: 4 # Number of tries
-# Data reader config
-crop: True
-padding: 100.0
-resize_factor: 0.4
-remove_area_perc: 0.01
-middle_margin_perc: 0.20
-has_columns: True
-grayscale_only: True
-double_pages: False
-# define to inherit any missing prompts from the default prompt+
-inherit_default: False
-# Path to default file if inheriting from another custom prompt
-default_file: None
 # Any divisions in the catalogue
 divisions: ["Dicotyledones", "Monocotyledones", "Pteridophyta", "Hepaticae", "Algae"]
 # System defines the system prompt to the model

@@ -18,7 +18,7 @@ class ImageProcessor:
     def __init__(self,
                  pad: float = 50.0,
                  resize_factor: float = 0.4,
-                 remove_area_perc: float = 0.01,
+                 remove_area_perc: float = 0.05,
                  middle_margin_perc: float = 0.20,
                  double_pages: bool = False):
         """
@@ -64,7 +64,7 @@ class ImageProcessor:
 
     # ================= ROI Detection & Cropping Methods =================
 
-    def identify_roi(self, path: str) -> list[int]:
+    def identify_roi(self, path: Union[str, np.array]) -> list[int]:
         """
         Identify the region of interest in an image to crop / zoom into
 
@@ -74,14 +74,14 @@ class ImageProcessor:
             boxes (list): a box (x1, y1, x3, y3) to crop the image
         """
         # Open the image and compute its area.
-        image = Image.open(path)
+        image = Image.open(path) if isinstance(path, str) else Image.fromarray(path)
         image_area = image.size[0] * image.size[1]
 
         x = y = None
         w = h = None
 
         # Load the Tesseract OCR API and perform detection
-        with PyTessBaseAPI(psm=PSM.SINGLE_COLUMN) as api:
+        with PyTessBaseAPI(psm=PSM.AUTO) as api:
             # Start API by setting image and perform recognition
             api.SetImage(image)
             api.Recognize()
@@ -101,7 +101,7 @@ class ImageProcessor:
 
         return [x, y, w, h]
 
-    def crop_and_resize(self, path: str) -> Image.Image:
+    def crop_and_resize(self, path: Union[str, np.ndarray]) -> Image.Image:
         """
         Performs the following task in order:
             1) Identifies the region of interest
@@ -117,7 +117,7 @@ class ImageProcessor:
         # Identify ROI coordinates.
         roi = self.identify_roi(path)
         # Load the image.
-        image = Image.open(path)
+        image = Image.open(path) if isinstance(path, str) else Image.fromarray(path)
         # Crop the image (add padding around the ROI).
         cropped = image.crop((
             roi[0] - self.pad,
@@ -156,7 +156,7 @@ class ImageProcessor:
             file_name_parts = path.split(os.sep)[-1].split(".")
             # Create a format string to allow numbering the splits.
             save_file_name = os.path.join(save_path, f"{file_name_parts[0]}_cropped_{{}}.{file_name_parts[-1]}")
-
+        
         # Crop and resize the image.
         resized = self.crop_and_resize(path)
         # Convert the PIL image to a cv2 image.
