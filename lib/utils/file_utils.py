@@ -2,7 +2,7 @@
 from lib.utils import get_logger
 logger = get_logger(__name__)
 import os
-
+from PIL import Image
 
 def save_to_file(file: str, text: str, mode: str="w") -> None:
     """
