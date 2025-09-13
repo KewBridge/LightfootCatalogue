@@ -80,5 +80,14 @@ pip install taxonerd
 # DeepDoctection
 pip install deepdoctection[pt]
 
-echo "==> Environment '$env_name' created successfully."
+
+echo "====================================================="
+echo ">>> Installing additional pacakages..."
+echo
+echo ">>> Installing taxonderd model: en_ner_eco_md"
+
+pip install https://github.com/nleguillarme/taxonerd/releases/download/v1.5.4/en_ner_eco_md-1.1.0.tar.gz
+
+
+ "==> Environment '$env_name' created successfully."
 echo "====================================================="

@@ -7,6 +7,6 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --export=all
 
-source activate lcat-step
+source activate dd_lcat
 echo ">>> Activated Environment <<<"
 python run.py ./images/lightfootcat ./prompts/ost_prompt.yaml lightfootcat_full --temp-text ./outputs/lightfootcat/temp.txt  --save-path ./outputs/lightfootcat/

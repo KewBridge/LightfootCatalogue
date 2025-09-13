@@ -9,7 +9,7 @@
 
 CATALOGUE=${CATALOGUE_NAME:-lightfootcat}
 
-source activate lcat
+source activate dd_lcat
 echo ">>> Activated Environment <<<"
 echo "Running job for dataset: $CATALOGUE"
 

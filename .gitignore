@@ -1,9 +1,6 @@
 # ignore all images
 /resources/images
-<<<<<<< HEAD
 /resources/model_weights
-=======
->>>>>>> refs/remotes/origin/main
 /outputs/
 temp.txt
 slurm-*.out

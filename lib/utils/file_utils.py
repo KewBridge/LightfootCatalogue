@@ -2,11 +2,6 @@
 from lib.utils import get_logger
 logger = get_logger(__name__)
 import os
-<<<<<<< HEAD
-from PIL import Image
-=======
-
->>>>>>> refs/remotes/origin/main
 
 def save_to_file(file: str, text: str, mode: str="w") -> None:
     """
@@ -60,8 +55,4 @@ def get_save_file_name(save_path: str, save_file_name: str) -> str:
         final_save_file_name = f"{save_file_name}_{id}"
         id += 1
 
-<<<<<<< HEAD
     return final_save_file_name
-=======
-    return final_save_file_name
->>>>>>> refs/remotes/origin/main

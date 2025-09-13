@@ -18,7 +18,7 @@ from lib.utils.promptLoader import PromptLoader
 from lib.utils.save_utils import save_json, save_csv_from_json, verify_json
 from lib.data_processing.text_processing import TextProcessor
 from lib.data_processing.chunker import SpeciesChunker
-
+from lib.data_processing.layout_detection import LayoutDetector
 # Logging
 from lib.utils import get_logger
 logger = get_logger(__name__)
@@ -50,6 +50,10 @@ class OCRModel(BaseModel):
         self.extraction_model_name = self.prompt.get("ocr_extraction_model", "qwen2.5")
         self.model = self.load_model()
         self.chunker = SpeciesChunker()#TextChunker(self.overlap, self.prompt.get("max_chunk_size", 1024))
+        self.layout_detection = None
+    
+    def load_ld(self):
+        self.layout_detection = LayoutDetector()
 
     def getImagePrompt(self) -> list:
         """
@@ -176,50 +180,51 @@ class OCRModel(BaseModel):
         return cleaned_text #"\n".join(cleaned_text_split[:-1]), cleaned_text_split[-1]
     
 
-    def detect_column_cuts(self, gray_img, min_gap_width=50, gap_thresh_ratio=0.05):
-        """
-        Given a grayscale page image, return the x-coordinates where you should cut 
-        to split into columns.  If no good gutter is found, returns [] (i.e. one column).
-        """
-        # 1) Binarize (invert so text is “1”)
-        binarized_image = cv2.threshold(gray_img, 0, 255,
-                            cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
-        # 2) Optional: close tiny text-break gaps
-        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5,5))
-        binarized_image = cv2.morphologyEx(binarized_image, cv2.MORPH_CLOSE, kernel)
-        # 3) Sum ink pixels in each column
-        vert_proj = binarized_image.sum(axis=0)  # shape: (width,)
-        # 4) Threshold to find “mostly white” columns
-        thresh = vert_proj.max() * gap_thresh_ratio
-        is_gap = vert_proj < thresh
-        # 5) Find contiguous gap runs wider than min_gap_width
-        cuts = []
-        start = None
-        for x, val in enumerate(is_gap):
-            if val and start is None:
-                start = x
-            elif not val and start is not None:
-                width = x - start
-                if width >= min_gap_width:
-                    cuts.append((start + x)//2)  # mid-point of the gap
-                start = None
-        # handle case run-to-end
-        if start is not None and (len(is_gap) - start) >= min_gap_width:
-            cuts.append((start + len(is_gap))//2)
-        return cuts
+    # def detect_column_cuts(self, gray_img, min_gap_width=50, gap_thresh_ratio=0.05):
+    #     """
+    #     Given a grayscale page image, return the x-coordinates where you should cut 
+    #     to split into columns.  If no good gutter is found, returns [] (i.e. one column).
+    #     """
+    #     # 1) Binarize (invert so text is “1”)
+    #     binarized_image = cv2.threshold(gray_img, 0, 255,
+    #                         cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
+    #     # 2) Optional: close tiny text-break gaps
+    #     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5,5))
+    #     binarized_image = cv2.morphologyEx(binarized_image, cv2.MORPH_CLOSE, kernel)
+    #     # 3) Sum ink pixels in each column
+    #     vert_proj = binarized_image.sum(axis=0)  # shape: (width,)
+    #     # 4) Threshold to find “mostly white” columns
+    #     thresh = vert_proj.max() * gap_thresh_ratio
+    #     is_gap = vert_proj < thresh
+    #     # 5) Find contiguous gap runs wider than min_gap_width
+    #     cuts = []
+    #     start = None
+    #     for x, val in enumerate(is_gap):
+    #         if val and start is None:
+    #             start = x
+    #         elif not val and start is not None:
+    #             width = x - start
+    #             if width >= min_gap_width:
+    #                 cuts.append((start + x)//2)  # mid-point of the gap
+    #             start = None
+    #     # handle case run-to-end
+    #     if start is not None and (len(is_gap) - start) >= min_gap_width:
+    #         cuts.append((start + len(is_gap))//2)
+    #     return cuts
     
 
     def single_image_extract(self, image: Union[str, np.ndarray]) -> str:
 
         logger.debug("Extracting text from image...")
-        logger.debug(f"Image type: {type(image)}")
-        logger.debug(f"Image shape: {image.shape if isinstance(image, np.ndarray) else 'N/A'}")
-        logger.debug(f"Image dtype: {image.dtype if isinstance(image, np.ndarray) else 'N/A'}")
-        logger.debug("=" * 50)
+        # logger.debug(f"Image type: {type(image)}")
+        # logger.debug(f"Image shape: {image.shape if isinstance(image, np.ndarray) else 'N/A'}")
+        # logger.debug(f"Image dtype: {image.dtype if isinstance(image, np.ndarray) else 'N/A'}")
+        # logger.debug("=" * 50)
 
         if isinstance(image, np.ndarray):
 
             image = Image.fromarray(image)
+
         text = ""
         if (self.extraction_model_name is None) or (self.extraction_model_name.lower() == "default"):
             text = image_to_string(image, lang="eng+lat", config="--psm 1")
@@ -232,31 +237,31 @@ class OCRModel(BaseModel):
         
         return text.strip()
         
-    def ocr_page_with_columns(self, path_to_image: Union[str, np.ndarray]) -> str:
+    # def ocr_page_with_columns(self, path_to_image: Union[str, np.ndarray]) -> str:
 
-        if isinstance(path_to_image, str):
-            img = cv2.imread(path_to_image)
-            grey_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        elif isinstance(path_to_image, np.ndarray):
-            grey_img = path_to_image
-        else:
-            raise ValueError("Input must be a file path or a numpy array.")
+    #     if isinstance(path_to_image, str):
+    #         img = cv2.imread(path_to_image)
+    #         grey_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    #     elif isinstance(path_to_image, np.ndarray):
+    #         grey_img = path_to_image
+    #     else:
+    #         raise ValueError("Input must be a file path or a numpy array.")
             
-        cuts = self.detect_column_cuts(grey_img)
+    #     cuts = self.detect_column_cuts(grey_img)
 
-        # define our column boxes
-        xs = [0] + cuts + [grey_img.shape[1]]
-        text = []
+    #     # define our column boxes
+    #     xs = [0] + cuts + [grey_img.shape[1]]
+    #     text = []
         
-        #col_imgs = []
-        for left, right in zip(xs[:-1], xs[1:]):
-            col_img = grey_img[:, left:right]
+    #     #col_imgs = []
+    #     for left, right in zip(xs[:-1], xs[1:]):
+    #         col_img = grey_img[:, left:right]
             
-            #col_imgs.append(col_img)
-            txt = self.single_image_extract(col_img)
-            text.append(txt.strip())
-        # join them in reading order, separated by two line breaks
-        return "\n\n\n\n\n".join(text)
+    #         #col_imgs.append(col_img)
+    #         txt = self.single_image_extract(col_img)
+    #         text.append(txt.strip())
+    #     # join them in reading order, separated by two line breaks
+    #     return "\n\n\n\n\n".join(text)
     
     def extract_text_from_image(self, image:np.ndarray) -> list[str]:
         """
@@ -271,7 +276,7 @@ class OCRModel(BaseModel):
         
         
         # Load the image
-        return self.ocr_page_with_columns(image) if self.prompt["has_columns"] else self.single_image_extract(image)
+        return self.single_image_extract(image)
     
 
     def clean_text(self, text):
@@ -281,10 +286,10 @@ class OCRModel(BaseModel):
         text = re.sub(r"(?m)^\s*\d+\s*$\n?", r"", text)
 
         #Remove common headers
-        common_headers = ["John Lightfoot"]
-        alts = "|".join([re.escape(header) for header in common_headers])
-        common_headers_regex = rf"(?<=\n\n)[^\n]*?(?:{alts})[^\n]*?(?=\n\n)"
-        text = re.sub(common_headers_regex, r"", text, flags=re.IGNORECASE)
+        #common_headers = ["John Lightfoot"]
+        #alts = "|".join([re.escape(header) for header in common_headers])
+        #common_headers_regex = rf"(?<=\n\n)[^\n]*?(?:{alts})[^\n]*?(?=\n\n)"
+        #text = re.sub(common_headers_regex, r"", text, flags=re.IGNORECASE)
         text = re.sub(r"(\w+)-\s*\n\s*(\w+)", r"\1\2", text)
         text = re.sub(r"([A-Z]+)\s*(EAE|FAE|EAF)", r"\1EAE", text)
         text = re.sub(r"\n{2,}", r"\n", text)  # Collapse multiple newlines
@@ -369,71 +374,6 @@ class OCRModel(BaseModel):
             logger.debug("\tBatch Finished")
 
         return "".join(batch_texts) 
-
-    def process_image(self, image: Union[str, np.ndarray]) -> np.ndarray:
-        """
-        Process a single image for OCR extraction.
-        This includes converting to grayscale, removing shadows, denoising, binarization, and morphological operations.
-
-        Parameters:
-            image (str or np.ndarray): Path to the image or the image itself as a numpy array
-
-        Returns:
-            np.ndarray: Processed image ready for OCR extraction
-        """
-        assert isinstance(image, (str, np.ndarray)), "Image must be a file path or a numpy array."
-
-        if isinstance(image, str):
-            image = cv2.imread(image)
-
-        logger.debug("Step 1: Grayscale Conversion")
-        gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
-        logger.debug("Step 2: Gaussian Blur")
-        blurred = cv2.GaussianBlur(gray_image, (3, 3), 0)
-
-        logger.debug("Step 2: Remove shadows")
-        thresh = cv2.adaptiveThreshold(blurred, 255,
-                                        cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-                                        cv2.THRESH_BINARY, 41, 10)
-
-        logger.debug("Step 3: Noise Reduction")
-        denoised_image = cv2.bilateralFilter(thresh, 9, 75, 75)
-
-        # logger.debug("Step 4: Binarization (black and White) via Otsu's method")
-        # binarized_image = cv2.threshold(denoised_image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
-
-        # logger.debug("Step 5: Deskewing")
-        # logger.debug("Skipping deskewing for now")
-        # deskewed_image = binarized_image
-
-        # logger.debug("Step 6: Morphological opening (erosion followed by dilation)")
-        # kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1, 1))
-        # opened_image = cv2.morphologyEx(deskewed_image, cv2.MORPH_OPEN, kernel, iterations=1)
-
-        logger.debug("Step 7: Optional dilation to thicken strokes")
-        kernel2 = cv2.getStructuringElement(cv2.MORPH_RECT, (1, 1))
-        processed_image = cv2.dilate(denoised_image, kernel2, iterations=1)
-
-        return processed_image
-
-    def process_images(self, images: list[str]) -> np.ndarray:
-        """
-        Process a list of images for OCR extraction.
-
-        Args:
-            images (list[str]): List of image file paths.
-            grayscale_only (bool, optional): If True, only grayscale images will be processed. Defaults to False.
-
-        Returns:
-            np.ndarray: Array of processed images.
-        """
-        processed_images = []
-        for image in images:
-            processed = self.process_image(image)
-            processed_images.append(processed)
-            
-        return processed_images
     
 
     def chunk_and_clean(self, text: str, add_overlap: bool = True) -> list[str]:
@@ -494,9 +434,10 @@ class OCRModel(BaseModel):
         if text_file is None:
 
             logger.info(f"Processing input images before extraction...")
-            images = self.process_images(images)
+            self.load_ld()
+            processed_images = self.layout_detection(images)
             logger.info(f"Extracting text from images...")
-            extracted_text = self.extract_text(images, save_file, debug)
+            extracted_text = self.extract_text(processed_images, save_file, debug)
             #logger.info(f"Chunking text for cleaning...")
             #extracted_text = self.chunk_and_clean(extracted_text, add_overlap=True)
 

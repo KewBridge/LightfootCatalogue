@@ -1,6 +1,8 @@
 #Define variable configuration
 # Model config
 #model: "qwen2.5"
+crop: False
+ocr_extraction_model: "qwen2.5"#null
 output_save_file_name: "hanbury"
 output_save_path: "outputs/hanbury_with_extract/"    # Where to save the output
 has_columns: False
@@ -8,9 +10,9 @@ double_pages: False
 # define to inherit any missing prompts from the default prompt
 inherit_default: False
 # Path to default file if inheriting from another custom prompt
-default_file: None
+default_file: null
 # Any divisions in the catalogue
-divisions: ["Dicotyledones", "Gamopetalae", "MONOCHLAMYDEAE","GYMNOSPERMEAE", "Monocotyledones"]
+divisions: ["Dicotyledones", "Monocotyledones"]
 # System defines the system prompt to the model
 system:
   # Setup defines the model setup prompt. This lets the model know what area of knowledge to focus on for this task

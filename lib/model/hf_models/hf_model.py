@@ -218,11 +218,7 @@ class HF_Model:
 
 
     def __call__(self, conversation: list, images:list[str]=None, 
-<<<<<<< HEAD
                  debug: bool=False, max_new_tokens=None, return_input_image_size=False) -> list:
-=======
-                 debug: bool=False, max_new_tokens=None) -> list:
->>>>>>> refs/remotes/origin/main
         """
         Performs inference on the given set of images and/or text.
 
@@ -254,14 +250,11 @@ class HF_Model:
 
         output_text = self.inference_chat_model(inputs, max_new_tokens)
         
-<<<<<<< HEAD
         if return_input_image_size:
             input_height = inputs["image_grid_thw"][0][1]
             input_width = inputs["image_grid_thw"][0][2]
 
             return output_text, input_height, input_width
-=======
->>>>>>> refs/remotes/origin/main
 
 
         return output_text

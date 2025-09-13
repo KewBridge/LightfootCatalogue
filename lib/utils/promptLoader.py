@@ -182,7 +182,7 @@ class PromptLoader:
                 message += "System Message: {}\n".format(self._unravel_prompt(prompt))
             elif title.lower() == "schema":
                 catalogue_schema = get_catalogue(self._unravel_prompt(prompt)) ## Must be a single string or file name
-                message += "## Schema \n {}\n".format(catalogue_schema.schema())
+                message += "## Schema \n {}\n".format(catalogue_schema.model_json_schema())
             else:
                 message += f"## {title.upper()} \n"
                 message += self._unravel_prompt(prompt)

@@ -33,7 +33,7 @@ git clone https://github.com/KewBridge/LightfootCatalogue.git
 ```
 srun --partition=gpu --gpus=1 --mem=80G --cpus-per-task=4 --pty bash
 ```
-2. Run installation script (assuming conda is installed in your local device, if not follow this link for [Crop Diversity HPC](https://help.cropdiversity.ac.uk/bioconda.html))
+2. Run installation script (assuming conda is installed in your local device)
 ```
 ./install_req.sh
 ```

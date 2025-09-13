@@ -13,6 +13,11 @@ from lib.data_processing.image_processor import ImageProcessor
 from lib.utils import get_logger
 logger = get_logger(__name__)
 
+
+
+#TODO: Reformat the code for datapath being passed in runtime and not during initialisation
+#TODO: reformat to do layout detection before processing and remove cropping as might not need with layout detection
+#TODO: Maybe try integration layout detection within image processor
 class DataReader:
 
     EXTRACTED_TEXT="extracted_text.txt"

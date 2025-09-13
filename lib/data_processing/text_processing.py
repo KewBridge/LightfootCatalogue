@@ -201,7 +201,7 @@ class TextProcessor:
         splits = list(zip(div_split[::2], div_split[1::2]))
 
         # Iterate through all divisions and Check if they match a divison, if not add it to previous divisions
-        prev_div = None
+        prev_div = "NO DIVISION FOUND"
         for div, content in splits:
             if re.match(div_check_regex, div):
                 if div not in struct.keys():
