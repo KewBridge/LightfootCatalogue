@@ -4,8 +4,8 @@
 ocr_extraction_model: "qwen2.5"#null
 output_save_file_name: "lightfootcat"
 output_save_path: "outputs/lightfootcat_with_extract/"    # Where to save the output
-has_columns: True
-double_pages: True
+# has_columns: True
+# double_pages: True
 # define to inherit any missing prompts from the default prompt
 inherit_default: False
 # Path to default file if inheriting from another custom prompt

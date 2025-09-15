@@ -19,6 +19,8 @@ class LayoutDetector:
     CONFIG_OVERWRITE = [
         "USE_TABLE_SEGMENTATION=False"
     ]
+
+
     def __init__(self):
 
         self.analyser = dd.get_dd_analyzer(config_overwrite=self.CONFIG_OVERWRITE)  # instantiate the built-in analyzer similar to the Hugging Face space demo
@@ -86,7 +88,7 @@ class LayoutDetector:
 
         return processed_image
 
-    def process_images(self, images: list[str], save: bool = False, save_path : str="./resources/images/temp_images") -> np.ndarray:
+    def process_images(self, images: Union[list[str], list[np.ndarray]], save: bool = False, save_path : str="./resources/images/temp_images") -> np.ndarray:
         """
         Process a list of images for OCR extraction.
 
@@ -222,68 +224,135 @@ class LayoutDetector:
                     merged_columns.append(box)
         return merged_columns
 
+    def get_boxes_and_midpoints(self, page) -> tuple[list[list[float]], list[tuple[float, float]]]:
+        """
+        Get the bounding boxes and midpoints of the bounding boxes from a page
 
-    def __call__(self, images: list[str], save_path: str="./resources/images/temp_images/") -> list[np.array]:
+        Args:
+            page: A page object from deepdoctection
+
+        Returns:
+            tuple[list[list[float]], list[tuple[float, float]]]: List of bounding boxes and list of midpoints
+        """
+        bboxes = []
+        midpoints = []
+
+        for layout in page.layouts:
+            if layout.text == "":
+                continue
+            bbox = layout.bbox
+
+            bboxes.append(bbox)
+            midpoints.append(self.get_midpoint(bbox))
+
+        return bboxes, midpoints
+
+
+    def get_groups(self, bboxes: list[list[float]], midpoints: list[tuple[float, float]]) -> dict[int, list[list[float]]]:
+        """
+        Group the bounding boxes based on their midpoints using HDBSCAN clustering
+
+        Args:
+            midpoints (list[tuple[float, float]]): List of midpoints of the bounding boxes
+
+        Returns:
+            dict[int, list[list[float]]]: Dictionary of groups of bounding boxes
+        """
+        if len(midpoints) == 0:
+            return {}
+
+        mid_xs = np.array([midpoint[0] for midpoint in midpoints])
+        clustering = HDBSCAN(min_samples=min(10, max(len(mid_xs) // 2, 1))).fit(mid_xs.reshape(-1, 1))
+
+        groups = {}
+
+        for idx, i in enumerate(clustering.labels_):
+            if i not in groups:
+                groups[i] = []
+            groups[i].append(bboxes[idx])
+
+        return groups
+
+
+    def get_columns(self, groups: dict[int, list[tuple[float, float]]]) -> list[np.ndarray]:
+        """
+        Get the columns from the image based on the bounding boxes
+
+        Args:
+            image (np.ndarray): Image array
+            boxes (list[list[float]]): List of bounding boxes
+            padding (float, optional): Padding percentage. Defaults to 0.02.
+
+        Returns:
+            list[np.ndarray]: List of column images
+        """
+        columns = []
+        for group in groups:
+            if group == -1:
+                continue
+            boxes = np.array(groups[group])
+            x1 = min(boxes[:, 0])
+            y1 = min(boxes[:, 1])
+            x2 = max(boxes[:, 2])
+            y2 = max(boxes[:, 3])
+            columns.append(self.pad([x1, y1, x2, y2]))
+        return columns
+
+    
+    def sort_and_process_images(self, images: dict[str, list[np.array]]) -> list[np.array]:
+        """
+        Sort the images based on the file name and process them
+
+        Args:
+            images (dict[str, list[np.array]]): Dictionary of file names and list of image arrays
+
+        Returns:
+            list[np.array]: List of processed image arrays
+        """
+        sorted_images = []
+        for file_name in natsorted(images.keys()):
+            sorted_images.extend(self.process_images(images[file_name], save=False))
+        
+        return sorted_images
+
+
+    def __call__(self, image_path: str) -> list[np.array]:
         """
         Pre-process the images, perform layout detection and seperate into columns of text for OCR
 
         Args:
-            images (list[str]): List of image file paths.
+            images (str): Path to a directory of images or a path to a single image
             save_path (str, optional): Path to save temporary images. Defaults to "./resources/images/temp_images/".
 
         Returns:
             list[np.array]: List of processed image arrays.
         """
         # Pre-process the image and save them into a temp folder
-        #TODO: Do not preprocess the images before layout detection, as it may remove some text boxes
-        _ = self.process_images(images, save=True, save_path=save_path)
+        #_ = self.process_images(images, save=True, save_path=save_path)
 
-        analysed_folder = self.analyser.analyze(path=save_path)
+        if os.path.isdir(image_path):
+            analysed_folder = self.analyser.analyze(path=image_path)
+        elif os.path.isfile(image_path):
+            image_bytes = Path(image_path).read_bytes()
+            analysed_folder = self.analyser.analyze(image=image_path, bytes=image_bytes)
+        else:
+            raise FileNotFoundError(f"No images found under {image_path}. Please pass in either a single image or a directory of images, got {image_path} instead")
         analysed_folder.reset_state()
         doc = iter(analysed_folder)
 
         
-        final_images = {}
+        final_images_dict = {}
 
         for page in doc:
             file_name = page.file_name
-            if file_name not in final_images:
-                final_images[file_name] = []
-            
-            bboxes = []
-            midpoints = []
+            if file_name not in final_images_dict:
+                final_images_dict[file_name] = []
 
-            for layout in page.layouts:
-                if layout.text == "":
-                    continue
-                bbox = layout.bbox
+            bboxes, midpoints = self.get_boxes_and_midpoints(page)
 
-                bboxes.append(bbox)
-                midpoints.append(self.get_midpoint(bbox))
+            groups = self.get_groups(bboxes, midpoints)
 
-            if len(midpoints) == 0:
-                logger.error(f"No text detected in the image {page.file_name}, cannot perform layout detection.")
-                continue
-            mid_xs = np.array([midpoint[0] for midpoint in midpoints])
-            clustering = HDBSCAN(min_samples=min(10, max(len(mid_xs) // 2, 1))).fit(mid_xs.reshape(-1, 1))
-
-            groups = {}
-
-            for idx, i in enumerate(clustering.labels_):
-                if i not in groups:
-                    groups[i] = []
-                groups[i].append(bboxes[idx])
-
-            columns = []
-            for group in groups:
-                if group == -1:
-                    continue
-                boxes = np.array(groups[group])
-                x1 = min(boxes[:, 0])
-                y1 = min(boxes[:, 1])
-                x2 = max(boxes[:, 2])
-                y2 = max(boxes[:, 3])
-                columns.append(self.pad([x1, y1, x2, y2]))
+            columns = self.get_columns(groups)
 
             merged_columns = sorted(self.merge_columns(columns), key=lambda x: x[0])
             
@@ -291,11 +360,8 @@ class LayoutDetector:
             
             for col in merged_columns:
                 cropped_column = image.crop((col[0], col[1], col[2], col[3]))
-                final_images[file_name].append(np.array(cropped_column))
+                final_images_dict[file_name].append(np.array(cropped_column))
 
-        save_dir = Path(save_path)
-
-        # Removing temporary images
-        shutil.rmtree(save_path)
+        final_images = self.sort_and_process_images(final_images_dict)
 
         return final_images

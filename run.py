@@ -4,7 +4,7 @@ logger = get_logger(__name__)
 # OS setting for Pytorch dynamic GPU memory allocation
 logger.info("Setting OS envrionmnet variables")
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
-os.environ["TORCH_USE_CUDA_DSA"] = "1"
+#os.environ["TORCH_USE_CUDA_DSA"] = "1"
 
 import argparse
 from lib.data_processing.data_reader import DataReader
@@ -57,26 +57,17 @@ def main():
     if not(os.path.exists(prompt["output_save_path"])):
         os.makedirs(args.save_path)
 
-
-    ocr_model = OCRModel(prompt=prompt)
-
-    # Load the model
-    logger.info(f"Loading model: {ocr_model.model_name}")
-    ocr_model.model.load()
     # Intialise DataReader
     logger.info(">>> Initializing DataReader...")
-    data_reader = DataReader(args.images, extraction_model=ocr_model, prompt=prompt)
+    data_reader = DataReader(args.images, prompt=prompt)
     # Load the extracted text
     logger.info(">>> Extracting text from images...")
     extracted_text = data_reader(args.temp_text)
 
     if args.test:
-        print("Test mode enabled. Only processing the first/upto 1000 characters")
+        logger.debug("Test mode enabled. Only processing the first/upto 1000 characters")
         extracted_text = extracted_text[:min(1000, len(extracted_text))]
     
-
-    print(f"Unloading model: {ocr_model.model_name}")
-    ocr_model.model.unload()
     if args.ocr_only:
         logger.info(">>> OCR Finished")
         return

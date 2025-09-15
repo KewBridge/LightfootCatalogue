@@ -5,8 +5,8 @@ crop: False
 ocr_extraction_model: "qwen2.5"#null
 output_save_file_name: "hanbury"
 output_save_path: "outputs/hanbury_with_extract/"    # Where to save the output
-has_columns: False
-double_pages: False
+# has_columns: False
+# double_pages: False
 # define to inherit any missing prompts from the default prompt
 inherit_default: False
 # Path to default file if inheriting from another custom prompt

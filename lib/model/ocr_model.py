@@ -45,7 +45,7 @@ class OCRModel(BaseModel):
         self.temperature = self.prompt.get("ocr_temperature", 0.1)
         self.overlap = 100
         self.context_size = 500
-        self.model_name = self.prompt.get("ocr_model", "qwen2")
+        self.model_name = self.prompt.get("ocr_model", "qwen2.5")
         self.extraction_model = None
         self.extraction_model_name = self.prompt.get("ocr_extraction_model", "qwen2.5")
         self.model = self.load_model()
@@ -413,12 +413,12 @@ class OCRModel(BaseModel):
         return merged_text
 
 
-    def __call__(self, images: list[str], text_file: Optional[str] = None, save_file: str = None, debug: bool = False) -> str:
+    def __call__(self, images: str, text_file: Optional[str] = None, save_file: str = None, debug: bool = False) -> str:
         """
         Extracting text from image or loading a temp file
 
         Paramaters:
-            images (list): a list of images to extract text from
+            images (str): the path to a directory of images or a path to a single image
             text_file (str): the path to the text file containing the pre-extracted text to use
             save_file (str): Path to save file
             debug (bool): used when debugging. logs debug messages

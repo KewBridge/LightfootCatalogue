@@ -152,6 +152,9 @@ class TextProcessor:
         text = re.sub(r"ace(\.|a)?e\.?", "aceae", text, flags= re.MULTILINE) # This changes for all others
         text = re.sub(r"FLOR(\.|A)?E", "FLORAE", text, flags= re.MULTILINE) # This changes for all family level ones
         text = re.sub(r"flor(\.|a)?e", "florae", text, flags= re.MULTILINE) # This changes for all others
+
+        # remove any tribe or series text if they are on their own line (basically not part of a folder)
+        text = re.sub(r"^(TRIBE|SERIES)\s+[IVXLCDM\.]+\s*[A-Z]*$", "", text, flags=re.MULTILINE | re.IGNORECASE)
         return text
     
     def _create_division_regex(self, divisions: Optional[list]=None) -> re.Pattern:
