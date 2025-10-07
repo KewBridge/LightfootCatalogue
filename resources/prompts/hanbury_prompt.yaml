@@ -21,17 +21,16 @@ system:
   # context defines the context of the task. This includes the input to the model and the description of said input
   # instructions define the step-by-step instructions for the model to follow through
   instructions: |
-    Reformat the following botanical text **exactly** into JSON according to the provided schema.
+    Reformat the following botanical text EXACTLY into JSON according to the provided SCHEMA.
 
-    **Strict Output Rules:**
-    - The output must be a single **valid JSON object** with no surrounding text, explanations, markdown, or formatting.
-    - **Do not generate any extra text** beyond the required JSON structure.
-    - **All keys must be quoted properly**.
-    - **No trailing commas** should be present.
-    - Extract data **as-is** from the input text; do not modify, paraphrase, or infer missing details.
-    - Make sure all quotation marks, backslashes, and special characters inside description fields are properly escaped according to JSON standards. Double quotes inside content must be escaped as \".
+    - The output must be a single VALID JSON OBJECT with no surrounding text, explanations, markdown, or formatting.
+    - DO NOT GENERATE ANYTHING beyond the required JSON structure.
+    - **ALL KEYS MUST BE QUOTED PROPERLY**.
+    - NO TRAILING COMMAS should be present.
+    - Extract ONLY the text in the providede text; do not modify, paraphrase, infer or assume missing details.
+    - Escape all special characters properly: `[` → `\[`, `]` → `\]`, `.` → `\.` if part of abbreviation or formatting.
     - When extracting text like dates, locations, or scientific references, maintain the exact format from the source without attempting to standardize or reformat.
-    - Any text before the first species must not be included in the JSON output.
+    Output must strictly match this schema:
   # rules define the key-value rules for each expected key in the output json dict
   # rules:
   #   familyName: >
@@ -44,60 +43,92 @@ system:
   # schema defines the output json structure
   schema: default
 
-  examples: 
+  Examples: 
     - input: |
-        RANUNCULACEAE.
+        RANUNCULACEAE
 
-        1. Aconitum Napellus, L. a. A portion of the plant in flower. Hohneck, Vosges, 13 Aug., 1855. Pie de Sancy, Auvergne, Sept., 1858. b. Plant in flower, with root attached.
-
-        2. Aconitum Lycoctonum, L. a. Plant in flower, with root attached. Hohneck, Vosges, 13 Aug., 1855.
+        .
+        1. Aconitum Napellus, L.
+        a. A portion of the plant in flower.
+        Hohneck, Vosges, 13 Aug., 1855. Pic de Sancy, Auvergne,
+        Sept., 1858.
+        b. Plant in flower, with root attached.
+        2. Aconitum Lycocotonum, L.
+        a. Plant in flower, with root attached.
+        Hohneck, Vosges, 13 Aug., 1855.
+        3. Actaea spicata, L.
+        a. Leafy stem with flowers and detached fruit. Cultivated at Clapham Common, 1867.
+        b. Two leafy stems with fruit, and detached fruit.
+        (1) Hohneck, Vosges, 13 Aug., 1855. (2) Auvergne, Sept.,
+        1855.
 
     - output: |
-        {familyContents: [{
-        "familyName": "RANUNCULACEAE", 
-        "species": [ 
+        {
+        "family_name": "RANUNCULACEAE",
+        "species": [
             {
-              "speciesName": "1\. Aconitum Napellus\, L\.",
-              "folders": [ 
-                    {
-                      "description": "a\. A portion of the plant in flower\. Hohneck\, Vosges\, 13 Aug\., 1855\. Pie de Sancy\, Auvergne\, Sept\.\, 1858\."
-                    },
-                    {
-                      "description": "b\. Plant in flower\, with root attached\."
-                    }
-              ]    
+            "species_name": "1\\. Aconitum Napellus, L\\.",
+            "number_of_folders": 2,
+            "number_of_sheets": 0,
+            "folders_and_sheets": [
+                {
+                "description": "a. A portion of the plant in flower. Hohneck, Vosges, 13 Aug\\., 1855. Pic de Sancy, Auvergne, Sept\\., 1858."
+                },
+                {
+                "description": "b. Plant in flower, with root attached."
+                }
+            ]
             },
             {
-              "speciesName": "2\. Aconitum Lycoctonum\, L\.",
-              "folders": [
-                    {
-                      "description": "a\. Plant in flower\, with root attached\. Hohneck\, Vosges\, 13 Aug\.\, 1855\."
-                    },
-              ]
-            }
-          ]
-        }]}
-    - input2: |
-       BURSERACEAE
-       A small tree about 6 feet high; flowered in April, 1868.
-       c. Ditto.
-       From the gardens at "The Tanks," Aden, 21 Jan., 1872;
-       100. Boswellia Carterii, Birdw. "Mohr Madow." Var. A. a, b, c. Leafy twig.
-    - output2: |
-        {familyContents: [{
-        "familyName": "BURSERACEAE", 
-        "species": [ 
+            "species_name": "2\\. Aconitum Lycocotonum, L\\.",
+            "number_of_folders": 1,
+            "number_of_sheets": 0,
+            "folders_and_sheets": [
+                {
+                "description": "a. Plant in flower, with root attached. Hohneck, Vosges, 13 Aug\\., 1855."
+                }
+            ]
+            },
             {
-              "speciesName": "100\. Boswellia Carterii\, Birdw\. \"Mohr Madow.\" Var\. A\.",
-              "folders": [ 
-                    },
-                    {
-                      "description": "a\, b\, c\. Leafy twig\."
-                    }
-              ]    
+            "species_name": "3\\. Actaea spicata, L\\.",
+            "number_of_folders": 2,
+            "number_of_sheets": 0,
+            "folders_and_sheets": [
+                {
+                "description": "a. Leafy stem with flowers and detached fruit. Cultivated at Clapham Common, 1867."
+                },
+                {
+                "description": "b. Two leafy stems with fruit, and detached fruit. (1) Hohneck, Vosges, 13 Aug\\., 1855. (2) Auvergne, Sept\\., 1855."
+                }
+            ]
             }
-          ]
-        }]}
+        ]
+        }
+    - input: |
+        GUTTIFERAE
+
+        .
+        [52. Garcinia Hanburyi, Hook.f.] Garcinia Morella, Desrousse var. pedicellata.
+        a. Leaves.
+        Singapore, D'Almeida. With 6 drawings attached, including a sketch of the tree, leaves, flowers, and dissections of the flower and fruit.
+        [These drawings formed the basis of the illustrations published in the Trans. Linn. Soc., 1864, vol. xxiv. tab. 50a, p. 487. The plant was subsequently raised to the rank of a species by Sir J. D. Hooker, under the name of G Hanburyi, Hook.f. See Journ. Lin. Soc., vol. xiv., p. 485, 1875. Bentl. and Trim. Med. Pl., tab. 33. Hanbury 'Science Papers,' p. 326-333.]
+
+    - output: |
+        {
+        "family_name": "GUTTIFERAE",
+        "species": [
+            {
+            "species_name": "\\[52\\. Garcinia Hanburyi, Hook\\.f\\.\\] Garcinia Morella, Desrousse var\\. pedicellata.",
+            "number_of_folders": 1,
+            "number_of_sheets": 0,
+            "folders_and_sheets": [
+                {
+                "description": "a. Leaves. Singapore, D'Almeida. With 6 drawings attached, including a sketch of the tree, leaves, flowers, and dissections of the flower and fruit. \\[These drawings formed the basis of the illustrations published in the Trans\\. Linn\\. Soc\\., 1864, vol\\. xxiv\\., tab\\. 50a, p\\. 487. The plant was subsequently raised to the rank of a species by Sir J\\. D\\. Hooker, under the name of G Hanburyi, Hook\\.f\\. See Journ\\. Lin\\. Soc\\., vol\\. xiv\\., p\\. 485, 1875. Bentl\\. and Trim\\. Med\\. Pl\\., tab\\. 33. Hanbury 'Science Papers,' p\\. 326-333.\\]"
+                }
+            ]
+            }
+        ]
+        }  
 
 
 
@@ -109,9 +140,9 @@ user:
 
   # the prompt defines the user's prompt to the model
   text: | 
-   Reformat the text below exactly into JSON according to the schema provided.
-    Only output the JSON object and nothing else.
+   Extract the botanical information from the provided text and format it into JSON according to the schema. 
+   Ensure that all special characters are escaped properly and that the output is a single valid JSON object with no additional text or formatting.
   
-   Extracted text:
-   {extracted_text} 
+   Text to extract from:
+   \n\n{extracted_text}\n\n
     

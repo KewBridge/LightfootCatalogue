@@ -15,10 +15,6 @@ from lib.utils import get_logger
 logger = get_logger(__name__)
 
 
-
-#TODO: Reformat the code for datapath being passed in runtime and not during initialisation
-#TODO: reformat to do layout detection before processing and remove cropping as might not need with layout detection
-#TODO: Maybe try integration layout detection within image processor
 class DataReader:
 
     EXTRACTED_TEXT="extracted_text.txt"
@@ -42,9 +38,10 @@ class DataReader:
         self.data_path = data_path
         self.extraction_model = OCRModel(prompt=prompt)
         self.prompt = PromptLoader(prompt) if isinstance(prompt, str) else prompt
-        #self.crop = prompt["crop"] if prompt["crop"] is not None else False
+        self.crop = prompt["crop"] if prompt["crop"] is not None else False
 
-        #self.image_processor = ImageProcessor(self.prompt["padding"],prompt["resize_factor"], prompt["remove_area_perc"], prompt["middle_margin_perc"], prompt["double_pages"])       
+        self.image_processor = ImageProcessor(self.prompt["padding"],prompt["resize_factor"], prompt["remove_area_perc"], prompt["middle_margin_perc"], prompt["double_pages"])       
+
 
     def load_files(self, path: Optional[str]=None) -> list[str]:
         """
@@ -100,6 +97,7 @@ class DataReader:
         
         return all_files
 
+
     def pdf_to_images(self, main_path: str, pdf_path: str) -> list[str]:
         """
         Convert the input pdf into a set of images stored in a folder
@@ -129,7 +127,7 @@ class DataReader:
         return output_dir
 
         
-    def get_data(self) -> list[str]:
+    def get_data(self) -> str:
         """
         Load the images, process them and return a sorted list
 
@@ -137,51 +135,43 @@ class DataReader:
             list[str]: sorted list of post-processed image filenames
         """
 
-        # has_files = lambda path: os.path.exists(path) and bool(os.listdir(path))
+        has_files = lambda path: os.path.exists(path) and bool(os.listdir(path))
 
-        # logger.info("Gathering input data")
-        # pdf_extracted_path = os.path.join(self.data_path, "extracted_images")
+        logger.info("Gathering input data")
+        pdf_extracted_path = os.path.join(self.data_path, "extracted_images")
 
-        # if self.crop:
-        #     logger.info("Cropping is enabled. Cropped images will be saved in a separate directory")
+        if self.crop:
+            logger.info("Cropping is enabled. Cropped images will be saved in a separate directory")
 
-        #     logger.info("Checking if cropped images already exist")
-        #     cropped_dir = os.path.join(self.data_path, self.CROPPED_DIR_NAME)
-        #     pdf_cropped_dir = os.path.join(self.data_path, "extracted_images", self.CROPPED_DIR_NAME)
+            logger.info("Checking if cropped images already exist")
+            cropped_dir = os.path.join(self.data_path, self.CROPPED_DIR_NAME)
+            pdf_cropped_dir = os.path.join(self.data_path, "extracted_images", self.CROPPED_DIR_NAME)
             
-        #     for d in (cropped_dir, pdf_cropped_dir):
-        #         if has_files(d):
-        #             logger.info(f"Cropped images already exist in {d}. Using them instead of cropping again")
-        #             return natsorted(self.load_files(d))
+            for d in (cropped_dir, pdf_cropped_dir):
+                if has_files(d):
+                    logger.info(f"Cropped images already exist in {d}. Using them instead of cropping again")
+                    return d#natsorted(self.load_files(d))
             
-        #     logger.info("No cropped images found. Cropping the images now")
+            logger.info("No cropped images found. Cropping the images now")
 
 
-        #     images = self.load_files(pdf_extracted_path) if has_files(pdf_extracted_path) else self.load_files() 
+            images = self.load_files(pdf_extracted_path) if has_files(pdf_extracted_path) else self.load_files() 
 
-        #     logger.info("Cropping Images...")
-        #     images = self.image_processor(images)
-        # else:
-        #     logger.info("Cropping is disabled. Using the original images")
-        #     images = self.load_files(pdf_extracted_path) if has_files(pdf_extracted_path) else self.load_files() 
+            logger.info("Cropping Images...")
+            images = self.image_processor(images)
 
-        # if not images:
-        #     raise FileNotFoundError(f"No images or PDFs found under {self.data_path}")
+            if not images:
+                raise FileNotFoundError(f"No images or PDFs found under {self.data_path}")
 
-        # # return the images sorted wrt to filename
-        # return natsorted(images
-
-        if os.path.isdir(self.data_path):
-            return self.data_path
-        elif os.path.isfile(self.data_path) and self.data_path.split(".")[-1].lower() in self.ALLOWED_EXT:
-            if self.data_path.split(".")[-1].lower() == "pdf":
-                logger.info("Detected PDF! Converting to images ...")
-                image_path = self.pdf_to_images(os.path.dirname(self.data_path), self.data_path)
-                return image_path
-            return self.data_path # if a single image is passed leave it as it is
+            return pdf_cropped_dir if has_files(pdf_extracted_path) else cropped_dir
         else:
-            raise FileNotFoundError(f"No images found under {self.data_path}. Please pass in either a pdf or a directory of images, got {self.data_path} instead")
+            logger.info("Cropping is disabled. Using the original images")
+            images = self.load_files(pdf_extracted_path) if has_files(pdf_extracted_path) else self.load_files()
 
+            if not images:
+                raise FileNotFoundError(f"No images or PDFs found under {self.data_path}")
+
+            return pdf_extracted_path if has_files(pdf_extracted_path) else self.data_path
             
     
     def __call__(self, temp_text: Optional[str] = None) -> str:

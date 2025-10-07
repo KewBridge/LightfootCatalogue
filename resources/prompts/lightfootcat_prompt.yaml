@@ -1,6 +1,8 @@
 #Define variable configuration
 # Model config
 #model: "qwen2.5"
+crop: True
+double_pages: True
 ocr_extraction_model: "qwen2.5"#null
 output_save_file_name: "lightfootcat"
 output_save_path: "outputs/lightfootcat_with_extract/"    # Where to save the output
@@ -52,9 +54,7 @@ system:
         2 folders. 07
         Folder 1. Acer Pseudo-Platanus
         [(G]. i. "Maple. Bulls: [Bulstrode]
-        Park” [JL]
-        Folder 2. Acer Pseudo-Platanus
-        [TA].
+        Park” [JL] Folder 2. Acer Pseudo-Platanus [TA].
 
     - output_species_and_records: |
         {
@@ -96,12 +96,7 @@ system:
         2 folders.
 
         Folder 1, Campanula rapunculus
-        [TA].
-
-        ightfoot
-
-        Folder 2. Campanula rapunculus
-        [G].
+        [TA].Folder 2. Campanula rapunculus [G].
 
     - output: |
         {

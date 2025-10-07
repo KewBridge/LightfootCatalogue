@@ -3,8 +3,8 @@
 #SBATCH --job-name="lightfootcat test job"
 #SBATCH --partition=gpu
 #SBATCH --gpus=a100:1
-#SBATCH --mem=16GB
-#SBATCH --cpus-per-task=8
+#SBATCH --mem=32GB
+#SBATCH --cpus-per-task=16
 #SBATCH --export=all
 
 CATALOGUE=${CATALOGUE_NAME:-lightfootcat}

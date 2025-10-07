@@ -37,6 +37,8 @@ class ImageProcessor:
         self.middle_margin_perc = middle_margin_perc
         self.double_pages = double_pages
 
+
+    # ================= Conversion Methods =================
     def pil_to_cv2(self, image: Image.Image) -> np.ndarray:
         """
         Conver PIL image to cv2 image
@@ -48,6 +50,7 @@ class ImageProcessor:
 
         return cv2_image
 
+
     def cv2_to_pil(self, image: np.ndarray) -> Image.Image:
         """
         Convert cv2 image to PIL image
@@ -56,14 +59,15 @@ class ImageProcessor:
 
         return Image.fromarray(image)
 
+
     def box_area(self, box: dict) -> int:
         """
         Return the area of of the bounding box
         """
         return box['w'] * box['h']
 
-    # ================= ROI Detection & Cropping Methods =================
 
+    # ================= ROI Detection & Cropping Methods =================
     def identify_roi(self, path: Union[str, np.array]) -> list[int]:
         """
         Identify the region of interest in an image to crop / zoom into
@@ -101,6 +105,7 @@ class ImageProcessor:
 
         return [x, y, w, h]
 
+
     def crop_and_resize(self, path: Union[str, np.ndarray]) -> Image.Image:
         """
         Performs the following task in order:
@@ -133,6 +138,7 @@ class ImageProcessor:
             cropped = cropped.resize((int(w * self.resize_factor), int(h * self.resize_factor)))
 
         return cropped
+
 
     def crop_image(self, path: str, save_file_name: Optional[str] = None) -> tuple[list[np.ndarray], list[str]]:
         """
@@ -177,6 +183,7 @@ class ImageProcessor:
 
         return split_imgs, saved_paths
 
+
     def __call__(self, images: list[str], save_file_name: Optional[str] = None) -> list[str]:
         """
         Crop the image, pad it and save the resized image
@@ -193,9 +200,9 @@ class ImageProcessor:
             _, paths = self.crop_image(image_path, save_file_name)
             new_image_paths.extend(paths)
         return new_image_paths
+    
 
     # ================= Splitting Methods =================
-
     def get_lines(self, image: Union[str, np.ndarray]) -> Optional[np.ndarray]:
         """
         Given an image, perform binary thresholding, Canny edge detection
@@ -219,6 +226,7 @@ class ImageProcessor:
         # Find lines using Hough Lines Transformation
         lines = cv2.HoughLinesP(edges, rho=1, theta=np.pi / 180, threshold=200, minLineLength=80)
         return lines
+
 
     def filter_lines(self, lines: list, middle_line: int) -> list:
         """
@@ -251,6 +259,7 @@ class ImageProcessor:
                 middle_lines.append(line[0])
 
         return middle_lines
+
 
     def split_image(self, image: Union[str, np.ndarray], name: str = None) -> tuple[Optional[np.ndarray], Optional[np.ndarray]]:
         """
@@ -290,6 +299,7 @@ class ImageProcessor:
             print(f">>>> Splitting unsuccessful: {name} | Middle lines found: 0 | Total lines: {line_length}")
             print("\tFalling back to threshold-based splitting.")
             return self.split_image_with_thresholding(image, name)
+
 
     def split_image_with_thresholding(self, image: Union[str, np.ndarray], name: str = None) -> tuple[Optional[np.ndarray], Optional[np.ndarray]]:
         """

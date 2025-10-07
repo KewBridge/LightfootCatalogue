@@ -1,13 +1,16 @@
+# Python libraries
 #from taxonerd import TaxoNERD
 import spacy
 import re
 import string
 from fuzzywuzzy import fuzz
 
+# Get the logger for this file
 from lib.utils import get_logger
 logger = get_logger(__name__)
 
 class TextChunker:
+
 
     def __init__(self, overlap: int = 100, max_chunk_size: int = 2000,
                  window_size: int = 10, threshold: int = 90):
@@ -25,6 +28,15 @@ class TextChunker:
 
 
     def chunk_text_for_cleaning(self, text: str, add_overlap: bool = True) -> list[str]:
+        """Chunks the input text into smaller segments for cleaning.
+
+        Args:
+            text (str): The input text to be chunked.
+            add_overlap (bool, optional): Whether to add overlapping text between chunks. Defaults to True.
+
+        Returns:
+            list[str]: A list of text chunks.
+        """
 
         chunks = []
 
@@ -44,32 +56,7 @@ class TextChunker:
                     chunks.append("\n".join(current_chunk))
                 current_chunk = []
                 chunk_size = 0
-
-                # lines = paragraph.split("\n")
-                # num_of_lines_not_taken = len(lines)
-
-                # while num_of_lines_not_taken > 0:
-
-                #     num_lines_to_take = min(int(float(self.max_chunk_size / para_length) * len(lines)), num_of_lines_not_taken)
-
-                #     lines_to_add = lines[:num_lines_to_take]
-                #     joined_lines = "\n".join(lines_to_add)
-
-                #     while len(joined_lines) > self.max_chunk_size and num_lines_to_take > 1:
-                #         num_lines_to_take -= 1
-                #         lines_to_add = lines[:num_lines_to_take]
-                #         joined_lines = "\n".join(lines_to_add)
-
-
-                #     if len(joined_lines) <= self.max_chunk_size:
-                #         current_chunk.append(joined_lines)
-                #         chunk_size += len(joined_lines)
-                    
-                #     if current_chunk:
-                #         chunks.append("\n\n".join(current_chunk))
-                #     current_chunk = []
-                #     chunk_size = 0
-                #     num_of_lines_not_taken -= num_lines_to_take        
+    
 
         if current_chunk:
             chunks.append("\n".join(current_chunk) if len(current_chunk) > 1 else current_chunk[0])
@@ -82,6 +69,7 @@ class TextChunker:
 
         return chunks
     
+
     def extract_tokens_and_spans(self, text: str) -> tuple[list[str], list[tuple[int, int]]]:
         """
         Extracts tokens and their character spans from a given text.
@@ -105,7 +93,7 @@ class TextChunker:
         return tokens, spans
 
 
-    def merge_chunks_fuzzy(self, chunk_a, chunk_b):
+    def merge_chunks_fuzzy(self, chunk_a: str, chunk_b: str) -> str:
         """
         Fuzzy-merge two text chunks by detecting an overlap of up to `self.overlap`
         (scanning `chunk_b` in a sliding window of that many cleaned tokens + a little buffer),
@@ -157,7 +145,16 @@ class TextChunker:
             return chunk_a + "\n\n" + chunk_b
 
 
-    def merge_sentences(self, sents):
+    def merge_sentences(self, sents: list[str]) -> str:
+        """
+        Merges a list of sentences into a single chunk using fuzzy merging.
+
+        Args:
+            sents (list[str]): The list of sentences to merge.
+
+        Returns:
+            str: Merged sentence
+        """
 
         assert len(sents) > 0, "No sentences to merge"
 
@@ -175,24 +172,38 @@ class TextChunker:
 
 class SpeciesChunker:
 
-    SPECIES_REGEX = r"([A-Z][a-z]+(?: [a-z]+)\s?(?:[a-zA-Z\[\]\(\)\.\s\,]+)?)"
+    SPECIES_REGEX = r"\b([A-Z][a-z]+(?: [a-z]+)\s?(?:[a-zA-Z\[\]\(\)\.\s\,]+)?)\b"
 
-    def __init__(self, threshold=70):
+
+    def __init__(self, threshold: int = 70):
 
         self.threshold = threshold
         self.nlp = None
         
+    
     def load(self):
+        """
+        Load the TaxoNERD model for species chunking.
+
+        Raises:
+            RuntimeError: If the chunker is already loaded.
+        """
         if self.nlp is not None:
             raise RuntimeError("Chunker is already loaded. Please create a new instance to load again.")
         
-        # = TaxoNERD(prefer_gpu=False)
-        self.nlp = spacy.load("en_ner_eco_md")#taxonerd.load("en_core_eco_md", exclude=[], threshold=self.threshold)
+        self.nlp = spacy.load("en_ner_eco_md")
+
 
     def chunk_species(self, text: str) -> list[str]:
         """
-        Chunk the text into species records using TaxoNERD.
+         Chunk the text into species records using TaxoNERD.
         Returns a list of dictionaries with species and folders.
+
+        Args:
+            text (str): The text to chunk.
+
+        Returns:
+            list[str]: A list of chunked species records.
         """
         if self.nlp is None:
             print("Chunker is not loaded. Loading Chunker...")
@@ -203,7 +214,7 @@ class SpeciesChunker:
 
         all_valid_species = "|".join(re.escape(i.text) for i in species_names if re.match(self.SPECIES_REGEX, i.text))
 
-        split_regex = re.compile(rf"^(([0-9]+\.\s?)?(\s+|-)?({all_valid_species})\s*.*)")
+        split_regex = re.compile(rf"^(([0-9]+\.\s?)?(\s+|-)?({all_valid_species}))")
 
         text_splits = text.split("\n")
 
@@ -213,29 +224,37 @@ class SpeciesChunker:
 
         for line in text_splits:
             if not(line.strip()):
-                #print("Skipping empty line")
+
                 continue
             if re.match(split_regex, line):
-                #(current_chunk)
+
                 if current_chunk:
                     chunks.append(current_chunk.strip())
-                    #print("Chunk added:\n", current_chunk.strip())
-                    #print("=" * 50)
+
 
                 current_chunk = line.strip()
-                #print("Matched:", line)
-                #print(current_chunk)
+
             else:
                 current_chunk += "\n" + line.strip()
-                #print("Not matched:", line)
+
         
         if current_chunk:
             chunks.append(current_chunk.strip())
         
         return chunks
     
-    def group_into_major_chunks(self, chunks: list[str], max_chunk_size: int = 1000) -> list[str]:
 
+    def group_into_major_chunks(self, chunks: list[str], max_chunk_size: int = 1000) -> list[str]:
+        """
+        Groups smaller chunks into larger major chunks without exceeding the specified maximum chunk size.
+
+        Args:
+            chunks (list[str]): The list of chunks to group.
+            max_chunk_size (int, optional): The maximum size of each major chunk. Defaults to 1000.
+
+        Returns:
+            list[str]: A list of major chunks.
+        """
         major_chunks = []
         current_chunk = ""
 

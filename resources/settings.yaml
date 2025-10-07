@@ -12,13 +12,13 @@ ocr_temperature: 0.01
 transcription_temperature: 0.01
 timeout: 4 # Number of tries
 # Data reader config
-# crop: True
-# padding: 100.0
-# resize_factor: 1
-# remove_area_perc: 0.01
-# middle_margin_perc: 0.20
-# has_columns: True
-# double_pages: False
+crop: True
+padding: 100.0
+resize_factor: 1
+remove_area_perc: 0.01
+middle_margin_perc: 0.20
+has_columns: False
+double_pages: False
 # define to inherit any missing prompts from the default prompt+
 inherit_default: False
 # Path to default file if inheriting from another custom prompt

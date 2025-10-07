@@ -240,13 +240,13 @@ class PromptLoader:
         """
 
         system_prompt = (
-            "You are an expert in extracting text from images."
-            "Do not perform any grammatical corrections. Ignore Page numbers and any other text that is not part of the main body text.\n"
-            "Do not generate any additional text or explanations."
+            "You are an expert in extracting verbatim text from images."
+            #"Do not perform any grammatical corrections. Ignore Page numbers and any other text that is not part of the main body text.\n"
+            #"Do not generate any additional text or explanations."
         ) if not system_prompt else system_prompt
 
         image_prompt = (
-            "Extract only the main body text from the image, preserving the original structure and formatting." 
+            "Please perform OCR on this image.Return all verbatim text without any explanation." 
         ) if not image_prompt else image_prompt
 
         return [dict(role="system", content=[dict(type="text", text=system_prompt)]),

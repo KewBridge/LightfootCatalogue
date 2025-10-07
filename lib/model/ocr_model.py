@@ -63,16 +63,26 @@ class OCRModel(BaseModel):
             list: Image extraction conversation to VL model
         """
 
+        # system_prompt = (
+        #     "You are an expert in extracting text from images."
+        #     "Do not perform any grammatical corrections. Ignore Page numbers and any other text that is not part of the main body text.\n"
+        #     "Only extract literal text from the image.\n"
+        #     "Do not add or insert any new content.\n"
+        #     "If the text is unclear or incomplete, leave it blank."
+        # )
+
+        # image_prompt = (
+        #     "Extract only the main body text from the image, preserving the original structure and formatting. \n"
+        # )
+
         system_prompt = (
-            "You are an expert in extracting text from images."
-            "Do not perform any grammatical corrections. Ignore Page numbers and any other text that is not part of the main body text.\n"
-            "Only extract literal text from the image.\n"
-            "Do not add or insert any new content.\n"
-            "If the text is unclear or incomplete, leave it blank."
+            "You are an expert in extracting verbatim text from images."
+            #"Do not perform any grammatical corrections. Ignore Page numbers and any other text that is not part of the main body text.\n"
+            #"Do not generate any additional text or explanations."
         )
 
         image_prompt = (
-            "Extract only the main body text from the image, preserving the original structure and formatting. \n"
+            "Please perform OCR on this image. Return all verbatim text without any explanation." 
         )
 
         return self.prompt.getImagePrompt(system_prompt, image_prompt)
@@ -236,47 +246,7 @@ class OCRModel(BaseModel):
             text = self.extraction_model(message, [image])[0]
         
         return text.strip()
-        
-    # def ocr_page_with_columns(self, path_to_image: Union[str, np.ndarray]) -> str:
-
-    #     if isinstance(path_to_image, str):
-    #         img = cv2.imread(path_to_image)
-    #         grey_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    #     elif isinstance(path_to_image, np.ndarray):
-    #         grey_img = path_to_image
-    #     else:
-    #         raise ValueError("Input must be a file path or a numpy array.")
-            
-    #     cuts = self.detect_column_cuts(grey_img)
-
-    #     # define our column boxes
-    #     xs = [0] + cuts + [grey_img.shape[1]]
-    #     text = []
-        
-    #     #col_imgs = []
-    #     for left, right in zip(xs[:-1], xs[1:]):
-    #         col_img = grey_img[:, left:right]
-            
-    #         #col_imgs.append(col_img)
-    #         txt = self.single_image_extract(col_img)
-    #         text.append(txt.strip())
-    #     # join them in reading order, separated by two line breaks
-    #     return "\n\n\n\n\n".join(text)
     
-    def extract_text_from_image(self, image:np.ndarray) -> list[str]:
-        """
-        Extract text from a single image
-
-        Parameters:
-            image (str): path to the image
-
-        Returns:
-            list: extracted text from the image
-        """
-        
-        
-        # Load the image
-        return self.single_image_extract(image)
     
 
     def clean_text(self, text):
@@ -358,7 +328,7 @@ class OCRModel(BaseModel):
             #print(f">>> Batch {ind + 1} starting...")
 
             logger.debug("Extracting text from image")
-            extracted_text = self.extract_text_from_image(batch)
+            extracted_text = self.single_image_extract(batch)
 
             cleaned_text = self.clean_text(extracted_text) if clean else extracted_text
 

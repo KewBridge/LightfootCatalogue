@@ -7,46 +7,6 @@ from lib.utils import get_logger
 logger = get_logger(__name__)
 
 
-# TODO: Improve regex / code for identifying family names
-
-# TODO: Strictly split by family only
-# THEN Under each family split by tribe
-FAMILY_REGEX_PATTERN = """
-                          [\*"\.]*                # Optional leading asterisks or quotes
-                          (?:
-                            (?i:TRIBE|SERIES)   # Match either "Tribe" or "Series"
-                            \s+                # Ensure at least one space
-                            [IVXLCDM\.]+         # Match Roman numerals (I, V, X, L, C, D, M)
-                            \s+                # Ensure at least one space before the family name
-                            ([A-Z\-]+(EE\.?|
-                                    (AC|OR)EAE|
-                                    Æ|
-                                    (ACE|ORE|FER|NE)\.E\.?|
-                                    AE|
-                                    ORAE|
-                                    (?i:OR\.E))\.?|
-                                    \w+\.)?
-                            |
-                            [A-Z\-]+((AC|OR)EAE|Æ|(ACE|ORE|FER|NE)\.E\.?|AE|ORAE|OR\.E)\.? # All-uppercase families ending with ACEAE (any number of letters before ACEAE)
-                            |
-                            (COMPOSITAE
-                            |CRUCIFERAE
-                            |GRAMINEAE
-                            |GUTTIFERAE
-                            |LABIATAE
-                            |LEGUMINOSAE
-                            |PALMAE
-                            |UMBELLIFERAE
-                            |PAPILIONACEAE)\.? # All-uppercase families ending with ACEAE (any number of letters before ACEAE)
-                          )
-                          [\*"\.]*                # Optional trailing asterisks or quotes
-                          
-
-"""
-FAMILY_REGEX_WITH_LOOKAHEAD = re.compile(rf"(?={FAMILY_REGEX_PATTERN})", re.VERBOSE)
-FAMILY_REGEX = re.compile(rf"({FAMILY_REGEX_PATTERN})", re.VERBOSE)
-
-
 class TextProcessor:
 
     def __init__(self):
@@ -63,7 +23,7 @@ class TextProcessor:
         ]
         legacy_alts = "|".join([re.escape(alt) for alt in legacy])
 
-        self.family_regex = rf"\b([A-Z]+ACEAE|{legacy_alts})\b"
+        self.family_regex = rf"\b([A-Z]+ACEAE|{legacy_alts}|[A-Z]+EAE)\b"
         # Species Regex
         self.species_regex_pattern = """(?:\d+\.\s)?
                                         [A-Z][a-z\-]+
@@ -79,7 +39,6 @@ class TextProcessor:
         self.species_chunker = SpeciesChunker()
 
 
-#TODO: update for family, tribe, series and species
     def __call__(self, text: str, divisions: list, max_chunk_size: int = 3000):
         
         # Pre-process input text to clean it
@@ -106,7 +65,8 @@ class TextProcessor:
             struct[current_div] = family_split
         
         return struct
-# TODO:  update for family, tribe, series and species
+
+
     def split_by_families(self, text: str):
 
         finds = re.finditer(self.family_regex, text)
@@ -147,16 +107,18 @@ class TextProcessor:
         text = re.sub(r"Æ", "AE", text, flags=re.MULTILINE)
         text = re.sub(r"œ", "ae", text, flags=re.MULTILINE)
 
-        text = re.sub(r"NE(\.|A)?E\.?", "NEAE", text, flags= re.MULTILINE) # This changes for all family level ones")
-        text = re.sub(r"ACE(\.|A)?E\.?", "ACEAE", text, flags= re.MULTILINE) # This changes for all family level ones
+        text = re.sub(r"(?: [A-Z]{2,})\.A\.", "EAE", text)
+        text = re.sub(r"(?: [A-Z]{2,})E(\.|A)?E\.?", "EAE", text, flags= re.MULTILINE) # This changes for all family level ones")
+        text = re.sub(r"(?: [A-Z]{2,})ACE(\.|A)?(\.|E)?\.?", "ACEAE", text, flags= re.MULTILINE) # This changes for all family level ones
         text = re.sub(r"ace(\.|a)?e\.?", "aceae", text, flags= re.MULTILINE) # This changes for all others
-        text = re.sub(r"FLOR(\.|A)?E", "FLORAE", text, flags= re.MULTILINE) # This changes for all family level ones
+        text = re.sub(r"(?: [A-Z]{2,})FLOR(\.|A)?(\.|E)?\.?", "FLORAE", text, flags= re.MULTILINE) # This changes for all family level ones
         text = re.sub(r"flor(\.|a)?e", "florae", text, flags= re.MULTILINE) # This changes for all others
 
         # remove any tribe or series text if they are on their own line (basically not part of a folder)
-        text = re.sub(r"^(TRIBE|SERIES)\s+[IVXLCDM\.]+\s*[A-Z]*$", "", text, flags=re.MULTILINE | re.IGNORECASE)
+        text = re.sub(r"^(TRIBE|SERIES)\s+[IVXLCDM\.]+\s*[A-Z.]*$", "", text, flags=re.MULTILINE | re.IGNORECASE)
         return text
     
+
     def _create_division_regex(self, divisions: Optional[list]=None) -> re.Pattern:
         """
         Generated the division regex
@@ -173,6 +135,7 @@ class TextProcessor:
         division_str = "|".join(map(re.escape, divisions))
         return re.compile(f"(?:\d+\.?\s+)?({division_str})\.?", re.IGNORECASE)
     
+
     def split_by_divisions(self, text: str, divisions: list) -> dict:
         """
         Split the text by division and clean the output to get a structured hierarchy of divisions
@@ -217,6 +180,7 @@ class TextProcessor:
 
         return struct
 
+    
     def make_text_blocks(self, text_structure, max_chunk_size=3000, overlap_context=1000):
 
         text_blocks = []

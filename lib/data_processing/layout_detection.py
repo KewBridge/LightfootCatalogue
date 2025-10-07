@@ -1,10 +1,9 @@
+#Python modules
 from typing import Union
 import cv2
 from natsort import natsorted
 import os
 import numpy as np
-from lib.utils import get_logger
-logger = get_logger(__name__)
 import tempfile
 from pathlib import Path
 import shutil
@@ -14,6 +13,12 @@ import deepdoctection as dd
 from jdeskew.estimator import get_angle
 from jdeskew.utility import rotate
 import gc
+from tqdm import tqdm
+
+# Custom modules
+from lib.utils import get_logger
+logger = get_logger(__name__)
+
 
 class LayoutDetector:
     CONFIG_OVERWRITE = [
@@ -22,21 +27,49 @@ class LayoutDetector:
 
 
     def __init__(self):
-
+        """
+        Initialize the LayoutDetector with a deepdoctection analyzer.
+        """
+        
+        logger.info("Initializing Layout Detector")
         self.analyser = dd.get_dd_analyzer(config_overwrite=self.CONFIG_OVERWRITE)  # instantiate the built-in analyzer similar to the Hugging Face space demo
+        logger.info("Layout Detector initialized")
+
+
+    def load(self):
+        """
+        Load the deepdoctection analyzer if not already loaded.
+        """
+        if self.analyser is None:
+            logger.info("Loading Layout Detector")
+            self.analyser = dd.get_dd_analyzer(config_overwrite=self.CONFIG_OVERWRITE)
+        else:
+            logger.info("Layout Detector already loaded")
+
 
     def unload(self):
+        """
+        Unload the deepdoctection analyzer and free up resources.
+        """
+        logger.info("Unloading Layout Detector")
         del self.analyser
         gc.collect()
         self.analyser = None
 
-    def load(self):
-        if self.analyser is None:
-            self.analyser = dd.get_dd_analyzer(config_overwrite=self.CONFIG_OVERWRITE)
 
-    def deskew(self, image_array):
+    def deskew(self, image_array: np.ndarray) -> np.ndarray:
+        """
+        Deskew the image using jdeskew library.
+
+        Args:
+            image_array (np.ndarray): The input image as a numpy array.
+
+        Returns:
+            np.ndarray: Deskewed image as a numpy array.
+        """
         angle = get_angle(image_array)
         return rotate(image_array, angle)
+
 
     def process_image(self, image: Union[str, np.ndarray]) -> np.ndarray:
         """
@@ -88,7 +121,8 @@ class LayoutDetector:
 
         return processed_image
 
-    def process_images(self, images: Union[list[str], list[np.ndarray]], save: bool = False, save_path : str="./resources/images/temp_images") -> np.ndarray:
+
+    def process_list_of_images(self, images: Union[list[str], list[np.ndarray]], save: bool = False, save_path : str="./resources/images/temp_images") -> np.ndarray:
         """
         Process a list of images for OCR extraction.
 
@@ -105,7 +139,7 @@ class LayoutDetector:
                 shutil.rmtree(save_path)
             save_dir.mkdir(parents=True, exist_ok=True)
 
-
+        #logger.info(f"Pre-OCR-Processing {len(images)} images")
         processed_images = []
         for image in images:
             processed = self.process_image(image)
@@ -263,13 +297,23 @@ class LayoutDetector:
 
         mid_xs = np.array([midpoint[0] for midpoint in midpoints])
         clustering = HDBSCAN(min_samples=min(10, max(len(mid_xs) // 2, 1))).fit(mid_xs.reshape(-1, 1))
+        labels = clustering.labels_
+
+        # if all noise then use less minimum samples
+        if np.all(labels == -1):
+            logger.info("All points classified as noise, reducing min_samples to 2")
+            clustering = HDBSCAN(min_samples=2).fit(mid_xs.reshape(-1, 1))
+            labels = clustering.labels_
+        
+        # if still all noise then assign all to one group
+        if np.all(labels == -1):
+            logger.info("All points still classified as noise, assigning all to one group")
+            labels = np.zeros(len(mid_xs), dtype=int)
 
         groups = {}
 
-        for idx, i in enumerate(clustering.labels_):
-            if i not in groups:
-                groups[i] = []
-            groups[i].append(bboxes[idx])
+        for idx, i in enumerate(labels):
+            groups.setdefault(i, []).append(bboxes[idx])
 
         return groups
 
@@ -310,9 +354,12 @@ class LayoutDetector:
             list[np.array]: List of processed image arrays
         """
         sorted_images = []
-        for file_name in natsorted(images.keys()):
-            sorted_images.extend(self.process_images(images[file_name], save=False))
-        
+        total_images = sum([len(v) for v in images.values()])
+
+        logger.info(f"Sorting and processing {total_images} images from {len(images)} files")
+        for file_name in tqdm(natsorted(images.keys()), desc="Sorting and processing images", unit="image"):
+            sorted_images.extend(self.process_list_of_images(images[file_name], save=False))
+        logger.info(f"Sorted and processed {len(sorted_images)} images from {len(images)} files")
         return sorted_images
 
 
@@ -358,10 +405,15 @@ class LayoutDetector:
             
             image = Image.open(page.location)
             
+            if len(merged_columns) == 0:
+                logger.info(f"No columns found in {file_name}, Skipping the image, please check for issues.\n\n {columns} \n\n|\n\n {groups} \n\n|\n\n {bboxes} \n\n|\n\n {midpoints} \n\n")
+                continue
+
+            logger.info(f"Found {len(merged_columns)} columns in {file_name}")
             for col in merged_columns:
                 cropped_column = image.crop((col[0], col[1], col[2], col[3]))
                 final_images_dict[file_name].append(np.array(cropped_column))
 
         final_images = self.sort_and_process_images(final_images_dict)
-
+        
         return final_images

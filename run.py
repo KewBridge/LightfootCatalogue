@@ -4,7 +4,7 @@ logger = get_logger(__name__)
 # OS setting for Pytorch dynamic GPU memory allocation
 logger.info("Setting OS envrionmnet variables")
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
-#os.environ["TORCH_USE_CUDA_DSA"] = "1"
+os.environ["TORCH_USE_CUDA_DSA"] = "1"
 
 import argparse
 from lib.data_processing.data_reader import DataReader
