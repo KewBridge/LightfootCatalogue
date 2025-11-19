@@ -1,10 +1,11 @@
 #Define variable configuration
+output_save_file_name: "default"
+output_save_path: "outputs/default/"    # Where to save the output
+
 # Model config
 model: "qwen2.5"
-output_save_file_name: "default"
 max_tokens: 4096
 max_chunk_size: 1000
-output_save_path: "outputs/default/"    # Where to save the output
 batch_size: 1
 ocr_model: "mistral7b"
 ocr_extraction_model: "qwen2.5"
@@ -19,9 +20,7 @@ remove_area_perc: 0.01
 middle_margin_perc: 0.20
 has_columns: False
 double_pages: False
-# define to inherit any missing prompts from the default prompt+
+# define to inherit any missing prompts from the default prompt
 inherit_default: False
 # Path to default file if inheriting from another custom prompt
 default_file: None
-
-# Lets define the pattern for Tribe, Series and Family names in catalogue

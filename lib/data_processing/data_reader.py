@@ -174,19 +174,16 @@ class DataReader:
             return pdf_extracted_path if has_files(pdf_extracted_path) else self.data_path
             
     
-    def __call__(self, temp_text: Optional[str] = None) -> str:
+    def __call__(self) -> str:
         """
-        Checks if the images have already been extracted and if the provided temporary text file exists
-
-        Args:
-            temp_text (str, optional): temporary text file path. Defaults to None.
+        Returns the extracted text from the images or loads it from a temp file if it exists
 
         Returns:
             str: The extracted text
         """
         
         # check for passed in temp extracted text file or default extracted text file. If found, load and return the text
-        temp_text_file = os.path.join(self.data_path, temp_text) if not(temp_text is None) else os.path.join(self.data_path, self.EXTRACTED_TEXT)
+        temp_text_file = os.path.join(self.data_path, self.EXTRACTED_TEXT)
         if not(temp_text_file is None) and os.path.isfile(temp_text_file):
             logger.info("Temperory text file found")
             return self.extraction_model([], temp_text_file)
