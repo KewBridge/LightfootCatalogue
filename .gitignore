@@ -1,8 +1,12 @@
 # ignore all images
 /resources/images
 /resources/model_weights
-/outputs/
+outputs/*
+!outputs/logs
+*.out
 temp.txt
 slurm-*.out
 /.*/
 */__pycache__/
+*/.ipynb_checkpoints/
+*.pyc
