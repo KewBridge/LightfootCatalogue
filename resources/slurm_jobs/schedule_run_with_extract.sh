@@ -6,6 +6,7 @@
 #SBATCH --mem=32GB
 #SBATCH --cpus-per-task=16
 #SBATCH --export=all
+#SBATCH --output=outputs/logs/slurm-%j.out
 
 CATALOGUE=${CATALOGUE_NAME:-lightfootcat}
 

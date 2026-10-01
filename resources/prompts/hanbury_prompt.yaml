@@ -1,8 +1,8 @@
 #Define variable configuration
 # Model config
-#model: "qwen2.5"
+model: "gpt-oss-120b"
 crop: False
-ocr_extraction_model: "qwen2.5"#null
+ocr_extraction_model: "qwen2.5"#"llama4-maverick-17b"#
 output_save_file_name: "hanbury"
 output_save_path: "outputs/hanbury_with_extract/"    # Where to save the output
 # has_columns: False

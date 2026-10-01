@@ -1,9 +1,9 @@
 #Define variable configuration
 # Model config
-#model: "qwen2.5"
+model: "gpt-oss-120b"
 crop: True
 double_pages: True
-ocr_extraction_model: "qwen2.5"#null
+ocr_extraction_model: "qwen2.5"#"llama4-maverick-17b"#
 output_save_file_name: "lightfootcat"
 output_save_path: "outputs/lightfootcat_with_extract/"    # Where to save the output
 # has_columns: True
@@ -56,7 +56,7 @@ system:
         [(G]. i. "Maple. Bulls: [Bulstrode]
         Park” [JL] Folder 2. Acer Pseudo-Platanus [TA].
 
-    - output_species_and_records: |
+    - output: |
         {
         "family_name": "ACERACEAE",
         "species": [

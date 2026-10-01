@@ -26,4 +26,5 @@ dependencies:
     - natsort
     - fuzzywuzzy
     - python-Levenshtein
-    - taxonerd  
+    - taxonerd
+    - groq

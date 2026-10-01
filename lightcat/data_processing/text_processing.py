@@ -1,0 +1,198 @@
+import re
+from typing import Optional, Iterator, Match
+import lightcat.config as config
+from lightcat.data_processing.chunker import SpeciesChunker
+
+# Logging
+from lightcat.utils import get_logger
+logger = get_logger(__name__)
+
+
+class TextProcessor:
+
+    def __init__(self):
+        
+        # Family Regex
+        # self.family_regex = re.compile(rf"""(?P<PAGENOSTART>^\d+)?\s*
+        #                                (?P<INDEX>[IVXLCDM\.]+\s)?(\s+|-)?
+        #                                (?P<FAMILY>{FAMILY_REGEX_PATTERN})\s*
+        #                                (?P<PAGENOEND>\d+$)?""", flags=re.VERBOSE)
+        legacy_alts = "|".join([re.escape(alt) for alt in config.LEGACY_FAMILY_NAMES])
+
+        self.family_regex = rf"\b([A-Z]+ACEAE|{legacy_alts}|[A-Z]+EAE)\b"
+        # Species Regex
+        self.species_regex_pattern = """(?:\d+\.\s)?
+                                        [A-Z][a-z\-]+
+                                        (?:\s[a-z\-]+)?
+                                        (?:\s(var\.|subsp\.|f\.)\s[a-z\-]+)?
+                                        (?:\s[A-Z][a-z\-]+)?
+                                        (?:\s\([\w\s]+\))?"""
+        self.species_regex = re.compile(rf"(?P<SPECIES>{self.species_regex_pattern})", flags=re.VERBOSE)
+
+        # Known non-species words
+        self.not_species_text = set()
+
+        self.species_chunker = SpeciesChunker()
+
+
+    def __call__(self, text: str, divisions: list, max_chunk_size: int = 3000):
+        
+        # Pre-process input text to clean it
+        text = self.preprocess_text(text, divisions[0])
+
+        # split the structure by divisions
+        div_struct = self.split_by_divisions(text, divisions)
+
+        # Define a new structure
+        struct = dict()
+
+        for current_div, div_content in div_struct.items():
+            current_div = current_div.strip()
+            #print(f"==> Processing {current_div}")
+
+
+            family_split = self.split_by_families(div_content)
+
+
+            for i, text_chunk in enumerate(family_split):
+                chunks = self.species_chunker.chunk_species(text_chunk["text"])
+                text_chunk["species"] = self.species_chunker.group_into_major_chunks(chunks, max_chunk_size=max_chunk_size)
+
+            struct[current_div] = family_split
+        
+        return struct
+
+
+    def split_by_families(self, text: str):
+
+        finds = re.finditer(self.family_regex, text)
+
+        find_matches = [i for i in finds]
+
+        text_chunks = []
+        
+        for idx, i in enumerate(find_matches):
+            match = re.sub(r"[.\n\t,]*\s*([A-Z]+)\s*[.\n\t,]*", r"\1", i.group())
+            start = i.end()
+            end = find_matches[idx+1].start() if idx+1 < len(find_matches) else None
+            text_chunk = text[start:end] if end else text[start:]
+            text_chunks.append(dict(family=match, text=text_chunk))
+        
+        if text_chunks:
+              return text_chunks
+        else:
+              return [{"family": "No family found", "text": text.strip()}]
+
+
+    def preprocess_text(self, text: str, first_division: str) -> str:
+        """
+        Preprocess the text for splitting into text blocks
+
+        Args:
+            text (str): Extracted text
+            first_division (str): The first division in text
+
+        Returns:
+            str: Cleaned text
+        """
+        text = re.sub(rf"^.*?({re.escape(first_division)})", r"\1", text, flags=re.S | re.I)
+        
+        text = re.sub(r"^(Catalogue|catalogue)$", "", text, flags=re.MULTILINE) # Remove Catalogue/catalogue
+        #text = re.sub(f"^\d+\.?$", "", text, flags=re.MULTILINE)
+        # Clean family ending
+        text = re.sub(r"Æ", "AE", text, flags=re.MULTILINE)
+        text = re.sub(r"œ", "ae", text, flags=re.MULTILINE)
+
+        text = re.sub(r"(?: [A-Z]{2,})\.A\.", "EAE", text)
+        text = re.sub(r"(?: [A-Z]{2,})E(\.|A)?E\.?", "EAE", text, flags= re.MULTILINE) # This changes for all family level ones")
+        text = re.sub(r"(?: [A-Z]{2,})ACE(\.|A)?(\.|E)?\.?", "ACEAE", text, flags= re.MULTILINE) # This changes for all family level ones
+        text = re.sub(r"ace(\.|a)?e\.?", "aceae", text, flags= re.MULTILINE) # This changes for all others
+        text = re.sub(r"(?: [A-Z]{2,})FLOR(\.|A)?(\.|E)?\.?", "FLORAE", text, flags= re.MULTILINE) # This changes for all family level ones
+        text = re.sub(r"flor(\.|a)?e", "florae", text, flags= re.MULTILINE) # This changes for all others
+
+        # remove any tribe or series text if they are on their own line (basically not part of a folder)
+        text = re.sub(r"^(TRIBE|SERIES)\s+[IVXLCDM\.]+\s*[A-Z.]*$", "", text, flags=re.MULTILINE | re.IGNORECASE)
+        return text
+    
+
+    def _create_division_regex(self, divisions: Optional[list]=None) -> re.Pattern:
+        """
+        Generated the division regex
+
+        Args:
+            divisions (Optional[list], optional): List of divisions. Defaults to None.
+
+        Returns:
+            re.Pattern: Pattern for division regex
+        """
+        if not(divisions):
+            return re.compile(f"(?:\d+\.?\s+)?([A-Z][a-z]+|[A-Z]+)\.?")
+        
+        division_str = "|".join(map(re.escape, divisions))
+        return re.compile(f"(?:\d+\.?\s+)?({division_str})\.?", re.IGNORECASE)
+    
+
+    def split_by_divisions(self, text: str, divisions: list) -> dict:
+        """
+        Split the text by division and clean the output to get a structured hierarchy of divisions
+
+        Args:
+            text (str): extracted text
+            divisions (list): List of divisions to split by
+
+        Returns:
+            dict: a structured hierarchy of divisions and their contents
+        """
+
+        # Generate div regexes
+        # To split divisions
+        div_regex = self._create_division_regex(divisions)
+        # To check if a division
+        div_check_regex = self._create_division_regex()
+
+        # Intialise structure
+        struct = {}
+
+        #Split by divisions and clean
+        div_split = re.split(div_regex, text)
+        remove_newline = lambda x: not(re.match(re.compile(r"^(\n)+$"), x))
+        div_split = list(filter(None,div_split))
+        div_split = list(filter(remove_newline, div_split))
+
+        # Pack into splits
+        splits = list(zip(div_split[::2], div_split[1::2]))
+
+        # Iterate through all divisions and Check if they match a divison, if not add it to previous divisions
+        prev_div = "NO DIVISION FOUND"
+        for div, content in splits:
+            if re.match(div_check_regex, div):
+                if div not in struct.keys():
+                    struct[div] = content
+                else:
+                    struct[div] += content
+                prev_div = div
+            else:
+                struct[prev_div] += div + content
+
+        return struct
+
+    
+    def make_text_blocks(self, text_structure, max_chunk_size=3000, overlap_context=1000):
+
+        text_blocks = []
+
+        for div, div_content in text_structure.items():
+            
+            for family_content in div_content:
+                family = family_content["family"]
+                contents = family_content["species"]
+
+                for chunk in contents:
+                    text_blocks.append(dict(
+                        division=div,
+                        family=family,
+                        content=chunk
+                    ))
+            
+        return text_blocks
+
